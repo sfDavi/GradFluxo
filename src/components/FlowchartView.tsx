@@ -2,6 +2,7 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } fr
 import type { Curso, Disciplina, Nucleo, Status } from '../types';
 import { calcularStatus } from '../utils/calcularStatus';
 import { DisciplinaDrawer } from './DisciplinaDrawer';
+import { ExportButton } from './ExportButton';
 import { FilterChips } from './FilterChips';
 import { ProgressByNucleo } from './ProgressByNucleo';
 import { SearchBar, normalizeText } from './SearchBar';
@@ -437,6 +438,9 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
       </div>
 
       <div className="progress-section">
+        <div className="progress-header-row">
+          <ExportButton curso={curso} cursadas={cursadas} />
+        </div>
         <div className="progress-label">
           <span className="progress-label-title">Progresso do Curso</span>
           <span className="progress-label-value">
