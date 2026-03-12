@@ -3,6 +3,7 @@ import type { Curso, Disciplina, Nucleo, Status } from '../types';
 import { calcularStatus } from '../utils/calcularStatus';
 import { DisciplinaDrawer } from './DisciplinaDrawer';
 import { ExportButton } from './ExportButton';
+import { ImportButton } from './ImportButton';
 import { FilterChips } from './FilterChips';
 import { ProgressByNucleo } from './ProgressByNucleo';
 import { SearchBar, normalizeText } from './SearchBar';
@@ -146,6 +147,11 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
     }
     return map;
   }, [curso.disciplinas]);
+
+  const validCodes = useMemo(
+    () => new Set(curso.disciplinas.map((d) => d.codigoDisciplina)),
+    [curso.disciplinas]
+  );
 
   const dependentsMap = useMemo(() => {
     const map = new Map<string, string[]>();
@@ -440,6 +446,11 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
       <div className="progress-section">
         <div className="progress-header-row">
           <ExportButton curso={curso} cursadas={cursadas} />
+          <ImportButton
+            curso={curso}
+            validCodes={validCodes}
+            onImport={setCursadas}
+          />
         </div>
         <div className="progress-label">
           <span className="progress-label-title">Progresso do Curso</span>
