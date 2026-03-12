@@ -1,6 +1,6 @@
 # GradFluxo — Fluxograma Interativo de Disciplinas
 
-Aplicação web para estudantes universitários visualizarem a grade curricular do seu curso em formato de fluxograma interativo. Marque disciplinas como cursadas, acompanhe seu progresso e visualize cadeias de pré-requisitos — tudo no navegador, sem backend.
+Aplicação web para estudantes universitários visualizarem a grade curricular do seu curso em formato de fluxograma interativo.
 
 ## Funcionalidades
 
@@ -23,7 +23,7 @@ Aplicação web para estudantes universitários visualizarem a grade curricular 
 
 ```bash
 # Clone o repositório
-git clone https://github.com/seu-usuario/GradFluxo.git
+git clone https://github.com/sfDavi/GradFluxo.git
 cd GradFluxo
 
 # Instale as dependências
