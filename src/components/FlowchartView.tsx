@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import type { Curso, Disciplina, Nucleo, Status } from '../types';
 import { calcularStatus } from '../utils/calcularStatus';
+import { DisciplinaDrawer } from './DisciplinaDrawer';
 import { FilterChips } from './FilterChips';
 import { ProgressByNucleo } from './ProgressByNucleo';
 import { SearchBar, normalizeText } from './SearchBar';
@@ -63,6 +64,7 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeNucleos, setActiveNucleos] = useState<Set<Nucleo>>(new Set());
   const [activeStatuses, setActiveStatuses] = useState<Set<Status>>(new Set());
+  const [drawerDisciplina, setDrawerDisciplina] = useState<string | null>(null);
 
   const handleToggleNucleo = useCallback((nucleo: Nucleo) => {
     setActiveNucleos((prev) => {
@@ -136,6 +138,14 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
     saveCursadas(curso.codigoCurso, cursadas);
   }, [curso.codigoCurso, cursadas]);
 
+  const disciplinasMap = useMemo(() => {
+    const map = new Map<string, Disciplina>();
+    for (const d of curso.disciplinas) {
+      map.set(d.codigoDisciplina, d);
+    }
+    return map;
+  }, [curso.disciplinas]);
+
   const dependentsMap = useMemo(() => {
     const map = new Map<string, string[]>();
     for (const d of curso.disciplinas) {
@@ -207,6 +217,26 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
     },
     [statusMap, dependentsMap]
   );
+
+  const handleContextMenu = useCallback(
+    (e: React.MouseEvent, codigoDisciplina: string) => {
+      e.preventDefault();
+      setDrawerDisciplina(codigoDisciplina);
+    },
+    []
+  );
+
+  const handleInfoClick = useCallback(
+    (e: React.MouseEvent, codigoDisciplina: string) => {
+      e.stopPropagation();
+      setDrawerDisciplina(codigoDisciplina);
+    },
+    []
+  );
+
+  const handleDrawerNavigate = useCallback((codigoDisciplina: string) => {
+    setDrawerDisciplina(codigoDisciplina);
+  }, []);
 
   const semestreMap = useMemo(() => {
     const map = new Map<number, Disciplina[]>();
@@ -382,9 +412,17 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
                     className={`discipline-card${isHovered ? ' is-hovered' : ''}${isHighlighted ? ' is-highlighted' : ''}${isSearchMatch ? ' is-search-match' : ''}`}
                     title={statusLabels[status]}
                     onClick={() => handleDisciplinaClick(d.codigoDisciplina)}
+                    onContextMenu={(e) => handleContextMenu(e, d.codigoDisciplina)}
                     onMouseEnter={() => setHoveredDisciplina(d.codigoDisciplina)}
                     onMouseLeave={() => setHoveredDisciplina(null)}
                   >
+                    <button
+                      className="discipline-info-btn"
+                      onClick={(e) => handleInfoClick(e, d.codigoDisciplina)}
+                      aria-label={`Detalhes de ${d.nomeDisciplina}`}
+                    >
+                      i
+                    </button>
                     <span className="discipline-code">{d.codigoDisciplina}</span>
                     <span className="discipline-name">{d.nomeDisciplina}</span>
                     <span className="discipline-info">
@@ -415,6 +453,25 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
 
         <ProgressByNucleo curso={curso} cursadas={cursadas} />
       </div>
+
+      {drawerDisciplina && disciplinasMap.get(drawerDisciplina) && (
+        <DisciplinaDrawer
+          disciplina={disciplinasMap.get(drawerDisciplina)!}
+          status={statusMap.get(drawerDisciplina) || 'nao_cursavel'}
+          prerequisitosDisciplinas={
+            (disciplinasMap.get(drawerDisciplina)!.prerequisitos || [])
+              .map((code) => disciplinasMap.get(code))
+              .filter((d): d is Disciplina => d !== undefined)
+          }
+          dependentesDisciplinas={
+            (dependentsMap.get(drawerDisciplina) || [])
+              .map((code) => disciplinasMap.get(code))
+              .filter((d): d is Disciplina => d !== undefined)
+          }
+          onClose={() => setDrawerDisciplina(null)}
+          onNavigate={handleDrawerNavigate}
+        />
+      )}
     </div>
   );
 }

@@ -639,3 +639,286 @@
   border-radius: 3px;
   transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+/* ═══════════════════════════════════════════════
+   DISCIPLINE INFO BUTTON
+   ═══════════════════════════════════════════════ */
+
+.discipline-info-btn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid rgba(240, 236, 228, 0.2);
+  background: rgba(0, 0, 0, 0.25);
+  color: var(--text-secondary);
+  font-size: 0.6rem;
+  font-weight: 700;
+  font-style: italic;
+  font-family: Georgia, serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s ease, background 0.15s ease;
+  z-index: 2;
+  padding: 0;
+  line-height: 1;
+}
+
+.discipline-card:hover .discipline-info-btn {
+  opacity: 1;
+}
+
+.discipline-info-btn:hover {
+  background: rgba(0, 0, 0, 0.5);
+  color: var(--text-primary);
+  border-color: rgba(240, 236, 228, 0.35);
+}
+
+/* ═══════════════════════════════════════════════
+   DISCIPLINE DRAWER
+   ═══════════════════════════════════════════════ */
+
+.drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.drawer-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 380px;
+  background: var(--bg-surface);
+  border-left: 1px solid rgba(240, 236, 228, 0.08);
+  overflow-y: auto;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  z-index: 101;
+  animation: slideInRight 0.3s ease-out;
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+.drawer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.drawer-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.drawer-code {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.drawer-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.3;
+  margin: 0;
+}
+
+.drawer-close {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(240, 236, 228, 0.08);
+  background: var(--bg-elevated);
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.drawer-close:hover {
+  background: rgba(240, 236, 228, 0.1);
+  color: var(--text-primary);
+}
+
+.drawer-badges {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.drawer-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.6rem;
+  border-radius: 100px;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.drawer-badge-status[data-status="cursada"] {
+  background: var(--status-cursada);
+  color: var(--text-primary);
+}
+
+.drawer-badge-status[data-status="cursavel"] {
+  background: var(--status-cursavel);
+  color: var(--text-primary);
+}
+
+.drawer-badge-status[data-status="nao_cursavel"] {
+  background: var(--status-locked);
+  color: var(--text-secondary);
+  border: 1px solid rgba(240, 236, 228, 0.1);
+}
+
+.drawer-badge-nucleo[data-nucleo="comum"] {
+  background: color-mix(in srgb, var(--nucleo-comum) 20%, var(--bg-surface));
+  color: var(--nucleo-comum);
+}
+
+.drawer-badge-nucleo[data-nucleo="especifico"] {
+  background: color-mix(in srgb, var(--nucleo-especifico) 20%, var(--bg-surface));
+  color: var(--nucleo-especifico);
+}
+
+.drawer-badge-nucleo[data-nucleo="livre"] {
+  background: color-mix(in srgb, var(--nucleo-livre) 20%, var(--bg-surface));
+  color: var(--nucleo-livre);
+}
+
+.drawer-badge-nucleo[data-nucleo="optativo"] {
+  background: color-mix(in srgb, var(--nucleo-optativo) 20%, var(--bg-surface));
+  color: var(--nucleo-optativo);
+}
+
+.drawer-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background: var(--bg-elevated);
+  border-radius: var(--radius-sm);
+}
+
+.drawer-detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.drawer-detail-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.drawer-detail-value {
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.drawer-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.drawer-section-title {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0;
+}
+
+.drawer-discipline-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.drawer-discipline-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.4rem 0.6rem;
+  border-radius: var(--radius-sm);
+  background: var(--bg-elevated);
+  border: 1px solid rgba(240, 236, 228, 0.04);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: left;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.drawer-discipline-link:hover {
+  background: rgba(240, 236, 228, 0.08);
+  border-color: rgba(240, 236, 228, 0.12);
+}
+
+.drawer-link-code {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.03em;
+  flex-shrink: 0;
+}
+
+.drawer-link-name {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+}
+
+.drawer-ementa {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  font-weight: 300;
+  margin: 0;
+}
+
+/* ─── Drawer mobile ─── */
+
+@media (max-width: 768px) {
+  .drawer-panel {
+    width: 100%;
+  }
+}
