@@ -7,6 +7,7 @@ import { ImportButton } from './ImportButton';
 import { FilterChips } from './FilterChips';
 import { ProgressByNucleo } from './ProgressByNucleo';
 import { SearchBar, normalizeText } from './SearchBar';
+import { UndoToast } from './UndoToast';
 
 interface Line {
   x1: number;
@@ -67,6 +68,11 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
   const [activeNucleos, setActiveNucleos] = useState<Set<Nucleo>>(new Set());
   const [activeStatuses, setActiveStatuses] = useState<Set<Status>>(new Set());
   const [drawerDisciplina, setDrawerDisciplina] = useState<string | null>(null);
+  const [undoInfo, setUndoInfo] = useState<{
+    snapshot: Set<string>;
+    nomeDisciplina: string;
+    cascadeCount: number;
+  } | null>(null);
 
   const handleToggleNucleo = useCallback((nucleo: Nucleo) => {
     setActiveNucleos((prev) => {
@@ -193,6 +199,7 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
     (codigoDisciplina: string) => {
       const status = statusMap.get(codigoDisciplina);
       if (status === 'cursavel') {
+        setUndoInfo(null);
         setCursadas((prev) => {
           const next = new Set(prev);
           next.add(codigoDisciplina);
@@ -200,6 +207,7 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
         });
       } else if (status === 'cursada') {
         setCursadas((prev) => {
+          const snapshot = new Set(prev);
           const next = new Set(prev);
           const toRemove = new Set<string>();
           const queue = [codigoDisciplina];
@@ -217,13 +225,35 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
           for (const code of toRemove) {
             next.delete(code);
           }
+          const cascadeCount = toRemove.size - 1; // exclude the clicked discipline itself
+          if (cascadeCount > 0) {
+            const disc = disciplinasMap.get(codigoDisciplina);
+            setUndoInfo({
+              snapshot,
+              nomeDisciplina: disc?.nomeDisciplina || codigoDisciplina,
+              cascadeCount,
+            });
+          } else {
+            setUndoInfo(null);
+          }
           return next;
         });
       }
       // nao_cursavel: do nothing
     },
-    [statusMap, dependentsMap]
+    [statusMap, dependentsMap, disciplinasMap]
   );
+
+  const handleUndo = useCallback(() => {
+    if (undoInfo) {
+      setCursadas(undoInfo.snapshot);
+      setUndoInfo(null);
+    }
+  }, [undoInfo]);
+
+  const handleUndoDismiss = useCallback(() => {
+    setUndoInfo(null);
+  }, []);
 
   const handleContextMenu = useCallback(
     (e: React.MouseEvent, codigoDisciplina: string) => {
@@ -468,6 +498,15 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
 
         <ProgressByNucleo curso={curso} cursadas={cursadas} />
       </div>
+
+      {undoInfo && (
+        <UndoToast
+          nomeDisciplina={undoInfo.nomeDisciplina}
+          cascadeCount={undoInfo.cascadeCount}
+          onUndo={handleUndo}
+          onDismiss={handleUndoDismiss}
+        />
+      )}
 
       {drawerDisciplina && disciplinasMap.get(drawerDisciplina) && (
         <DisciplinaDrawer

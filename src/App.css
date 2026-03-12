@@ -1066,3 +1066,58 @@
     width: 100%;
   }
 }
+
+/* ═══════════════════════════════════════════════
+   UNDO TOAST
+   ═══════════════════════════════════════════════ */
+
+.undo-toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #323232;
+  color: #f0ece4;
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  z-index: 200;
+  animation: undo-toast-in 0.3s ease-out;
+  max-width: 90vw;
+}
+
+.undo-toast-message {
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.undo-toast-btn {
+  background: transparent;
+  color: #edc55a;
+  border: none;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+
+.undo-toast-btn:hover {
+  background: rgba(237, 197, 90, 0.15);
+}
+
+@keyframes undo-toast-in {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
