@@ -1,17 +1,13 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import type { Curso, Disciplina, Status } from '../types';
+import type { Curso, Disciplina, Nucleo, Status } from '../types';
 import { calcularStatus } from '../utils/calcularStatus';
-<<<<<<< Updated upstream
-=======
 import { DisciplinaDrawer } from './DisciplinaDrawer';
 import { ExportButton } from './ExportButton';
 import { ImportButton } from './ImportButton';
 import { FilterChips } from './FilterChips';
 import { ProgressByNucleo } from './ProgressByNucleo';
 import { SearchBar, normalizeText } from './SearchBar';
-import { SimulationToggle } from './SimulationToggle';
 import { UndoToast } from './UndoToast';
->>>>>>> Stashed changes
 
 interface Line {
   x1: number;
@@ -68,8 +64,6 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
   const [lines, setLines] = useState<Line[]>([]);
   const [cursadas, setCursadas] = useState<Set<string>>(() => loadCursadas(curso.codigoCurso));
   const [hoveredDisciplina, setHoveredDisciplina] = useState<string | null>(null);
-<<<<<<< Updated upstream
-=======
   const [searchTerm, setSearchTerm] = useState('');
   const [activeNucleos, setActiveNucleos] = useState<Set<Nucleo>>(new Set());
   const [activeStatuses, setActiveStatuses] = useState<Set<Status>>(new Set());
@@ -79,17 +73,6 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
     nomeDisciplina: string;
     cascadeCount: number;
   } | null>(null);
-  const [isSimulationMode, setIsSimulationMode] = useState(false);
-  const [simuladas, setSimuladas] = useState<Set<string>>(new Set());
-
-  const handleToggleSimulation = useCallback(() => {
-    setIsSimulationMode((prev) => {
-      if (prev) {
-        setSimuladas(new Set());
-      }
-      return !prev;
-    });
-  }, []);
 
   const handleToggleNucleo = useCallback((nucleo: Nucleo) => {
     setActiveNucleos((prev) => {
@@ -116,16 +99,9 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
 
   const hasFilters = activeNucleos.size > 0 || activeStatuses.size > 0;
 
-  const effectiveCursadas = useMemo(() => {
-    if (!isSimulationMode || simuladas.size === 0) return cursadas;
-    const union = new Set(cursadas);
-    for (const code of simuladas) union.add(code);
-    return union;
-  }, [cursadas, simuladas, isSimulationMode]);
-
   const statusMap = useMemo(
-    () => calcularStatus(curso.disciplinas, effectiveCursadas),
-    [curso.disciplinas, effectiveCursadas]
+    () => calcularStatus(curso.disciplinas, cursadas),
+    [curso.disciplinas, cursadas]
   );
 
   const searchMatches = useMemo(() => {
@@ -165,15 +141,22 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
     }
     return combined;
   }, [searchMatches, filterMatches]);
->>>>>>> Stashed changes
 
   useEffect(() => {
     saveCursadas(curso.codigoCurso, cursadas);
   }, [curso.codigoCurso, cursadas]);
 
-  const statusMap = useMemo(
-    () => calcularStatus(curso.disciplinas, cursadas),
-    [curso.disciplinas, cursadas]
+  const disciplinasMap = useMemo(() => {
+    const map = new Map<string, Disciplina>();
+    for (const d of curso.disciplinas) {
+      map.set(d.codigoDisciplina, d);
+    }
+    return map;
+  }, [curso.disciplinas]);
+
+  const validCodes = useMemo(
+    () => new Set(curso.disciplinas.map((d) => d.codigoDisciplina)),
+    [curso.disciplinas]
   );
 
   const dependentsMap = useMemo(() => {
@@ -215,40 +198,8 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
   const handleDisciplinaClick = useCallback(
     (codigoDisciplina: string) => {
       const status = statusMap.get(codigoDisciplina);
-
-      if (isSimulationMode) {
-        // In simulation mode: toggle simuladas, never touch cursadas
-        if (simuladas.has(codigoDisciplina)) {
-          // Remove from simuladas (and cascade-remove simulated dependents)
-          setSimuladas((prev) => {
-            const next = new Set(prev);
-            const toRemove = new Set<string>();
-            const queue = [codigoDisciplina];
-            while (queue.length > 0) {
-              const code = queue.pop()!;
-              if (toRemove.has(code)) continue;
-              toRemove.add(code);
-              const deps = dependentsMap.get(code) || [];
-              for (const dep of deps) {
-                if (next.has(dep)) queue.push(dep);
-              }
-            }
-            for (const code of toRemove) next.delete(code);
-            return next;
-          });
-        } else if (status === 'cursavel') {
-          setSimuladas((prev) => {
-            const next = new Set(prev);
-            next.add(codigoDisciplina);
-            return next;
-          });
-        }
-        // Don't touch real cursadas or undo in simulation mode
-        return;
-      }
-
-      // Normal mode
       if (status === 'cursavel') {
+        setUndoInfo(null);
         setCursadas((prev) => {
           const next = new Set(prev);
           next.add(codigoDisciplina);
@@ -256,6 +207,7 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
         });
       } else if (status === 'cursada') {
         setCursadas((prev) => {
+          const snapshot = new Set(prev);
           const next = new Set(prev);
           const toRemove = new Set<string>();
           const queue = [codigoDisciplina];
@@ -273,9 +225,7 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
           for (const code of toRemove) {
             next.delete(code);
           }
-<<<<<<< Updated upstream
-=======
-          const cascadeCount = toRemove.size - 1;
+          const cascadeCount = toRemove.size - 1; // exclude the clicked discipline itself
           if (cascadeCount > 0) {
             const disc = disciplinasMap.get(codigoDisciplina);
             setUndoInfo({
@@ -286,18 +236,44 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
           } else {
             setUndoInfo(null);
           }
->>>>>>> Stashed changes
           return next;
         });
       }
       // nao_cursavel: do nothing
     },
-<<<<<<< Updated upstream
-    [statusMap, dependentsMap]
-=======
-    [statusMap, dependentsMap, disciplinasMap, isSimulationMode, simuladas]
->>>>>>> Stashed changes
+    [statusMap, dependentsMap, disciplinasMap]
   );
+
+  const handleUndo = useCallback(() => {
+    if (undoInfo) {
+      setCursadas(undoInfo.snapshot);
+      setUndoInfo(null);
+    }
+  }, [undoInfo]);
+
+  const handleUndoDismiss = useCallback(() => {
+    setUndoInfo(null);
+  }, []);
+
+  const handleContextMenu = useCallback(
+    (e: React.MouseEvent, codigoDisciplina: string) => {
+      e.preventDefault();
+      setDrawerDisciplina(codigoDisciplina);
+    },
+    []
+  );
+
+  const handleInfoClick = useCallback(
+    (e: React.MouseEvent, codigoDisciplina: string) => {
+      e.stopPropagation();
+      setDrawerDisciplina(codigoDisciplina);
+    },
+    []
+  );
+
+  const handleDrawerNavigate = useCallback((codigoDisciplina: string) => {
+    setDrawerDisciplina(codigoDisciplina);
+  }, []);
 
   const semestreMap = useMemo(() => {
     const map = new Map<number, Disciplina[]>();
@@ -405,11 +381,22 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
           <div className="legend-swatch" data-status="nao_cursavel" />
           <span>Não cursável</span>
         </div>
-        <SimulationToggle active={isSimulationMode} onToggle={handleToggleSimulation} />
       </div>
 
+      <SearchBar onSearchChange={setSearchTerm} />
+
+      <FilterChips
+        activeNucleos={activeNucleos}
+        activeStatuses={activeStatuses}
+        onToggleNucleo={handleToggleNucleo}
+        onToggleStatus={handleToggleStatus}
+        onClearFilters={handleClearFilters}
+        matchCount={combinedMatches ? combinedMatches.size : null}
+        totalCount={curso.disciplinas.length}
+      />
+
       <div
-        className={`flowchart-grid${hoveredDisciplina ? ' is-hovering' : ''}`}
+        className={`flowchart-grid${hoveredDisciplina ? ' is-hovering' : ''}${combinedMatches ? ' is-searching' : ''}`}
         ref={gridRef}
         style={{ position: 'relative' }}
       >
@@ -452,31 +439,20 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
                 const status = statusMap.get(d.codigoDisciplina) || 'nao_cursavel';
                 const isHovered = d.codigoDisciplina === hoveredDisciplina;
                 const isHighlighted = highlightedSet.has(d.codigoDisciplina);
-<<<<<<< Updated upstream
-=======
                 const isSearchMatch = combinedMatches ? combinedMatches.has(d.codigoDisciplina) : false;
-                const isSimulated = isSimulationMode && simuladas.has(d.codigoDisciplina);
-                const isSimUnlocked = isSimulationMode && !simuladas.has(d.codigoDisciplina) && !cursadas.has(d.codigoDisciplina) && status === 'cursavel';
->>>>>>> Stashed changes
                 return (
                   <div
                     key={d.codigoDisciplina}
                     data-disciplina={d.codigoDisciplina}
                     data-status={status}
                     data-nucleo={d.nucleo}
-<<<<<<< Updated upstream
-                    className={`discipline-card${isHovered ? ' is-hovered' : ''}${isHighlighted ? ' is-highlighted' : ''}`}
+                    className={`discipline-card${isHovered ? ' is-hovered' : ''}${isHighlighted ? ' is-highlighted' : ''}${isSearchMatch ? ' is-search-match' : ''}`}
                     title={statusLabels[status]}
-=======
-                    className={`discipline-card${isHovered ? ' is-hovered' : ''}${isHighlighted ? ' is-highlighted' : ''}${isSearchMatch ? ' is-search-match' : ''}${isSimulated ? ' is-simulated' : ''}${isSimUnlocked ? ' is-sim-unlocked' : ''}`}
-                    title={isSimulated ? 'Simulado' : statusLabels[status]}
->>>>>>> Stashed changes
                     onClick={() => handleDisciplinaClick(d.codigoDisciplina)}
+                    onContextMenu={(e) => handleContextMenu(e, d.codigoDisciplina)}
                     onMouseEnter={() => setHoveredDisciplina(d.codigoDisciplina)}
                     onMouseLeave={() => setHoveredDisciplina(null)}
                   >
-<<<<<<< Updated upstream
-=======
                     <button
                       className="discipline-info-btn"
                       onClick={(e) => handleInfoClick(e, d.codigoDisciplina)}
@@ -484,8 +460,6 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
                     >
                       i
                     </button>
-                    {isSimulated && <span className="simulation-badge">Simulado</span>}
->>>>>>> Stashed changes
                     <span className="discipline-code">{d.codigoDisciplina}</span>
                     <span className="discipline-name">{d.nomeDisciplina}</span>
                     <span className="discipline-info">
@@ -500,6 +474,14 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
       </div>
 
       <div className="progress-section">
+        <div className="progress-header-row">
+          <ExportButton curso={curso} cursadas={cursadas} />
+          <ImportButton
+            curso={curso}
+            validCodes={validCodes}
+            onImport={setCursadas}
+          />
+        </div>
         <div className="progress-label">
           <span className="progress-label-title">Progresso do Curso</span>
           <span className="progress-label-value">
@@ -513,7 +495,37 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
             style={{ width: `${Math.min(progressInfo.percentage, 100)}%` }}
           />
         </div>
+
+        <ProgressByNucleo curso={curso} cursadas={cursadas} />
       </div>
+
+      {undoInfo && (
+        <UndoToast
+          nomeDisciplina={undoInfo.nomeDisciplina}
+          cascadeCount={undoInfo.cascadeCount}
+          onUndo={handleUndo}
+          onDismiss={handleUndoDismiss}
+        />
+      )}
+
+      {drawerDisciplina && disciplinasMap.get(drawerDisciplina) && (
+        <DisciplinaDrawer
+          disciplina={disciplinasMap.get(drawerDisciplina)!}
+          status={statusMap.get(drawerDisciplina) || 'nao_cursavel'}
+          prerequisitosDisciplinas={
+            (disciplinasMap.get(drawerDisciplina)!.prerequisitos || [])
+              .map((code) => disciplinasMap.get(code))
+              .filter((d): d is Disciplina => d !== undefined)
+          }
+          dependentesDisciplinas={
+            (dependentsMap.get(drawerDisciplina) || [])
+              .map((code) => disciplinasMap.get(code))
+              .filter((d): d is Disciplina => d !== undefined)
+          }
+          onClose={() => setDrawerDisciplina(null)}
+          onNavigate={handleDrawerNavigate}
+        />
+      )}
     </div>
   );
 }
