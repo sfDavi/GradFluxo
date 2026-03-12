@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import type { Curso, Disciplina, Status } from '../types';
+import type { Curso, Disciplina, Nucleo, Status } from '../types';
 import { calcularStatus } from '../utils/calcularStatus';
+import { FilterChips } from './FilterChips';
 import { SearchBar, normalizeText } from './SearchBar';
 
 interface Line {
@@ -59,6 +60,33 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
   const [cursadas, setCursadas] = useState<Set<string>>(() => loadCursadas(curso.codigoCurso));
   const [hoveredDisciplina, setHoveredDisciplina] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [activeNucleos, setActiveNucleos] = useState<Set<Nucleo>>(new Set());
+  const [activeStatuses, setActiveStatuses] = useState<Set<Status>>(new Set());
+
+  const handleToggleNucleo = useCallback((nucleo: Nucleo) => {
+    setActiveNucleos((prev) => {
+      const next = new Set(prev);
+      if (next.has(nucleo)) next.delete(nucleo);
+      else next.add(nucleo);
+      return next;
+    });
+  }, []);
+
+  const handleToggleStatus = useCallback((status: Status) => {
+    setActiveStatuses((prev) => {
+      const next = new Set(prev);
+      if (next.has(status)) next.delete(status);
+      else next.add(status);
+      return next;
+    });
+  }, []);
+
+  const handleClearFilters = useCallback(() => {
+    setActiveNucleos(new Set());
+    setActiveStatuses(new Set());
+  }, []);
+
+  const hasFilters = activeNucleos.size > 0 || activeStatuses.size > 0;
 
   const searchMatches = useMemo(() => {
     if (!searchTerm) return null;
@@ -72,6 +100,31 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
     }
     return matches;
   }, [curso.disciplinas, searchTerm]);
+
+  const filterMatches = useMemo(() => {
+    if (!hasFilters) return null;
+    const matches = new Set<string>();
+    for (const d of curso.disciplinas) {
+      const nucleoOk = activeNucleos.size === 0 || activeNucleos.has(d.nucleo);
+      const statusOk = activeStatuses.size === 0 || activeStatuses.has(statusMap.get(d.codigoDisciplina) || 'nao_cursavel');
+      if (nucleoOk && statusOk) {
+        matches.add(d.codigoDisciplina);
+      }
+    }
+    return matches;
+  }, [curso.disciplinas, activeNucleos, activeStatuses, hasFilters, statusMap]);
+
+  const combinedMatches = useMemo(() => {
+    if (!searchMatches && !filterMatches) return null;
+    if (searchMatches && !filterMatches) return searchMatches;
+    if (!searchMatches && filterMatches) return filterMatches;
+    // AND: intersection
+    const combined = new Set<string>();
+    for (const code of searchMatches!) {
+      if (filterMatches!.has(code)) combined.add(code);
+    }
+    return combined;
+  }, [searchMatches, filterMatches]);
 
   useEffect(() => {
     saveCursadas(curso.codigoCurso, cursadas);
@@ -264,8 +317,18 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
 
       <SearchBar onSearchChange={setSearchTerm} />
 
+      <FilterChips
+        activeNucleos={activeNucleos}
+        activeStatuses={activeStatuses}
+        onToggleNucleo={handleToggleNucleo}
+        onToggleStatus={handleToggleStatus}
+        onClearFilters={handleClearFilters}
+        matchCount={combinedMatches ? combinedMatches.size : null}
+        totalCount={curso.disciplinas.length}
+      />
+
       <div
-        className={`flowchart-grid${hoveredDisciplina ? ' is-hovering' : ''}${searchMatches ? ' is-searching' : ''}`}
+        className={`flowchart-grid${hoveredDisciplina ? ' is-hovering' : ''}${combinedMatches ? ' is-searching' : ''}`}
         ref={gridRef}
         style={{ position: 'relative' }}
       >
@@ -308,7 +371,7 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
                 const status = statusMap.get(d.codigoDisciplina) || 'nao_cursavel';
                 const isHovered = d.codigoDisciplina === hoveredDisciplina;
                 const isHighlighted = highlightedSet.has(d.codigoDisciplina);
-                const isSearchMatch = searchMatches ? searchMatches.has(d.codigoDisciplina) : false;
+                const isSearchMatch = combinedMatches ? combinedMatches.has(d.codigoDisciplina) : false;
                 return (
                   <div
                     key={d.codigoDisciplina}
