@@ -39,12 +39,6 @@ interface FlowchartViewProps {
   onBack: () => void;
 }
 
-const statusColors: Record<Status, string> = {
-  cursada: '#2e7d32',
-  cursavel: '#1565c0',
-  nao_cursavel: '#616161',
-};
-
 const statusLabels: Record<Status, string> = {
   cursada: 'Cursada',
   cursavel: 'Cursável',
@@ -67,6 +61,7 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
   useEffect(() => {
     saveCursadas(curso.codigoCurso, cursadas);
   }, [curso.codigoCurso, cursadas]);
+
   const statusMap = useMemo(
     () => calcularStatus(curso.disciplinas, cursadas),
     [curso.disciplinas, cursadas]
@@ -120,7 +115,6 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
       } else if (status === 'cursada') {
         setCursadas((prev) => {
           const next = new Set(prev);
-          // Recursively collect all cursada dependents to remove
           const toRemove = new Set<string>();
           const queue = [codigoDisciplina];
           while (queue.length > 0) {
@@ -215,73 +209,95 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
     };
   }, [calculateLines]);
 
+  const isLineHighlighted = useCallback(
+    (line: Line) => {
+      if (!hoveredDisciplina) return false;
+      return (
+        (highlightedSet.has(line.from) || line.from === hoveredDisciplina) &&
+        (highlightedSet.has(line.to) || line.to === hoveredDisciplina)
+      );
+    },
+    [hoveredDisciplina, highlightedSet]
+  );
+
   return (
     <div className="flowchart-view">
-      <button className="back-button" onClick={onBack}>← Voltar aos Cursos</button>
+      <div className="flowchart-header">
+        <button className="back-button" onClick={onBack}>
+          ← Voltar
+        </button>
+      </div>
       <h1>{curso.nomeCurso}</h1>
       <p className="flowchart-subtitle">
-        {curso.codigoCurso} — {curso.numeroSemestres} semestres
+        {curso.codigoCurso} · {curso.numeroSemestres} semestres · {curso.cargaHorariaTotal}h
       </p>
-      <div className="flowchart-grid" ref={gridRef} style={{ position: 'relative' }}>
-        <svg className="prerequisite-lines" style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          pointerEvents: 'none',
-          zIndex: 0,
-        }}>
-          <defs>
-            <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
-              <polygon points="0 0, 8 3, 0 6" fill="rgba(255,255,255,0.3)" />
-            </marker>
-            <marker id="arrowhead-highlight" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
-              <polygon points="0 0, 8 3, 0 6" fill="rgba(255,255,0,0.9)" />
-            </marker>
-          </defs>
+
+      <div className="status-legend">
+        <div className="legend-item">
+          <div className="legend-swatch" data-status="cursada" />
+          <span>Cursada</span>
+        </div>
+        <div className="legend-item">
+          <div className="legend-swatch" data-status="cursavel" />
+          <span>Cursável</span>
+        </div>
+        <div className="legend-item">
+          <div className="legend-swatch" data-status="nao_cursavel" />
+          <span>Não cursável</span>
+        </div>
+      </div>
+
+      <div
+        className={`flowchart-grid${hoveredDisciplina ? ' is-hovering' : ''}`}
+        ref={gridRef}
+        style={{ position: 'relative' }}
+      >
+        <svg
+          className="prerequisite-lines"
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            pointerEvents: 'none',
+            zIndex: 0,
+          }}
+        >
           {lines.map((line) => {
-            const isHighlighted = hoveredDisciplina && (
-              (highlightedSet.has(line.from) || line.from === hoveredDisciplina) &&
-              (highlightedSet.has(line.to) || line.to === hoveredDisciplina)
-            );
+            const highlighted = isLineHighlighted(line);
             return (
               <path
                 key={`${line.from}-${line.to}`}
                 d={`M ${line.x1} ${line.y1} C ${line.x1 + 30} ${line.y1}, ${line.x2 - 30} ${line.y2}, ${line.x2} ${line.y2}`}
-                stroke={isHighlighted ? 'rgba(255,255,0,0.9)' : hoveredDisciplina ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.3)'}
-                strokeWidth={isHighlighted ? 2.5 : 1.5}
+                stroke={highlighted ? '#edc55a' : hoveredDisciplina ? 'rgba(240,236,228,0.05)' : 'rgba(240,236,228,0.18)'}
+                strokeWidth={highlighted ? 2.5 : 1.5}
                 fill="none"
-                markerEnd={isHighlighted ? 'url(#arrowhead-highlight)' : 'url(#arrowhead)'}
-                data-from={line.from}
-                data-to={line.to}
-                style={{ transition: 'stroke 0.15s, stroke-width 0.15s' }}
+                style={{ transition: 'stroke 0.2s, stroke-width 0.2s' }}
               />
             );
           })}
         </svg>
+
         {semestres.map((sem) => (
-          <div key={sem} className="semester-column" style={{ position: 'relative', zIndex: 1 }}>
+          <div
+            key={sem}
+            className="semester-column"
+            style={{ position: 'relative', zIndex: 1, animationDelay: `${(sem - 1) * 0.06}s` }}
+          >
             <h3 className="semester-header">{sem}º Semestre</h3>
             <div className="semester-cards">
               {semestreMap.get(sem)!.map((d) => {
                 const status = statusMap.get(d.codigoDisciplina) || 'nao_cursavel';
+                const isHovered = d.codigoDisciplina === hoveredDisciplina;
+                const isHighlighted = highlightedSet.has(d.codigoDisciplina);
                 return (
                   <div
                     key={d.codigoDisciplina}
                     data-disciplina={d.codigoDisciplina}
-                    className="discipline-card"
-                    style={{
-                      backgroundColor: statusColors[status],
-                      cursor: status === 'nao_cursavel' ? 'default' : 'pointer',
-                      opacity: hoveredDisciplina
-                        ? (d.codigoDisciplina === hoveredDisciplina || highlightedSet.has(d.codigoDisciplina) ? 1 : 0.3)
-                        : undefined,
-                      transition: 'opacity 0.15s',
-                      boxShadow: hoveredDisciplina && highlightedSet.has(d.codigoDisciplina)
-                        ? '0 0 0 2px #fff'
-                        : undefined,
-                    }}
+                    data-status={status}
+                    data-nucleo={d.nucleo}
+                    className={`discipline-card${isHovered ? ' is-hovered' : ''}${isHighlighted ? ' is-highlighted' : ''}`}
                     title={statusLabels[status]}
                     onClick={() => handleDisciplinaClick(d.codigoDisciplina)}
                     onMouseEnter={() => setHoveredDisciplina(d.codigoDisciplina)}
@@ -290,7 +306,7 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
                     <span className="discipline-code">{d.codigoDisciplina}</span>
                     <span className="discipline-name">{d.nomeDisciplina}</span>
                     <span className="discipline-info">
-                      {d.cargaHoraria}h — {nucleoLabels[d.nucleo] || d.nucleo}
+                      {d.cargaHoraria}h · {nucleoLabels[d.nucleo] || d.nucleo}
                     </span>
                   </div>
                 );
@@ -299,9 +315,14 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
           </div>
         ))}
       </div>
+
       <div className="progress-section">
         <div className="progress-label">
-          Progresso: {progressInfo.completed}h / {progressInfo.total}h ({progressInfo.percentage.toFixed(1)}%)
+          <span className="progress-label-title">Progresso do Curso</span>
+          <span className="progress-label-value">
+            {progressInfo.completed}h / {progressInfo.total}h ·{' '}
+            <span className="progress-label-percentage">{progressInfo.percentage.toFixed(1)}%</span>
+          </span>
         </div>
         <div className="progress-bar-track">
           <div
