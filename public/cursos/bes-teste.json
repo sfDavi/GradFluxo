@@ -1,0 +1,308 @@
+{
+  "codigoCurso": "BES-Teste",
+  "nomeCurso": "Bacharelado em Engenharia de Software",
+  "numeroSemestres": 8,
+  "cargaHorariaTotal": 3200,
+  "cargaHorariaNucleoComum": 960,
+  "cargaHorariaNucleoLivre": 320,
+  "cargaHorariaNucleoEspecifico": 1600,
+  "cargaHorariaNucleoOptativo": 320,
+  "disciplinas": [
+    {
+      "codigoDisciplina": "INF0001",
+      "nomeDisciplina": "Introdução à Computação",
+      "semestre": 1,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0002",
+      "nomeDisciplina": "Algoritmos e Programação",
+      "semestre": 1,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "MAT0001",
+      "nomeDisciplina": "Cálculo 1",
+      "semestre": 1,
+      "cargaHoraria": 96,
+      "nucleo": "comum",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "MAT0002",
+      "nomeDisciplina": "Geometria Analítica",
+      "semestre": 1,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0003",
+      "nomeDisciplina": "Estruturas de Dados 1",
+      "semestre": 2,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": ["INF0002"]
+    },
+    {
+      "codigoDisciplina": "INF0004",
+      "nomeDisciplina": "Programação Orientada a Objetos",
+      "semestre": 2,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": ["INF0002"]
+    },
+    {
+      "codigoDisciplina": "MAT0003",
+      "nomeDisciplina": "Cálculo 2",
+      "semestre": 2,
+      "cargaHoraria": 96,
+      "nucleo": "comum",
+      "prerequisitos": ["MAT0001"]
+    },
+    {
+      "codigoDisciplina": "MAT0004",
+      "nomeDisciplina": "Álgebra Linear",
+      "semestre": 2,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": ["MAT0002"]
+    },
+    {
+      "codigoDisciplina": "INF0005",
+      "nomeDisciplina": "Estruturas de Dados 2",
+      "semestre": 3,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": ["INF0003"]
+    },
+    {
+      "codigoDisciplina": "INF0006",
+      "nomeDisciplina": "Banco de Dados 1",
+      "semestre": 3,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": ["INF0003"]
+    },
+    {
+      "codigoDisciplina": "INF0007",
+      "nomeDisciplina": "Engenharia de Software 1",
+      "semestre": 3,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": ["INF0004"]
+    },
+    {
+      "codigoDisciplina": "EST0001",
+      "nomeDisciplina": "Probabilidade e Estatística",
+      "semestre": 3,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": ["MAT0003"]
+    },
+    {
+      "codigoDisciplina": "INF0008",
+      "nomeDisciplina": "Análise de Algoritmos",
+      "semestre": 4,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": ["INF0005", "MAT0004"]
+    },
+    {
+      "codigoDisciplina": "INF0009",
+      "nomeDisciplina": "Engenharia de Software 2",
+      "semestre": 4,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": ["INF0007"]
+    },
+    {
+      "codigoDisciplina": "INF0010",
+      "nomeDisciplina": "Banco de Dados 2",
+      "semestre": 4,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": ["INF0006"]
+    },
+    {
+      "codigoDisciplina": "INF0011",
+      "nomeDisciplina": "Redes de Computadores",
+      "semestre": 4,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": ["INF0001"]
+    },
+    {
+      "codigoDisciplina": "INF0012",
+      "nomeDisciplina": "Arquitetura de Software",
+      "semestre": 5,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": ["INF0009"]
+    },
+    {
+      "codigoDisciplina": "INF0013",
+      "nomeDisciplina": "Testes de Software",
+      "semestre": 5,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": ["INF0009"]
+    },
+    {
+      "codigoDisciplina": "INF0014",
+      "nomeDisciplina": "Sistemas Operacionais",
+      "semestre": 5,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": ["INF0005"]
+    },
+    {
+      "codigoDisciplina": "INF0015",
+      "nomeDisciplina": "Inteligência Artificial",
+      "semestre": 5,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": ["INF0008", "EST0001"]
+    },
+    {
+      "codigoDisciplina": "INF0016",
+      "nomeDisciplina": "Desenvolvimento Web",
+      "semestre": 6,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": ["INF0010", "INF0012"]
+    },
+    {
+      "codigoDisciplina": "INF0017",
+      "nomeDisciplina": "DevOps e Integração Contínua",
+      "semestre": 6,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": ["INF0013"]
+    },
+    {
+      "codigoDisciplina": "INF0018",
+      "nomeDisciplina": "Sistemas Distribuídos",
+      "semestre": 6,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": ["INF0011", "INF0014"]
+    },
+    {
+      "codigoDisciplina": "OPT0001",
+      "nomeDisciplina": "Optativa 1",
+      "semestre": 6,
+      "cargaHoraria": 64,
+      "nucleo": "optativo",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0019",
+      "nomeDisciplina": "Projeto de Software 1",
+      "semestre": 7,
+      "cargaHoraria": 96,
+      "nucleo": "especifico",
+      "prerequisitos": ["INF0016", "INF0017"]
+    },
+    {
+      "codigoDisciplina": "INF0020",
+      "nomeDisciplina": "Segurança de Software",
+      "semestre": 7,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": ["INF0018"]
+    },
+    {
+      "codigoDisciplina": "OPT0002",
+      "nomeDisciplina": "Optativa 2",
+      "semestre": 7,
+      "cargaHoraria": 64,
+      "nucleo": "optativo",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "LIV0001",
+      "nomeDisciplina": "Núcleo Livre 1",
+      "semestre": 7,
+      "cargaHoraria": 64,
+      "nucleo": "livre",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0021",
+      "nomeDisciplina": "Projeto de Software 2",
+      "semestre": 8,
+      "cargaHoraria": 96,
+      "nucleo": "especifico",
+      "prerequisitos": ["INF0019"]
+    },
+    {
+      "codigoDisciplina": "INF0022",
+      "nomeDisciplina": "Trabalho de Conclusão de Curso",
+      "semestre": 8,
+      "cargaHoraria": 128,
+      "nucleo": "especifico",
+      "prerequisitos": ["INF0019"]
+    },
+    {
+      "codigoDisciplina": "OPT0003",
+      "nomeDisciplina": "Optativa 3",
+      "semestre": 8,
+      "cargaHoraria": 64,
+      "nucleo": "optativo",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "LIV0002",
+      "nomeDisciplina": "Núcleo Livre 2",
+      "semestre": 8,
+      "cargaHoraria": 64,
+      "nucleo": "livre",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "OPT0004",
+      "nomeDisciplina": "Optativa 4",
+      "semestre": 8,
+      "cargaHoraria": 64,
+      "nucleo": "optativo",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "OPT0005",
+      "nomeDisciplina": "Optativa 5",
+      "semestre": 8,
+      "cargaHoraria": 64,
+      "nucleo": "optativo",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "LIV0003",
+      "nomeDisciplina": "Núcleo Livre 3",
+      "semestre": 7,
+      "cargaHoraria": 64,
+      "nucleo": "livre",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "LIV0004",
+      "nomeDisciplina": "Núcleo Livre 4",
+      "semestre": 6,
+      "cargaHoraria": 64,
+      "nucleo": "livre",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "LIV0005",
+      "nomeDisciplina": "Núcleo Livre 5",
+      "semestre": 5,
+      "cargaHoraria": 64,
+      "nucleo": "livre",
+      "prerequisitos": []
+    }
+  ]
+}

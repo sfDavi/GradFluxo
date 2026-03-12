@@ -1,0 +1,300 @@
+{
+  "codigoCurso": "BCC-Teste",
+  "nomeCurso": "Bacharelado em Ciência da Computação",
+  "numeroSemestres": 8,
+  "cargaHorariaTotal": 3200,
+  "cargaHorariaNucleoComum": 1024,
+  "cargaHorariaNucleoLivre": 320,
+  "cargaHorariaNucleoEspecifico": 1536,
+  "cargaHorariaNucleoOptativo": 320,
+  "disciplinas": [
+    {
+      "codigoDisciplina": "CC0001",
+      "nomeDisciplina": "Introdução à Ciência da Computação",
+      "semestre": 1,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "CC0002",
+      "nomeDisciplina": "Programação 1",
+      "semestre": 1,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "CC0003",
+      "nomeDisciplina": "Cálculo 1",
+      "semestre": 1,
+      "cargaHoraria": 96,
+      "nucleo": "comum",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "CC0004",
+      "nomeDisciplina": "Geometria Analítica e Álgebra Linear",
+      "semestre": 1,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "CC0005",
+      "nomeDisciplina": "Programação 2",
+      "semestre": 2,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": ["CC0002"]
+    },
+    {
+      "codigoDisciplina": "CC0006",
+      "nomeDisciplina": "Estruturas de Dados 1",
+      "semestre": 2,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": ["CC0002"]
+    },
+    {
+      "codigoDisciplina": "CC0007",
+      "nomeDisciplina": "Cálculo 2",
+      "semestre": 2,
+      "cargaHoraria": 96,
+      "nucleo": "comum",
+      "prerequisitos": ["CC0003"]
+    },
+    {
+      "codigoDisciplina": "CC0008",
+      "nomeDisciplina": "Matemática Discreta",
+      "semestre": 2,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": ["CC0004"]
+    },
+    {
+      "codigoDisciplina": "CC0009",
+      "nomeDisciplina": "Estruturas de Dados 2",
+      "semestre": 3,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": ["CC0006"]
+    },
+    {
+      "codigoDisciplina": "CC0010",
+      "nomeDisciplina": "Programação Orientada a Objetos",
+      "semestre": 3,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": ["CC0005"]
+    },
+    {
+      "codigoDisciplina": "CC0011",
+      "nomeDisciplina": "Probabilidade e Estatística",
+      "semestre": 3,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": ["CC0007"]
+    },
+    {
+      "codigoDisciplina": "CC0012",
+      "nomeDisciplina": "Lógica Matemática",
+      "semestre": 3,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": ["CC0008"]
+    },
+    {
+      "codigoDisciplina": "CC0013",
+      "nomeDisciplina": "Análise de Algoritmos",
+      "semestre": 4,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": ["CC0009", "CC0008"]
+    },
+    {
+      "codigoDisciplina": "CC0014",
+      "nomeDisciplina": "Banco de Dados",
+      "semestre": 4,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": ["CC0009"]
+    },
+    {
+      "codigoDisciplina": "CC0015",
+      "nomeDisciplina": "Sistemas Operacionais",
+      "semestre": 4,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": ["CC0009"]
+    },
+    {
+      "codigoDisciplina": "CC0016",
+      "nomeDisciplina": "Engenharia de Software",
+      "semestre": 4,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": ["CC0010"]
+    },
+    {
+      "codigoDisciplina": "CC0017",
+      "nomeDisciplina": "Redes de Computadores",
+      "semestre": 5,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": ["CC0015"]
+    },
+    {
+      "codigoDisciplina": "CC0018",
+      "nomeDisciplina": "Compiladores",
+      "semestre": 5,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": ["CC0013"]
+    },
+    {
+      "codigoDisciplina": "CC0019",
+      "nomeDisciplina": "Inteligência Artificial",
+      "semestre": 5,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": ["CC0013", "CC0011"]
+    },
+    {
+      "codigoDisciplina": "CC0020",
+      "nomeDisciplina": "Teoria da Computação",
+      "semestre": 5,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": ["CC0012", "CC0013"]
+    },
+    {
+      "codigoDisciplina": "CC0021",
+      "nomeDisciplina": "Computação Gráfica",
+      "semestre": 6,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": ["CC0004", "CC0013"]
+    },
+    {
+      "codigoDisciplina": "CC0022",
+      "nomeDisciplina": "Sistemas Distribuídos",
+      "semestre": 6,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": ["CC0017"]
+    },
+    {
+      "codigoDisciplina": "OPT0001",
+      "nomeDisciplina": "Optativa 1",
+      "semestre": 6,
+      "cargaHoraria": 64,
+      "nucleo": "optativo",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "LIV0001",
+      "nomeDisciplina": "Núcleo Livre 1",
+      "semestre": 6,
+      "cargaHoraria": 64,
+      "nucleo": "livre",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "CC0023",
+      "nomeDisciplina": "Projeto de Sistemas",
+      "semestre": 7,
+      "cargaHoraria": 96,
+      "nucleo": "especifico",
+      "prerequisitos": ["CC0016", "CC0014"]
+    },
+    {
+      "codigoDisciplina": "CC0024",
+      "nomeDisciplina": "Segurança Computacional",
+      "semestre": 7,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": ["CC0017"]
+    },
+    {
+      "codigoDisciplina": "OPT0002",
+      "nomeDisciplina": "Optativa 2",
+      "semestre": 7,
+      "cargaHoraria": 64,
+      "nucleo": "optativo",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "LIV0002",
+      "nomeDisciplina": "Núcleo Livre 2",
+      "semestre": 7,
+      "cargaHoraria": 64,
+      "nucleo": "livre",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "CC0025",
+      "nomeDisciplina": "Trabalho de Conclusão de Curso 1",
+      "semestre": 8,
+      "cargaHoraria": 96,
+      "nucleo": "especifico",
+      "prerequisitos": ["CC0023"]
+    },
+    {
+      "codigoDisciplina": "CC0026",
+      "nomeDisciplina": "Trabalho de Conclusão de Curso 2",
+      "semestre": 8,
+      "cargaHoraria": 96,
+      "nucleo": "especifico",
+      "prerequisitos": ["CC0023"]
+    },
+    {
+      "codigoDisciplina": "OPT0003",
+      "nomeDisciplina": "Optativa 3",
+      "semestre": 8,
+      "cargaHoraria": 64,
+      "nucleo": "optativo",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "OPT0004",
+      "nomeDisciplina": "Optativa 4",
+      "semestre": 8,
+      "cargaHoraria": 64,
+      "nucleo": "optativo",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "OPT0005",
+      "nomeDisciplina": "Optativa 5",
+      "semestre": 8,
+      "cargaHoraria": 64,
+      "nucleo": "optativo",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "LIV0003",
+      "nomeDisciplina": "Núcleo Livre 3",
+      "semestre": 7,
+      "cargaHoraria": 64,
+      "nucleo": "livre",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "LIV0004",
+      "nomeDisciplina": "Núcleo Livre 4",
+      "semestre": 6,
+      "cargaHoraria": 64,
+      "nucleo": "livre",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "LIV0005",
+      "nomeDisciplina": "Núcleo Livre 5",
+      "semestre": 5,
+      "cargaHoraria": 64,
+      "nucleo": "livre",
+      "prerequisitos": []
+    }
+  ]
+}
