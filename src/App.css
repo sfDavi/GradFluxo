@@ -190,6 +190,74 @@
   border: 1px solid rgba(240, 236, 228, 0.12);
 }
 
+/* ─── Search Bar ─── */
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--bg-surface);
+  border: 1px solid rgba(240, 236, 228, 0.08);
+  border-radius: var(--radius-md);
+  margin-bottom: 1rem;
+  max-width: 400px;
+  transition: border-color 0.2s ease;
+}
+
+.search-bar:focus-within {
+  border-color: var(--accent);
+}
+
+.search-icon {
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.search-input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+}
+
+.search-input::placeholder {
+  color: var(--text-muted);
+}
+
+.search-clear {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  background: var(--bg-hover);
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+.search-clear:hover {
+  color: var(--text-primary);
+  background: var(--bg-elevated);
+}
+
+/* ─── Search highlighting ─── */
+
+.flowchart-grid.is-searching .discipline-card {
+  opacity: 0.2;
+}
+
+.flowchart-grid.is-searching .discipline-card.is-search-match {
+  opacity: 1;
+  box-shadow: 0 0 0 2px var(--accent), 0 0 12px rgba(123, 158, 199, 0.2);
+}
+
 /* ─── Grid Layout ─── */
 
 .flowchart-grid {

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import type { Curso, Disciplina, Status } from '../types';
 import { calcularStatus } from '../utils/calcularStatus';
+import { SearchBar, normalizeText } from './SearchBar';
 
 interface Line {
   x1: number;
@@ -57,6 +58,20 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
   const [lines, setLines] = useState<Line[]>([]);
   const [cursadas, setCursadas] = useState<Set<string>>(() => loadCursadas(curso.codigoCurso));
   const [hoveredDisciplina, setHoveredDisciplina] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const searchMatches = useMemo(() => {
+    if (!searchTerm) return null;
+    const matches = new Set<string>();
+    for (const d of curso.disciplinas) {
+      const normalizedName = normalizeText(d.nomeDisciplina);
+      const normalizedCode = normalizeText(d.codigoDisciplina);
+      if (normalizedName.includes(searchTerm) || normalizedCode.includes(searchTerm)) {
+        matches.add(d.codigoDisciplina);
+      }
+    }
+    return matches;
+  }, [curso.disciplinas, searchTerm]);
 
   useEffect(() => {
     saveCursadas(curso.codigoCurso, cursadas);
@@ -247,8 +262,10 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
         </div>
       </div>
 
+      <SearchBar onSearchChange={setSearchTerm} />
+
       <div
-        className={`flowchart-grid${hoveredDisciplina ? ' is-hovering' : ''}`}
+        className={`flowchart-grid${hoveredDisciplina ? ' is-hovering' : ''}${searchMatches ? ' is-searching' : ''}`}
         ref={gridRef}
         style={{ position: 'relative' }}
       >
@@ -291,13 +308,14 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
                 const status = statusMap.get(d.codigoDisciplina) || 'nao_cursavel';
                 const isHovered = d.codigoDisciplina === hoveredDisciplina;
                 const isHighlighted = highlightedSet.has(d.codigoDisciplina);
+                const isSearchMatch = searchMatches ? searchMatches.has(d.codigoDisciplina) : false;
                 return (
                   <div
                     key={d.codigoDisciplina}
                     data-disciplina={d.codigoDisciplina}
                     data-status={status}
                     data-nucleo={d.nucleo}
-                    className={`discipline-card${isHovered ? ' is-hovered' : ''}${isHighlighted ? ' is-highlighted' : ''}`}
+                    className={`discipline-card${isHovered ? ' is-hovered' : ''}${isHighlighted ? ' is-highlighted' : ''}${isSearchMatch ? ' is-search-match' : ''}`}
                     title={statusLabels[status]}
                     onClick={() => handleDisciplinaClick(d.codigoDisciplina)}
                     onMouseEnter={() => setHoveredDisciplina(d.codigoDisciplina)}
