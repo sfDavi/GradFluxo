@@ -1,6 +1,17 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import type { Curso, Disciplina, Status } from '../types';
 import { calcularStatus } from '../utils/calcularStatus';
+<<<<<<< Updated upstream
+=======
+import { DisciplinaDrawer } from './DisciplinaDrawer';
+import { ExportButton } from './ExportButton';
+import { ImportButton } from './ImportButton';
+import { FilterChips } from './FilterChips';
+import { ProgressByNucleo } from './ProgressByNucleo';
+import { SearchBar, normalizeText } from './SearchBar';
+import { SimulationToggle } from './SimulationToggle';
+import { UndoToast } from './UndoToast';
+>>>>>>> Stashed changes
 
 interface Line {
   x1: number;
@@ -57,6 +68,104 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
   const [lines, setLines] = useState<Line[]>([]);
   const [cursadas, setCursadas] = useState<Set<string>>(() => loadCursadas(curso.codigoCurso));
   const [hoveredDisciplina, setHoveredDisciplina] = useState<string | null>(null);
+<<<<<<< Updated upstream
+=======
+  const [searchTerm, setSearchTerm] = useState('');
+  const [activeNucleos, setActiveNucleos] = useState<Set<Nucleo>>(new Set());
+  const [activeStatuses, setActiveStatuses] = useState<Set<Status>>(new Set());
+  const [drawerDisciplina, setDrawerDisciplina] = useState<string | null>(null);
+  const [undoInfo, setUndoInfo] = useState<{
+    snapshot: Set<string>;
+    nomeDisciplina: string;
+    cascadeCount: number;
+  } | null>(null);
+  const [isSimulationMode, setIsSimulationMode] = useState(false);
+  const [simuladas, setSimuladas] = useState<Set<string>>(new Set());
+
+  const handleToggleSimulation = useCallback(() => {
+    setIsSimulationMode((prev) => {
+      if (prev) {
+        setSimuladas(new Set());
+      }
+      return !prev;
+    });
+  }, []);
+
+  const handleToggleNucleo = useCallback((nucleo: Nucleo) => {
+    setActiveNucleos((prev) => {
+      const next = new Set(prev);
+      if (next.has(nucleo)) next.delete(nucleo);
+      else next.add(nucleo);
+      return next;
+    });
+  }, []);
+
+  const handleToggleStatus = useCallback((status: Status) => {
+    setActiveStatuses((prev) => {
+      const next = new Set(prev);
+      if (next.has(status)) next.delete(status);
+      else next.add(status);
+      return next;
+    });
+  }, []);
+
+  const handleClearFilters = useCallback(() => {
+    setActiveNucleos(new Set());
+    setActiveStatuses(new Set());
+  }, []);
+
+  const hasFilters = activeNucleos.size > 0 || activeStatuses.size > 0;
+
+  const effectiveCursadas = useMemo(() => {
+    if (!isSimulationMode || simuladas.size === 0) return cursadas;
+    const union = new Set(cursadas);
+    for (const code of simuladas) union.add(code);
+    return union;
+  }, [cursadas, simuladas, isSimulationMode]);
+
+  const statusMap = useMemo(
+    () => calcularStatus(curso.disciplinas, effectiveCursadas),
+    [curso.disciplinas, effectiveCursadas]
+  );
+
+  const searchMatches = useMemo(() => {
+    if (!searchTerm) return null;
+    const matches = new Set<string>();
+    for (const d of curso.disciplinas) {
+      const normalizedName = normalizeText(d.nomeDisciplina);
+      const normalizedCode = normalizeText(d.codigoDisciplina);
+      if (normalizedName.includes(searchTerm) || normalizedCode.includes(searchTerm)) {
+        matches.add(d.codigoDisciplina);
+      }
+    }
+    return matches;
+  }, [curso.disciplinas, searchTerm]);
+
+  const filterMatches = useMemo(() => {
+    if (!hasFilters) return null;
+    const matches = new Set<string>();
+    for (const d of curso.disciplinas) {
+      const nucleoOk = activeNucleos.size === 0 || activeNucleos.has(d.nucleo);
+      const statusOk = activeStatuses.size === 0 || activeStatuses.has(statusMap.get(d.codigoDisciplina) || 'nao_cursavel');
+      if (nucleoOk && statusOk) {
+        matches.add(d.codigoDisciplina);
+      }
+    }
+    return matches;
+  }, [curso.disciplinas, activeNucleos, activeStatuses, hasFilters, statusMap]);
+
+  const combinedMatches = useMemo(() => {
+    if (!searchMatches && !filterMatches) return null;
+    if (searchMatches && !filterMatches) return searchMatches;
+    if (!searchMatches && filterMatches) return filterMatches;
+    // AND: intersection
+    const combined = new Set<string>();
+    for (const code of searchMatches!) {
+      if (filterMatches!.has(code)) combined.add(code);
+    }
+    return combined;
+  }, [searchMatches, filterMatches]);
+>>>>>>> Stashed changes
 
   useEffect(() => {
     saveCursadas(curso.codigoCurso, cursadas);
@@ -106,6 +215,39 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
   const handleDisciplinaClick = useCallback(
     (codigoDisciplina: string) => {
       const status = statusMap.get(codigoDisciplina);
+
+      if (isSimulationMode) {
+        // In simulation mode: toggle simuladas, never touch cursadas
+        if (simuladas.has(codigoDisciplina)) {
+          // Remove from simuladas (and cascade-remove simulated dependents)
+          setSimuladas((prev) => {
+            const next = new Set(prev);
+            const toRemove = new Set<string>();
+            const queue = [codigoDisciplina];
+            while (queue.length > 0) {
+              const code = queue.pop()!;
+              if (toRemove.has(code)) continue;
+              toRemove.add(code);
+              const deps = dependentsMap.get(code) || [];
+              for (const dep of deps) {
+                if (next.has(dep)) queue.push(dep);
+              }
+            }
+            for (const code of toRemove) next.delete(code);
+            return next;
+          });
+        } else if (status === 'cursavel') {
+          setSimuladas((prev) => {
+            const next = new Set(prev);
+            next.add(codigoDisciplina);
+            return next;
+          });
+        }
+        // Don't touch real cursadas or undo in simulation mode
+        return;
+      }
+
+      // Normal mode
       if (status === 'cursavel') {
         setCursadas((prev) => {
           const next = new Set(prev);
@@ -131,12 +273,30 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
           for (const code of toRemove) {
             next.delete(code);
           }
+<<<<<<< Updated upstream
+=======
+          const cascadeCount = toRemove.size - 1;
+          if (cascadeCount > 0) {
+            const disc = disciplinasMap.get(codigoDisciplina);
+            setUndoInfo({
+              snapshot,
+              nomeDisciplina: disc?.nomeDisciplina || codigoDisciplina,
+              cascadeCount,
+            });
+          } else {
+            setUndoInfo(null);
+          }
+>>>>>>> Stashed changes
           return next;
         });
       }
       // nao_cursavel: do nothing
     },
+<<<<<<< Updated upstream
     [statusMap, dependentsMap]
+=======
+    [statusMap, dependentsMap, disciplinasMap, isSimulationMode, simuladas]
+>>>>>>> Stashed changes
   );
 
   const semestreMap = useMemo(() => {
@@ -245,6 +405,7 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
           <div className="legend-swatch" data-status="nao_cursavel" />
           <span>Não cursável</span>
         </div>
+        <SimulationToggle active={isSimulationMode} onToggle={handleToggleSimulation} />
       </div>
 
       <div
@@ -291,18 +452,40 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
                 const status = statusMap.get(d.codigoDisciplina) || 'nao_cursavel';
                 const isHovered = d.codigoDisciplina === hoveredDisciplina;
                 const isHighlighted = highlightedSet.has(d.codigoDisciplina);
+<<<<<<< Updated upstream
+=======
+                const isSearchMatch = combinedMatches ? combinedMatches.has(d.codigoDisciplina) : false;
+                const isSimulated = isSimulationMode && simuladas.has(d.codigoDisciplina);
+                const isSimUnlocked = isSimulationMode && !simuladas.has(d.codigoDisciplina) && !cursadas.has(d.codigoDisciplina) && status === 'cursavel';
+>>>>>>> Stashed changes
                 return (
                   <div
                     key={d.codigoDisciplina}
                     data-disciplina={d.codigoDisciplina}
                     data-status={status}
                     data-nucleo={d.nucleo}
+<<<<<<< Updated upstream
                     className={`discipline-card${isHovered ? ' is-hovered' : ''}${isHighlighted ? ' is-highlighted' : ''}`}
                     title={statusLabels[status]}
+=======
+                    className={`discipline-card${isHovered ? ' is-hovered' : ''}${isHighlighted ? ' is-highlighted' : ''}${isSearchMatch ? ' is-search-match' : ''}${isSimulated ? ' is-simulated' : ''}${isSimUnlocked ? ' is-sim-unlocked' : ''}`}
+                    title={isSimulated ? 'Simulado' : statusLabels[status]}
+>>>>>>> Stashed changes
                     onClick={() => handleDisciplinaClick(d.codigoDisciplina)}
                     onMouseEnter={() => setHoveredDisciplina(d.codigoDisciplina)}
                     onMouseLeave={() => setHoveredDisciplina(null)}
                   >
+<<<<<<< Updated upstream
+=======
+                    <button
+                      className="discipline-info-btn"
+                      onClick={(e) => handleInfoClick(e, d.codigoDisciplina)}
+                      aria-label={`Detalhes de ${d.nomeDisciplina}`}
+                    >
+                      i
+                    </button>
+                    {isSimulated && <span className="simulation-badge">Simulado</span>}
+>>>>>>> Stashed changes
                     <span className="discipline-code">{d.codigoDisciplina}</span>
                     <span className="discipline-name">{d.nomeDisciplina}</span>
                     <span className="discipline-info">
