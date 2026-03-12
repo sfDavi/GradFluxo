@@ -2,6 +2,7 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } fr
 import type { Curso, Disciplina, Nucleo, Status } from '../types';
 import { calcularStatus } from '../utils/calcularStatus';
 import { FilterChips } from './FilterChips';
+import { ProgressByNucleo } from './ProgressByNucleo';
 import { SearchBar, normalizeText } from './SearchBar';
 
 interface Line {
@@ -88,6 +89,11 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
 
   const hasFilters = activeNucleos.size > 0 || activeStatuses.size > 0;
 
+  const statusMap = useMemo(
+    () => calcularStatus(curso.disciplinas, cursadas),
+    [curso.disciplinas, cursadas]
+  );
+
   const searchMatches = useMemo(() => {
     if (!searchTerm) return null;
     const matches = new Set<string>();
@@ -129,11 +135,6 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
   useEffect(() => {
     saveCursadas(curso.codigoCurso, cursadas);
   }, [curso.codigoCurso, cursadas]);
-
-  const statusMap = useMemo(
-    () => calcularStatus(curso.disciplinas, cursadas),
-    [curso.disciplinas, cursadas]
-  );
 
   const dependentsMap = useMemo(() => {
     const map = new Map<string, string[]>();
@@ -411,6 +412,8 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
             style={{ width: `${Math.min(progressInfo.percentage, 100)}%` }}
           />
         </div>
+
+        <ProgressByNucleo curso={curso} cursadas={cursadas} />
       </div>
     </div>
   );
