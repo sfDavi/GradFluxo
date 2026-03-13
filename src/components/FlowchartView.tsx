@@ -24,6 +24,35 @@ function getStorageKey(codigoCurso: string): string {
   return `gradfluxo-cursadas-${codigoCurso}`;
 }
 
+function getPlanKey(codigoCurso: string): string {
+  return `gradfluxo-plano-${codigoCurso}`;
+}
+
+interface PlanoData {
+  codigoCurso: string;
+  movimentos: Record<string, number>;
+}
+
+function loadPlano(codigoCurso: string): Record<string, number> {
+  try {
+    const stored = localStorage.getItem(getPlanKey(codigoCurso));
+    if (stored) {
+      const data: PlanoData = JSON.parse(stored);
+      if (data && data.codigoCurso === codigoCurso && data.movimentos) {
+        return data.movimentos;
+      }
+    }
+  } catch {
+    // ignore corrupted data
+  }
+  return {};
+}
+
+function savePlano(codigoCurso: string, movimentos: Record<string, number>): void {
+  const data: PlanoData = { codigoCurso, movimentos };
+  localStorage.setItem(getPlanKey(codigoCurso), JSON.stringify(data));
+}
+
 function loadCursadas(codigoCurso: string): Set<string> {
   try {
     const stored = localStorage.getItem(getStorageKey(codigoCurso));
@@ -78,6 +107,8 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
   const [simulationMode, setSimulationMode] = useState(false);
   const [simuladas, setSimuladas] = useState<Set<string>>(new Set());
   const [isMobile, setIsMobile] = useState(() => window.matchMedia('(max-width: 768px)').matches);
+  const [plano, setPlano] = useState<Record<string, number>>(() => loadPlano(curso.codigoCurso));
+  const [dragOverSemestre, setDragOverSemestre] = useState<number | null>(null);
 
   useEffect(() => {
     const mql = window.matchMedia('(max-width: 768px)');
@@ -175,6 +206,16 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
   useEffect(() => {
     saveCursadas(curso.codigoCurso, cursadas);
   }, [curso.codigoCurso, cursadas]);
+
+  useEffect(() => {
+    savePlano(curso.codigoCurso, plano);
+  }, [curso.codigoCurso, plano]);
+
+  const hasPlano = Object.keys(plano).length > 0;
+
+  const handleResetPlano = useCallback(() => {
+    setPlano({});
+  }, []);
 
   const disciplinasMap = useMemo(() => {
     const map = new Map<string, Disciplina>();
@@ -301,6 +342,60 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
     setUndoInfo(null);
   }, []);
 
+  const isDraggable = useCallback(
+    (d: Disciplina) => !isMobile && (d.nucleo === 'livre' || d.nucleo === 'optativo'),
+    [isMobile]
+  );
+
+  const handleDragStart = useCallback(
+    (e: React.DragEvent, codigoDisciplina: string) => {
+      e.dataTransfer.setData('text/plain', codigoDisciplina);
+      e.dataTransfer.effectAllowed = 'move';
+    },
+    []
+  );
+
+  const handleDragOver = useCallback(
+    (e: React.DragEvent, semestre: number) => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      setDragOverSemestre(semestre);
+    },
+    []
+  );
+
+  const handleDragLeave = useCallback(() => {
+    setDragOverSemestre(null);
+  }, []);
+
+  const handleDrop = useCallback(
+    (e: React.DragEvent, targetSemestre: number) => {
+      e.preventDefault();
+      setDragOverSemestre(null);
+      const code = e.dataTransfer.getData('text/plain');
+      if (!code) return;
+      const disc = disciplinasMap.get(code);
+      if (!disc) return;
+      // Only allow livre/optativo
+      if (disc.nucleo !== 'livre' && disc.nucleo !== 'optativo') return;
+      // If dropping back to original semester, remove from plano
+      if (targetSemestre === disc.semestre) {
+        setPlano((prev) => {
+          const next = { ...prev };
+          delete next[code];
+          return next;
+        });
+      } else {
+        setPlano((prev) => ({ ...prev, [code]: targetSemestre }));
+      }
+    },
+    [disciplinasMap]
+  );
+
+  const handleDragEnd = useCallback(() => {
+    setDragOverSemestre(null);
+  }, []);
+
   const handleContextMenu = useCallback(
     (e: React.MouseEvent, codigoDisciplina: string) => {
       e.preventDefault();
@@ -324,12 +419,13 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
   const semestreMap = useMemo(() => {
     const map = new Map<number, Disciplina[]>();
     for (const d of curso.disciplinas) {
-      const list = map.get(d.semestre) || [];
+      const sem = plano[d.codigoDisciplina] ?? d.semestre;
+      const list = map.get(sem) || [];
       list.push(d);
-      map.set(d.semestre, list);
+      map.set(sem, list);
     }
     return map;
-  }, [curso.disciplinas]);
+  }, [curso.disciplinas, plano]);
 
   const semestres = useMemo(
     () => Array.from(semestreMap.keys()).sort((a, b) => a - b),
@@ -431,6 +527,11 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
 
       <div className="simulation-row">
         <SimulationToggle active={simulationMode} onToggle={handleToggleSimulation} />
+        {hasPlano && !isMobile && (
+          <button className="reset-plano-btn" onClick={handleResetPlano}>
+            ↩ Resetar plano
+          </button>
+        )}
       </div>
 
       <SearchBar onSearchChange={setSearchTerm} />
@@ -494,8 +595,11 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
           {semestres.map((sem) => (
             <div
               key={sem}
-              className="semester-column"
+              className={`semester-column${dragOverSemestre === sem ? ' is-drop-target' : ''}`}
               style={{ position: 'relative', zIndex: 1, animationDelay: `${(sem - 1) * 0.06}s` }}
+              onDragOver={(e) => handleDragOver(e, sem)}
+              onDragLeave={handleDragLeave}
+              onDrop={(e) => handleDrop(e, sem)}
             >
               <h3 className="semester-header">{sem}º Semestre</h3>
               <div className="semester-cards">
@@ -506,19 +610,25 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
                   const isSearchMatch = combinedMatches ? combinedMatches.has(d.codigoDisciplina) : false;
                   const isSimulated = simuladas.has(d.codigoDisciplina);
                   const isUnlockedBySimulation = simulationMode && !cursadas.has(d.codigoDisciplina) && !simuladas.has(d.codigoDisciplina) && status === 'cursavel';
+                  const canDrag = isDraggable(d);
+                  const isMoved = plano[d.codigoDisciplina] !== undefined;
                   return (
                     <div
                       key={d.codigoDisciplina}
                       data-disciplina={d.codigoDisciplina}
                       data-status={status}
                       data-nucleo={d.nucleo}
-                      className={`discipline-card${isHovered ? ' is-hovered' : ''}${isHighlighted ? ' is-highlighted' : ''}${isSearchMatch ? ' is-search-match' : ''}${isSimulated ? ' is-simulated' : ''}${isUnlockedBySimulation ? ' is-unlocked-by-sim' : ''}`}
+                      className={`discipline-card${isHovered ? ' is-hovered' : ''}${isHighlighted ? ' is-highlighted' : ''}${isSearchMatch ? ' is-search-match' : ''}${isSimulated ? ' is-simulated' : ''}${isUnlockedBySimulation ? ' is-unlocked-by-sim' : ''}${canDrag ? ' is-draggable' : ''}${isMoved ? ' is-moved' : ''}`}
                       title={isSimulated ? 'Simulado' : statusLabels[status]}
+                      draggable={canDrag}
+                      onDragStart={canDrag ? (e) => handleDragStart(e, d.codigoDisciplina) : undefined}
+                      onDragEnd={canDrag ? handleDragEnd : undefined}
                       onClick={() => handleDisciplinaClick(d.codigoDisciplina)}
                       onContextMenu={(e) => handleContextMenu(e, d.codigoDisciplina)}
                       onMouseEnter={() => setHoveredDisciplina(d.codigoDisciplina)}
                       onMouseLeave={() => setHoveredDisciplina(null)}
                     >
+                      {canDrag && <span className="drag-handle" aria-hidden="true">⠿</span>}
                       <button
                         className="discipline-info-btn"
                         onClick={(e) => handleInfoClick(e, d.codigoDisciplina)}
