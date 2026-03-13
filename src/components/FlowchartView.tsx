@@ -7,6 +7,7 @@ import { ImportButton } from './ImportButton';
 import { FilterChips } from './FilterChips';
 import { ProgressByNucleo } from './ProgressByNucleo';
 import { SearchBar, normalizeText } from './SearchBar';
+import { SimulationToggle } from './SimulationToggle';
 import { UndoToast } from './UndoToast';
 
 interface Line {
@@ -73,6 +74,26 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
     nomeDisciplina: string;
     cascadeCount: number;
   } | null>(null);
+  const [simulationMode, setSimulationMode] = useState(false);
+  const [simuladas, setSimuladas] = useState<Set<string>>(new Set());
+
+  const handleToggleSimulation = useCallback(() => {
+    setSimulationMode((prev) => {
+      if (prev) {
+        setSimuladas(new Set());
+      }
+      return !prev;
+    });
+  }, []);
+
+  const effectiveCursadas = useMemo(() => {
+    if (!simulationMode || simuladas.size === 0) return cursadas;
+    const union = new Set(cursadas);
+    for (const code of simuladas) {
+      union.add(code);
+    }
+    return union;
+  }, [cursadas, simuladas, simulationMode]);
 
   const handleToggleNucleo = useCallback((nucleo: Nucleo) => {
     setActiveNucleos((prev) => {
@@ -100,8 +121,8 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
   const hasFilters = activeNucleos.size > 0 || activeStatuses.size > 0;
 
   const statusMap = useMemo(
-    () => calcularStatus(curso.disciplinas, cursadas),
-    [curso.disciplinas, cursadas]
+    () => calcularStatus(curso.disciplinas, effectiveCursadas),
+    [curso.disciplinas, effectiveCursadas]
   );
 
   const searchMatches = useMemo(() => {
@@ -198,6 +219,22 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
   const handleDisciplinaClick = useCallback(
     (codigoDisciplina: string) => {
       const status = statusMap.get(codigoDisciplina);
+      if (simulationMode) {
+        if (status === 'cursavel') {
+          setSimuladas((prev) => {
+            const next = new Set(prev);
+            next.add(codigoDisciplina);
+            return next;
+          });
+        } else if (simuladas.has(codigoDisciplina)) {
+          setSimuladas((prev) => {
+            const next = new Set(prev);
+            next.delete(codigoDisciplina);
+            return next;
+          });
+        }
+        return;
+      }
       if (status === 'cursavel') {
         setUndoInfo(null);
         setCursadas((prev) => {
@@ -241,7 +278,7 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
       }
       // nao_cursavel: do nothing
     },
-    [statusMap, dependentsMap, disciplinasMap]
+    [statusMap, dependentsMap, disciplinasMap, simulationMode, simuladas]
   );
 
   const handleUndo = useCallback(() => {
@@ -383,6 +420,10 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
         </div>
       </div>
 
+      <div className="simulation-row">
+        <SimulationToggle active={simulationMode} onToggle={handleToggleSimulation} />
+      </div>
+
       <SearchBar onSearchChange={setSearchTerm} />
 
       <FilterChips
@@ -440,14 +481,16 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
                 const isHovered = d.codigoDisciplina === hoveredDisciplina;
                 const isHighlighted = highlightedSet.has(d.codigoDisciplina);
                 const isSearchMatch = combinedMatches ? combinedMatches.has(d.codigoDisciplina) : false;
+                const isSimulated = simuladas.has(d.codigoDisciplina);
+                const isUnlockedBySimulation = simulationMode && !cursadas.has(d.codigoDisciplina) && !simuladas.has(d.codigoDisciplina) && status === 'cursavel';
                 return (
                   <div
                     key={d.codigoDisciplina}
                     data-disciplina={d.codigoDisciplina}
                     data-status={status}
                     data-nucleo={d.nucleo}
-                    className={`discipline-card${isHovered ? ' is-hovered' : ''}${isHighlighted ? ' is-highlighted' : ''}${isSearchMatch ? ' is-search-match' : ''}`}
-                    title={statusLabels[status]}
+                    className={`discipline-card${isHovered ? ' is-hovered' : ''}${isHighlighted ? ' is-highlighted' : ''}${isSearchMatch ? ' is-search-match' : ''}${isSimulated ? ' is-simulated' : ''}${isUnlockedBySimulation ? ' is-unlocked-by-sim' : ''}`}
+                    title={isSimulated ? 'Simulado' : statusLabels[status]}
                     onClick={() => handleDisciplinaClick(d.codigoDisciplina)}
                     onContextMenu={(e) => handleContextMenu(e, d.codigoDisciplina)}
                     onMouseEnter={() => setHoveredDisciplina(d.codigoDisciplina)}
@@ -460,6 +503,7 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
                     >
                       i
                     </button>
+                    {isSimulated && <span className="simulated-badge">Simulado</span>}
                     <span className="discipline-code">{d.codigoDisciplina}</span>
                     <span className="discipline-name">{d.nomeDisciplina}</span>
                     <span className="discipline-info">

@@ -1111,6 +1111,69 @@
   background: rgba(237, 197, 90, 0.15);
 }
 
+/* ═══════════════════════════════════════════════
+   SIMULATION MODE
+   ═══════════════════════════════════════════════ */
+
+.simulation-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.simulation-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.85rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: var(--bg-surface);
+  border: 1px solid rgba(240, 236, 228, 0.08);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.simulation-toggle:hover {
+  background: var(--bg-elevated);
+  border-color: rgba(240, 236, 228, 0.14);
+}
+
+.simulation-toggle.is-active {
+  background: color-mix(in srgb, #edc55a 15%, var(--bg-surface));
+  border-color: #edc55a;
+  color: #edc55a;
+}
+
+/* Simulated discipline card */
+
+.discipline-card.is-simulated {
+  border-style: dashed !important;
+  border-color: #edc55a !important;
+  border-width: 2px;
+  border-left-width: 3px;
+}
+
+.discipline-card.is-unlocked-by-sim {
+  box-shadow: 0 0 0 1px rgba(237, 197, 90, 0.3);
+}
+
+.simulated-badge {
+  position: absolute;
+  top: 3px;
+  right: 26px;
+  font-size: 0.58rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #edc55a;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+
 @keyframes undo-toast-in {
   from {
     opacity: 0;
