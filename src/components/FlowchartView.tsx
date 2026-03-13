@@ -5,6 +5,7 @@ import { DisciplinaDrawer } from './DisciplinaDrawer';
 import { ExportButton } from './ExportButton';
 import { ImportButton } from './ImportButton';
 import { FilterChips } from './FilterChips';
+import { MobileAccordion } from './MobileAccordion';
 import { ProgressByNucleo } from './ProgressByNucleo';
 import { SearchBar, normalizeText } from './SearchBar';
 import { SimulationToggle } from './SimulationToggle';
@@ -76,6 +77,14 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
   } | null>(null);
   const [simulationMode, setSimulationMode] = useState(false);
   const [simuladas, setSimuladas] = useState<Set<string>>(new Set());
+  const [isMobile, setIsMobile] = useState(() => window.matchMedia('(max-width: 768px)').matches);
+
+  useEffect(() => {
+    const mql = window.matchMedia('(max-width: 768px)');
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mql.addEventListener('change', handler);
+    return () => mql.removeEventListener('change', handler);
+  }, []);
 
   const handleToggleSimulation = useCallback(() => {
     setSimulationMode((prev) => {
@@ -436,86 +445,101 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
         totalCount={curso.disciplinas.length}
       />
 
-      <div
-        className={`flowchart-grid${hoveredDisciplina ? ' is-hovering' : ''}${combinedMatches ? ' is-searching' : ''}`}
-        ref={gridRef}
-        style={{ position: 'relative' }}
-      >
-        <svg
-          className="prerequisite-lines"
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            pointerEvents: 'none',
-            zIndex: 0,
-          }}
+      {isMobile ? (
+        <MobileAccordion
+          semestres={semestres}
+          semestreMap={semestreMap}
+          statusMap={statusMap}
+          cursadas={cursadas}
+          simuladas={simuladas}
+          simulationMode={simulationMode}
+          combinedMatches={combinedMatches}
+          onDisciplinaClick={handleDisciplinaClick}
+          onInfoClick={handleInfoClick}
+          onContextMenu={handleContextMenu}
+        />
+      ) : (
+        <div
+          className={`flowchart-grid${hoveredDisciplina ? ' is-hovering' : ''}${combinedMatches ? ' is-searching' : ''}`}
+          ref={gridRef}
+          style={{ position: 'relative' }}
         >
-          {lines.map((line) => {
-            const highlighted = isLineHighlighted(line);
-            return (
-              <path
-                key={`${line.from}-${line.to}`}
-                d={`M ${line.x1} ${line.y1} C ${line.x1 + 30} ${line.y1}, ${line.x2 - 30} ${line.y2}, ${line.x2} ${line.y2}`}
-                stroke={highlighted ? '#edc55a' : hoveredDisciplina ? 'rgba(240,236,228,0.05)' : 'rgba(240,236,228,0.18)'}
-                strokeWidth={highlighted ? 2.5 : 1.5}
-                fill="none"
-                style={{ transition: 'stroke 0.2s, stroke-width 0.2s' }}
-              />
-            );
-          })}
-        </svg>
-
-        {semestres.map((sem) => (
-          <div
-            key={sem}
-            className="semester-column"
-            style={{ position: 'relative', zIndex: 1, animationDelay: `${(sem - 1) * 0.06}s` }}
+          <svg
+            className="prerequisite-lines"
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              pointerEvents: 'none',
+              zIndex: 0,
+            }}
           >
-            <h3 className="semester-header">{sem}º Semestre</h3>
-            <div className="semester-cards">
-              {semestreMap.get(sem)!.map((d) => {
-                const status = statusMap.get(d.codigoDisciplina) || 'nao_cursavel';
-                const isHovered = d.codigoDisciplina === hoveredDisciplina;
-                const isHighlighted = highlightedSet.has(d.codigoDisciplina);
-                const isSearchMatch = combinedMatches ? combinedMatches.has(d.codigoDisciplina) : false;
-                const isSimulated = simuladas.has(d.codigoDisciplina);
-                const isUnlockedBySimulation = simulationMode && !cursadas.has(d.codigoDisciplina) && !simuladas.has(d.codigoDisciplina) && status === 'cursavel';
-                return (
-                  <div
-                    key={d.codigoDisciplina}
-                    data-disciplina={d.codigoDisciplina}
-                    data-status={status}
-                    data-nucleo={d.nucleo}
-                    className={`discipline-card${isHovered ? ' is-hovered' : ''}${isHighlighted ? ' is-highlighted' : ''}${isSearchMatch ? ' is-search-match' : ''}${isSimulated ? ' is-simulated' : ''}${isUnlockedBySimulation ? ' is-unlocked-by-sim' : ''}`}
-                    title={isSimulated ? 'Simulado' : statusLabels[status]}
-                    onClick={() => handleDisciplinaClick(d.codigoDisciplina)}
-                    onContextMenu={(e) => handleContextMenu(e, d.codigoDisciplina)}
-                    onMouseEnter={() => setHoveredDisciplina(d.codigoDisciplina)}
-                    onMouseLeave={() => setHoveredDisciplina(null)}
-                  >
-                    <button
-                      className="discipline-info-btn"
-                      onClick={(e) => handleInfoClick(e, d.codigoDisciplina)}
-                      aria-label={`Detalhes de ${d.nomeDisciplina}`}
+            {lines.map((line) => {
+              const highlighted = isLineHighlighted(line);
+              return (
+                <path
+                  key={`${line.from}-${line.to}`}
+                  d={`M ${line.x1} ${line.y1} C ${line.x1 + 30} ${line.y1}, ${line.x2 - 30} ${line.y2}, ${line.x2} ${line.y2}`}
+                  stroke={highlighted ? '#edc55a' : hoveredDisciplina ? 'rgba(240,236,228,0.05)' : 'rgba(240,236,228,0.18)'}
+                  strokeWidth={highlighted ? 2.5 : 1.5}
+                  fill="none"
+                  style={{ transition: 'stroke 0.2s, stroke-width 0.2s' }}
+                />
+              );
+            })}
+          </svg>
+
+          {semestres.map((sem) => (
+            <div
+              key={sem}
+              className="semester-column"
+              style={{ position: 'relative', zIndex: 1, animationDelay: `${(sem - 1) * 0.06}s` }}
+            >
+              <h3 className="semester-header">{sem}º Semestre</h3>
+              <div className="semester-cards">
+                {semestreMap.get(sem)!.map((d) => {
+                  const status = statusMap.get(d.codigoDisciplina) || 'nao_cursavel';
+                  const isHovered = d.codigoDisciplina === hoveredDisciplina;
+                  const isHighlighted = highlightedSet.has(d.codigoDisciplina);
+                  const isSearchMatch = combinedMatches ? combinedMatches.has(d.codigoDisciplina) : false;
+                  const isSimulated = simuladas.has(d.codigoDisciplina);
+                  const isUnlockedBySimulation = simulationMode && !cursadas.has(d.codigoDisciplina) && !simuladas.has(d.codigoDisciplina) && status === 'cursavel';
+                  return (
+                    <div
+                      key={d.codigoDisciplina}
+                      data-disciplina={d.codigoDisciplina}
+                      data-status={status}
+                      data-nucleo={d.nucleo}
+                      className={`discipline-card${isHovered ? ' is-hovered' : ''}${isHighlighted ? ' is-highlighted' : ''}${isSearchMatch ? ' is-search-match' : ''}${isSimulated ? ' is-simulated' : ''}${isUnlockedBySimulation ? ' is-unlocked-by-sim' : ''}`}
+                      title={isSimulated ? 'Simulado' : statusLabels[status]}
+                      onClick={() => handleDisciplinaClick(d.codigoDisciplina)}
+                      onContextMenu={(e) => handleContextMenu(e, d.codigoDisciplina)}
+                      onMouseEnter={() => setHoveredDisciplina(d.codigoDisciplina)}
+                      onMouseLeave={() => setHoveredDisciplina(null)}
                     >
-                      i
-                    </button>
-                    {isSimulated && <span className="simulated-badge">Simulado</span>}
-                    <span className="discipline-code">{d.codigoDisciplina}</span>
-                    <span className="discipline-name">{d.nomeDisciplina}</span>
-                    <span className="discipline-info">
-                      {d.cargaHoraria}h · {nucleoLabels[d.nucleo] || d.nucleo}
-                    </span>
-                  </div>
-                );
-              })}
+                      <button
+                        className="discipline-info-btn"
+                        onClick={(e) => handleInfoClick(e, d.codigoDisciplina)}
+                        aria-label={`Detalhes de ${d.nomeDisciplina}`}
+                      >
+                        i
+                      </button>
+                      {isSimulated && <span className="simulated-badge">Simulado</span>}
+                      <span className="discipline-code">{d.codigoDisciplina}</span>
+                      <span className="discipline-name">{d.nomeDisciplina}</span>
+                      <span className="discipline-info">
+                        {d.cargaHoraria}h · {nucleoLabels[d.nucleo] || d.nucleo}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
 
       <div className="progress-section">
         <div className="progress-header-row">

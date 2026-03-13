@@ -1184,3 +1184,125 @@
     transform: translateX(-50%) translateY(0);
   }
 }
+
+/* ═══════════════════════════════════════════════
+   MOBILE ACCORDION
+   ═══════════════════════════════════════════════ */
+
+.mobile-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.mobile-accordion.is-searching .discipline-card {
+  opacity: 0.2;
+}
+
+.mobile-accordion.is-searching .discipline-card.is-search-match {
+  opacity: 1;
+  box-shadow: 0 0 0 2px var(--accent), 0 0 12px rgba(123, 158, 199, 0.2);
+}
+
+.accordion-item {
+  border: 1px solid rgba(240, 236, 228, 0.08);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--bg-surface);
+}
+
+.accordion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: var(--bg-surface);
+  border: none;
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.accordion-header:hover {
+  background: var(--bg-elevated);
+}
+
+.accordion-item.is-expanded .accordion-header {
+  border-bottom: 1px solid rgba(240, 236, 228, 0.06);
+}
+
+.accordion-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.accordion-count {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.accordion-chevron {
+  display: flex;
+  align-items: center;
+  color: var(--text-muted);
+  transition: transform 0.2s ease;
+}
+
+.accordion-chevron.is-open {
+  transform: rotate(180deg);
+}
+
+.accordion-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  animation: accordionOpen 0.2s ease;
+}
+
+@keyframes accordionOpen {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ─── Mobile info button always visible ─── */
+
+@media (max-width: 768px) {
+  .discipline-info-btn {
+    opacity: 1;
+  }
+
+  .flowchart-view {
+    padding: 1rem 1rem 2rem;
+  }
+
+  .search-bar {
+    max-width: 100%;
+  }
+
+  .filter-chips {
+    flex-wrap: wrap;
+  }
+
+  .filter-meta {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .progress-by-nucleo {
+    grid-template-columns: 1fr;
+  }
+}
