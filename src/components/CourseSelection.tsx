@@ -1,15 +1,20 @@
-import type { Curso } from '../types';
+import type { Curso } from "../types";
 
 interface CourseSelectionProps {
   cursos: Curso[];
   onSelectCurso: (curso: Curso) => void;
 }
 
-export function CourseSelection({ cursos, onSelectCurso }: CourseSelectionProps) {
+export function CourseSelection({
+  cursos,
+  onSelectCurso,
+}: CourseSelectionProps) {
   return (
     <div className="course-selection">
-      <h1>GradFluxo — Fluxograma de Disciplinas</h1>
-      <p>Selecione seu curso:</p>
+      <h1>
+        <span>Grad</span>Fluxo
+      </h1>
+      <p>Selecione seu curso para visualizar o fluxograma de disciplinas</p>
       <div className="course-list">
         {cursos.map((curso) => (
           <button

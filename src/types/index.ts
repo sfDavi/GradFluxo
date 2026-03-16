@@ -9,6 +9,7 @@ export interface Disciplina {
   cargaHoraria: number;
   nucleo: Nucleo;
   prerequisitos: string[];
+  ementa?: string;
 }
 
 export interface Curso {
