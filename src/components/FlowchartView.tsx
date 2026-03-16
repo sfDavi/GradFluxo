@@ -5,8 +5,10 @@ import { DisciplinaDrawer } from './DisciplinaDrawer';
 import { ExportButton } from './ExportButton';
 import { ImportButton } from './ImportButton';
 import { FilterChips } from './FilterChips';
+import { MobileAccordion } from './MobileAccordion';
 import { ProgressByNucleo } from './ProgressByNucleo';
 import { SearchBar, normalizeText } from './SearchBar';
+import { SimulationToggle } from './SimulationToggle';
 import { UndoToast } from './UndoToast';
 
 interface Line {
@@ -20,6 +22,35 @@ interface Line {
 
 function getStorageKey(codigoCurso: string): string {
   return `gradfluxo-cursadas-${codigoCurso}`;
+}
+
+function getPlanKey(codigoCurso: string): string {
+  return `gradfluxo-plano-${codigoCurso}`;
+}
+
+interface PlanoData {
+  codigoCurso: string;
+  movimentos: Record<string, number>;
+}
+
+function loadPlano(codigoCurso: string): Record<string, number> {
+  try {
+    const stored = localStorage.getItem(getPlanKey(codigoCurso));
+    if (stored) {
+      const data: PlanoData = JSON.parse(stored);
+      if (data && data.codigoCurso === codigoCurso && data.movimentos) {
+        return data.movimentos;
+      }
+    }
+  } catch {
+    // ignore corrupted data
+  }
+  return {};
+}
+
+function savePlano(codigoCurso: string, movimentos: Record<string, number>): void {
+  const data: PlanoData = { codigoCurso, movimentos };
+  localStorage.setItem(getPlanKey(codigoCurso), JSON.stringify(data));
 }
 
 function loadCursadas(codigoCurso: string): Set<string> {
@@ -73,6 +104,36 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
     nomeDisciplina: string;
     cascadeCount: number;
   } | null>(null);
+  const [simulationMode, setSimulationMode] = useState(false);
+  const [simuladas, setSimuladas] = useState<Set<string>>(new Set());
+  const [isMobile, setIsMobile] = useState(() => window.matchMedia('(max-width: 768px)').matches);
+  const [plano, setPlano] = useState<Record<string, number>>(() => loadPlano(curso.codigoCurso));
+  const [dragOverSemestre, setDragOverSemestre] = useState<number | null>(null);
+
+  useEffect(() => {
+    const mql = window.matchMedia('(max-width: 768px)');
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mql.addEventListener('change', handler);
+    return () => mql.removeEventListener('change', handler);
+  }, []);
+
+  const handleToggleSimulation = useCallback(() => {
+    setSimulationMode((prev) => {
+      if (prev) {
+        setSimuladas(new Set());
+      }
+      return !prev;
+    });
+  }, []);
+
+  const effectiveCursadas = useMemo(() => {
+    if (!simulationMode || simuladas.size === 0) return cursadas;
+    const union = new Set(cursadas);
+    for (const code of simuladas) {
+      union.add(code);
+    }
+    return union;
+  }, [cursadas, simuladas, simulationMode]);
 
   const handleToggleNucleo = useCallback((nucleo: Nucleo) => {
     setActiveNucleos((prev) => {
@@ -100,8 +161,8 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
   const hasFilters = activeNucleos.size > 0 || activeStatuses.size > 0;
 
   const statusMap = useMemo(
-    () => calcularStatus(curso.disciplinas, cursadas),
-    [curso.disciplinas, cursadas]
+    () => calcularStatus(curso.disciplinas, effectiveCursadas),
+    [curso.disciplinas, effectiveCursadas]
   );
 
   const searchMatches = useMemo(() => {
@@ -145,6 +206,16 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
   useEffect(() => {
     saveCursadas(curso.codigoCurso, cursadas);
   }, [curso.codigoCurso, cursadas]);
+
+  useEffect(() => {
+    savePlano(curso.codigoCurso, plano);
+  }, [curso.codigoCurso, plano]);
+
+  const hasPlano = Object.keys(plano).length > 0;
+
+  const handleResetPlano = useCallback(() => {
+    setPlano({});
+  }, []);
 
   const disciplinasMap = useMemo(() => {
     const map = new Map<string, Disciplina>();
@@ -198,6 +269,22 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
   const handleDisciplinaClick = useCallback(
     (codigoDisciplina: string) => {
       const status = statusMap.get(codigoDisciplina);
+      if (simulationMode) {
+        if (status === 'cursavel') {
+          setSimuladas((prev) => {
+            const next = new Set(prev);
+            next.add(codigoDisciplina);
+            return next;
+          });
+        } else if (simuladas.has(codigoDisciplina)) {
+          setSimuladas((prev) => {
+            const next = new Set(prev);
+            next.delete(codigoDisciplina);
+            return next;
+          });
+        }
+        return;
+      }
       if (status === 'cursavel') {
         setUndoInfo(null);
         setCursadas((prev) => {
@@ -241,7 +328,7 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
       }
       // nao_cursavel: do nothing
     },
-    [statusMap, dependentsMap, disciplinasMap]
+    [statusMap, dependentsMap, disciplinasMap, simulationMode, simuladas]
   );
 
   const handleUndo = useCallback(() => {
@@ -253,6 +340,60 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
 
   const handleUndoDismiss = useCallback(() => {
     setUndoInfo(null);
+  }, []);
+
+  const isDraggable = useCallback(
+    (d: Disciplina) => !isMobile && (d.nucleo === 'livre' || d.nucleo === 'optativo'),
+    [isMobile]
+  );
+
+  const handleDragStart = useCallback(
+    (e: React.DragEvent, codigoDisciplina: string) => {
+      e.dataTransfer.setData('text/plain', codigoDisciplina);
+      e.dataTransfer.effectAllowed = 'move';
+    },
+    []
+  );
+
+  const handleDragOver = useCallback(
+    (e: React.DragEvent, semestre: number) => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      setDragOverSemestre(semestre);
+    },
+    []
+  );
+
+  const handleDragLeave = useCallback(() => {
+    setDragOverSemestre(null);
+  }, []);
+
+  const handleDrop = useCallback(
+    (e: React.DragEvent, targetSemestre: number) => {
+      e.preventDefault();
+      setDragOverSemestre(null);
+      const code = e.dataTransfer.getData('text/plain');
+      if (!code) return;
+      const disc = disciplinasMap.get(code);
+      if (!disc) return;
+      // Only allow livre/optativo
+      if (disc.nucleo !== 'livre' && disc.nucleo !== 'optativo') return;
+      // If dropping back to original semester, remove from plano
+      if (targetSemestre === disc.semestre) {
+        setPlano((prev) => {
+          const next = { ...prev };
+          delete next[code];
+          return next;
+        });
+      } else {
+        setPlano((prev) => ({ ...prev, [code]: targetSemestre }));
+      }
+    },
+    [disciplinasMap]
+  );
+
+  const handleDragEnd = useCallback(() => {
+    setDragOverSemestre(null);
   }, []);
 
   const handleContextMenu = useCallback(
@@ -278,12 +419,13 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
   const semestreMap = useMemo(() => {
     const map = new Map<number, Disciplina[]>();
     for (const d of curso.disciplinas) {
-      const list = map.get(d.semestre) || [];
+      const sem = plano[d.codigoDisciplina] ?? d.semestre;
+      const list = map.get(sem) || [];
       list.push(d);
-      map.set(d.semestre, list);
+      map.set(sem, list);
     }
     return map;
-  }, [curso.disciplinas]);
+  }, [curso.disciplinas, plano]);
 
   const semestres = useMemo(
     () => Array.from(semestreMap.keys()).sort((a, b) => a - b),
@@ -383,6 +525,15 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
         </div>
       </div>
 
+      <div className="simulation-row">
+        <SimulationToggle active={simulationMode} onToggle={handleToggleSimulation} />
+        {hasPlano && !isMobile && (
+          <button className="reset-plano-btn" onClick={handleResetPlano}>
+            ↩ Resetar plano
+          </button>
+        )}
+      </div>
+
       <SearchBar onSearchChange={setSearchTerm} />
 
       <FilterChips
@@ -395,83 +546,110 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
         totalCount={curso.disciplinas.length}
       />
 
-      <div
-        className={`flowchart-grid${hoveredDisciplina ? ' is-hovering' : ''}${combinedMatches ? ' is-searching' : ''}`}
-        ref={gridRef}
-        style={{ position: 'relative' }}
-      >
-        <svg
-          className="prerequisite-lines"
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            pointerEvents: 'none',
-            zIndex: 0,
-          }}
+      {isMobile ? (
+        <MobileAccordion
+          semestres={semestres}
+          semestreMap={semestreMap}
+          statusMap={statusMap}
+          cursadas={cursadas}
+          simuladas={simuladas}
+          simulationMode={simulationMode}
+          combinedMatches={combinedMatches}
+          onDisciplinaClick={handleDisciplinaClick}
+          onInfoClick={handleInfoClick}
+          onContextMenu={handleContextMenu}
+        />
+      ) : (
+        <div
+          className={`flowchart-grid${hoveredDisciplina ? ' is-hovering' : ''}${combinedMatches ? ' is-searching' : ''}`}
+          ref={gridRef}
+          style={{ position: 'relative' }}
         >
-          {lines.map((line) => {
-            const highlighted = isLineHighlighted(line);
-            return (
-              <path
-                key={`${line.from}-${line.to}`}
-                d={`M ${line.x1} ${line.y1} C ${line.x1 + 30} ${line.y1}, ${line.x2 - 30} ${line.y2}, ${line.x2} ${line.y2}`}
-                stroke={highlighted ? '#edc55a' : hoveredDisciplina ? 'rgba(240,236,228,0.05)' : 'rgba(240,236,228,0.18)'}
-                strokeWidth={highlighted ? 2.5 : 1.5}
-                fill="none"
-                style={{ transition: 'stroke 0.2s, stroke-width 0.2s' }}
-              />
-            );
-          })}
-        </svg>
-
-        {semestres.map((sem) => (
-          <div
-            key={sem}
-            className="semester-column"
-            style={{ position: 'relative', zIndex: 1, animationDelay: `${(sem - 1) * 0.06}s` }}
+          <svg
+            className="prerequisite-lines"
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              pointerEvents: 'none',
+              zIndex: 0,
+            }}
           >
-            <h3 className="semester-header">{sem}º Semestre</h3>
-            <div className="semester-cards">
-              {semestreMap.get(sem)!.map((d) => {
-                const status = statusMap.get(d.codigoDisciplina) || 'nao_cursavel';
-                const isHovered = d.codigoDisciplina === hoveredDisciplina;
-                const isHighlighted = highlightedSet.has(d.codigoDisciplina);
-                const isSearchMatch = combinedMatches ? combinedMatches.has(d.codigoDisciplina) : false;
-                return (
-                  <div
-                    key={d.codigoDisciplina}
-                    data-disciplina={d.codigoDisciplina}
-                    data-status={status}
-                    data-nucleo={d.nucleo}
-                    className={`discipline-card${isHovered ? ' is-hovered' : ''}${isHighlighted ? ' is-highlighted' : ''}${isSearchMatch ? ' is-search-match' : ''}`}
-                    title={statusLabels[status]}
-                    onClick={() => handleDisciplinaClick(d.codigoDisciplina)}
-                    onContextMenu={(e) => handleContextMenu(e, d.codigoDisciplina)}
-                    onMouseEnter={() => setHoveredDisciplina(d.codigoDisciplina)}
-                    onMouseLeave={() => setHoveredDisciplina(null)}
-                  >
-                    <button
-                      className="discipline-info-btn"
-                      onClick={(e) => handleInfoClick(e, d.codigoDisciplina)}
-                      aria-label={`Detalhes de ${d.nomeDisciplina}`}
+            {lines.map((line) => {
+              const highlighted = isLineHighlighted(line);
+              return (
+                <path
+                  key={`${line.from}-${line.to}`}
+                  d={`M ${line.x1} ${line.y1} C ${line.x1 + 30} ${line.y1}, ${line.x2 - 30} ${line.y2}, ${line.x2} ${line.y2}`}
+                  stroke={highlighted ? '#edc55a' : hoveredDisciplina ? 'rgba(240,236,228,0.05)' : 'rgba(240,236,228,0.18)'}
+                  strokeWidth={highlighted ? 2.5 : 1.5}
+                  fill="none"
+                  style={{ transition: 'stroke 0.2s, stroke-width 0.2s' }}
+                />
+              );
+            })}
+          </svg>
+
+          {semestres.map((sem) => (
+            <div
+              key={sem}
+              className={`semester-column${dragOverSemestre === sem ? ' is-drop-target' : ''}`}
+              style={{ position: 'relative', zIndex: 1, animationDelay: `${(sem - 1) * 0.06}s` }}
+              onDragOver={(e) => handleDragOver(e, sem)}
+              onDragLeave={handleDragLeave}
+              onDrop={(e) => handleDrop(e, sem)}
+            >
+              <h3 className="semester-header">{sem}º Semestre</h3>
+              <div className="semester-cards">
+                {semestreMap.get(sem)!.map((d) => {
+                  const status = statusMap.get(d.codigoDisciplina) || 'nao_cursavel';
+                  const isHovered = d.codigoDisciplina === hoveredDisciplina;
+                  const isHighlighted = highlightedSet.has(d.codigoDisciplina);
+                  const isSearchMatch = combinedMatches ? combinedMatches.has(d.codigoDisciplina) : false;
+                  const isSimulated = simuladas.has(d.codigoDisciplina);
+                  const isUnlockedBySimulation = simulationMode && !cursadas.has(d.codigoDisciplina) && !simuladas.has(d.codigoDisciplina) && status === 'cursavel';
+                  const canDrag = isDraggable(d);
+                  const isMoved = plano[d.codigoDisciplina] !== undefined;
+                  return (
+                    <div
+                      key={d.codigoDisciplina}
+                      data-disciplina={d.codigoDisciplina}
+                      data-status={status}
+                      data-nucleo={d.nucleo}
+                      className={`discipline-card${isHovered ? ' is-hovered' : ''}${isHighlighted ? ' is-highlighted' : ''}${isSearchMatch ? ' is-search-match' : ''}${isSimulated ? ' is-simulated' : ''}${isUnlockedBySimulation ? ' is-unlocked-by-sim' : ''}${canDrag ? ' is-draggable' : ''}${isMoved ? ' is-moved' : ''}`}
+                      title={isSimulated ? 'Simulado' : statusLabels[status]}
+                      draggable={canDrag}
+                      onDragStart={canDrag ? (e) => handleDragStart(e, d.codigoDisciplina) : undefined}
+                      onDragEnd={canDrag ? handleDragEnd : undefined}
+                      onClick={() => handleDisciplinaClick(d.codigoDisciplina)}
+                      onContextMenu={(e) => handleContextMenu(e, d.codigoDisciplina)}
+                      onMouseEnter={() => setHoveredDisciplina(d.codigoDisciplina)}
+                      onMouseLeave={() => setHoveredDisciplina(null)}
                     >
-                      i
-                    </button>
-                    <span className="discipline-code">{d.codigoDisciplina}</span>
-                    <span className="discipline-name">{d.nomeDisciplina}</span>
-                    <span className="discipline-info">
-                      {d.cargaHoraria}h · {nucleoLabels[d.nucleo] || d.nucleo}
-                    </span>
-                  </div>
-                );
-              })}
+                      {canDrag && <span className="drag-handle" aria-hidden="true">⠿</span>}
+                      <button
+                        className="discipline-info-btn"
+                        onClick={(e) => handleInfoClick(e, d.codigoDisciplina)}
+                        aria-label={`Detalhes de ${d.nomeDisciplina}`}
+                      >
+                        i
+                      </button>
+                      {isSimulated && <span className="simulated-badge">Simulado</span>}
+                      <span className="discipline-code">{d.codigoDisciplina}</span>
+                      <span className="discipline-name">{d.nomeDisciplina}</span>
+                      <span className="discipline-info">
+                        {d.cargaHoraria}h · {nucleoLabels[d.nucleo] || d.nucleo}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
 
       <div className="progress-section">
         <div className="progress-header-row">
