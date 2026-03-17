@@ -121,7 +121,7 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
             onClick={handleResetPlano}
             disabled={!hasPlano && cursadas.size === 0}
           >
-            ↩ Resetar plano
+            ↩ Restaurar
           </button>
         </div>
       )}
@@ -198,7 +198,7 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
                     disabled={allCursadas}
                     title={allCursadas ? 'Todas cursadas' : 'Marcar todas como cursadas'}
                   >
-                    ✓
+                    ✔
                   </button>
                 </div>
                 <div className="semester-cards">

@@ -1,31 +1,31 @@
 :root {
   /* ─── Background (Ruzzidore 96) ─── */
-  --bg-base: #00060c;
+  --bg-base: #282828;
   --bg-surface: #444247;
-  --bg-elevated: #74777e;
+  --bg-elevated: #505050;
   --bg-hover: #afb4b6;
 
   /* ─── Status Colors ─── */
-  --status-cursada: #41a55b;
-  --status-cursada-hover: #92c468;
-  --status-cursavel: #6892c4;
-  --status-cursavel-hover: #7468c4;
+  --status-cursada: #109969;
+  --status-cursada-hover: #6ecb57;
+  --status-cursavel: #305090;
+  --status-cursavel-hover: #40b0fe;
   --status-locked: #444247;
 
   /* ─── Núcleo Accents ─── */
-  --nucleo-comum: #68c4ba;
-  --nucleo-especifico: #b77d48;
-  --nucleo-livre: #b045a7;
-  --nucleo-optativo: #3a948a;
+  --nucleo-comum: #b2ffc2;
+  --nucleo-especifico: #ffff9b;
+  --nucleo-livre: #c88ecc;
+  --nucleo-optativo: #d0ffff;
 
   /* ─── Text ─── */
   --text-primary: #e2e4e4;
-  --text-secondary: #afb4b6;
-  --text-muted: #74777e;
+  --text-secondary: #d7d7d7;
+  --text-muted: #d7d7d7;
 
   /* ─── Accent & Highlight ─── */
   --highlight: #ced087;
-  --accent: #6892c4;
+  --accent: #305090;
 
   /* ─── Prerequisite Lines ─── */
   --line-default: rgba(226, 228, 228, 0.18);
@@ -34,8 +34,8 @@
 
   /* ─── Progress ─── */
   --progress-track: var(--bg-elevated);
-  --progress-fill-start: #41a55b;
-  --progress-fill-end: #92c468;
+  --progress-fill-start: #109969;
+  --progress-fill-end: #6ecb57;
 
   /* ─── Typography ─── */
   --font-display: 'Bricolage Grotesque', sans-serif;
