@@ -1,36 +1,41 @@
 :root {
-  /* ─── Background ─── */
-  --bg-base: #1a1b21;
-  --bg-surface: #22232b;
-  --bg-elevated: #2a2b35;
-  --bg-hover: #343540;
+  /* ─── Background (Ruzzidore 96) ─── */
+  --bg-base: #00060c;
+  --bg-surface: #444247;
+  --bg-elevated: #74777e;
+  --bg-hover: #afb4b6;
 
   /* ─── Status Colors ─── */
-  --status-cursada: #3ba676;
-  --status-cursada-hover: #349668;
-  --status-cursavel: #5a8db8;
-  --status-cursavel-hover: #4e7da6;
-  --status-locked: #2a2b35;
+  --status-cursada: #41a55b;
+  --status-cursada-hover: #92c468;
+  --status-cursavel: #6892c4;
+  --status-cursavel-hover: #7468c4;
+  --status-locked: #444247;
 
   /* ─── Núcleo Accents ─── */
-  --nucleo-comum: #7b9ec7;
-  --nucleo-especifico: #c2873e;
-  --nucleo-livre: #9b7ec7;
-  --nucleo-optativo: #5bb8a6;
+  --nucleo-comum: #68c4ba;
+  --nucleo-especifico: #b77d48;
+  --nucleo-livre: #b045a7;
+  --nucleo-optativo: #3a948a;
 
   /* ─── Text ─── */
-  --text-primary: #f0ece4;
-  --text-secondary: #a09ca6;
-  --text-muted: #6b6774;
+  --text-primary: #e2e4e4;
+  --text-secondary: #afb4b6;
+  --text-muted: #74777e;
 
   /* ─── Accent & Highlight ─── */
-  --highlight: #edc55a;
-  --accent: #7b9ec7;
+  --highlight: #ced087;
+  --accent: #6892c4;
+
+  /* ─── Prerequisite Lines ─── */
+  --line-default: rgba(226, 228, 228, 0.18);
+  --line-dimmed: rgba(226, 228, 228, 0.05);
+  --line-highlight: var(--highlight);
 
   /* ─── Progress ─── */
   --progress-track: var(--bg-elevated);
-  --progress-fill-start: #2d9b6e;
-  --progress-fill-end: #3ba676;
+  --progress-fill-start: #41a55b;
+  --progress-fill-end: #92c468;
 
   /* ─── Typography ─── */
   --font-display: 'Bricolage Grotesque', sans-serif;
@@ -65,8 +70,8 @@ body {
   min-height: 100vh;
   min-width: 320px;
   background:
-    radial-gradient(ellipse at 15% 50%, rgba(59, 166, 118, 0.04) 0%, transparent 50%),
-    radial-gradient(ellipse at 85% 20%, rgba(90, 141, 184, 0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 15% 50%, rgba(65, 165, 91, 0.05) 0%, transparent 50%),
+    radial-gradient(ellipse at 85% 20%, rgba(104, 146, 196, 0.05) 0%, transparent 50%),
     var(--bg-base);
 }
 
