@@ -168,10 +168,11 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
           >
             {lines.map((line) => {
               const highlighted = isLineHighlighted(line);
+              const handle = Math.max(10, (line.x2 - line.x1) * 0.25);
               return (
                 <path
                   key={`${line.from}-${line.to}`}
-                  d={`M ${line.x1} ${line.y1} C ${line.x1 + 30} ${line.y1}, ${line.x2 - 30} ${line.y2}, ${line.x2} ${line.y2}`}
+                  d={`M ${line.x1} ${line.y1} C ${line.x1 + handle} ${line.y1}, ${line.x2 - handle} ${line.y2}, ${line.x2} ${line.y2}`}
                   className={`prerequisite-line${highlighted ? ' is-highlighted' : hoveredDisciplina ? ' is-dimmed' : ''}`}
                 />
               );
