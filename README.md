@@ -17,6 +17,10 @@ Aplicação web para estudantes universitários visualizarem a grade curricular 
 - **Suporte a múltiplos cursos** — novos cursos são adicionados apenas inserindo um arquivo JSON
 
 
+## Acesso
+
+Acesse diretamente em **[grad-fluxo.vercel.app](https://grad-fluxo.vercel.app/)** — sem instalação.
+
 ## Instalação e execução
 
 **Pré-requisitos:** Node.js 18+
@@ -91,9 +95,10 @@ GradFluxo/
 ├── public/
 │   └── cursos/
 │       ├── index.json          # Lista de arquivos de curso
+│       ├── bcc-17.json         # Ciência da Computação (grade 2017)
+│       ├── bcc-24.json         # Ciência da Computação (grade 2024)
 │       ├── bes-ufg-24.json     # Engenharia de Software - UFG (grade 2024)
-│       ├── bcc-teste.json      # BCC exemplo
-│       └── bes-teste.json      # BES exemplo
+│       └── ia-2020.json        # Inteligência Artificial (grade 2020)
 └── src/
     ├── types/
     │   └── index.ts            # Tipos TypeScript (Curso, Disciplina, Status, Nucleo)
