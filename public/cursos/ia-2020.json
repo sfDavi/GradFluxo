@@ -1,0 +1,284 @@
+{
+  "codigoCurso": "INTART-BI-1",
+  "nomeCurso": "INTELIGÊNCIA ARTIFICIAL - Goiânia - Presencial - MVN - BACHARELADO",
+  "numeroSemestres": 9,
+  "cargaHorariaTotal": 3200,
+  "cargaHorariaNucleoComum": 896,
+  "cargaHorariaNucleoLivre": 128,
+  "cargaHorariaNucleoEspecifico": 1600,
+  "cargaHorariaNucleoOptativo": 64,
+  "disciplinas": [
+    {
+      "codigoDisciplina": "INF0284",
+      "nomeDisciplina": "INTRODUÇÃO À PROGRAMAÇÃO",
+      "semestre": 1,
+      "cargaHoraria": 128,
+      "nucleo": "comum",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0305",
+      "nomeDisciplina": "LÓGICA MATEMÁTICA",
+      "semestre": 1,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0398",
+      "nomeDisciplina": "EMPREENDEDORISMO",
+      "semestre": 1,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "IME0350",
+      "nomeDisciplina": "CÁLCULO 1A",
+      "semestre": 2,
+      "cargaHoraria": 96,
+      "nucleo": "comum",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0283",
+      "nomeDisciplina": "COMPUTAÇÃO E SOCIEDADE",
+      "semestre": 2,
+      "cargaHoraria": 32,
+      "nucleo": "comum",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0286",
+      "nomeDisciplina": "ALGORITMOS E ESTRUTURAS DE DADOS 1",
+      "semestre": 2,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0396",
+      "nomeDisciplina": "PROGRAMAÇÃO ORIENTADA A OBJETOS",
+      "semestre": 2,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0408",
+      "nomeDisciplina": "TRANSFORMAÇÃO DIGITAL",
+      "semestre": 2,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "IME0378",
+      "nomeDisciplina": "PROBABILIDADE E ESTATÍSTICA A",
+      "semestre": 3,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0287",
+      "nomeDisciplina": "ALGORITMOS E ESTRUTURAS DE DADOS 2",
+      "semestre": 3,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0409",
+      "nomeDisciplina": "ANÁLISE E PROJETO DE ALGORITMOS",
+      "semestre": 3,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0410",
+      "nomeDisciplina": "PENSAMENTO ANALÍTICO DE DADOS",
+      "semestre": 3,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0475",
+      "nomeDisciplina": "BANCO DE DADOS",
+      "semestre": 3,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "IME0351",
+      "nomeDisciplina": "ÁLGEBRA LINEAR",
+      "semestre": 4,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0015",
+      "nomeDisciplina": "ARQUITETURA DE COMPUTADORES",
+      "semestre": 4,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0412",
+      "nomeDisciplina": "APRENDIZADO DE MÁQUINA SUPERVISIONADO",
+      "semestre": 4,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0413",
+      "nomeDisciplina": "PROCESSAMENTO DIGITAL DE SINAIS E IMAGENS",
+      "semestre": 4,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0414",
+      "nomeDisciplina": "MINERAÇÃO DE DADOS",
+      "semestre": 4,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0411",
+      "nomeDisciplina": "REDES DE COMPUTADORES",
+      "semestre": 5,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0415",
+      "nomeDisciplina": "HEURÍSTICAS E MODELAGEM MULTIOBJETIVO",
+      "semestre": 5,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0416",
+      "nomeDisciplina": "REDES NEURAIS PROFUNDAS",
+      "semestre": 5,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0417",
+      "nomeDisciplina": "VISÃO COMPUTACIONAL",
+      "semestre": 5,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0418",
+      "nomeDisciplina": "COMPUTAÇÃO DE ALTO DESEMPENHO",
+      "semestre": 5,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0423",
+      "nomeDisciplina": "INTERNET DAS COISAS",
+      "semestre": 6,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0424",
+      "nomeDisciplina": "PROCESSAMENTO DE LINGUAGEM NATURAL",
+      "semestre": 6,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0425",
+      "nomeDisciplina": "APRENDIZADO DE MÁQUINA NÃO SUPERVISIONADO",
+      "semestre": 6,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0426",
+      "nomeDisciplina": "APRENDIZADO DE MÁQUINA POR REFORÇO",
+      "semestre": 6,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0427",
+      "nomeDisciplina": "PROCESSAMENTO DE DADOS MASSIVOS",
+      "semestre": 6,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0429",
+      "nomeDisciplina": "PERCEPÇÃO E AÇÃO ROBÓTICA",
+      "semestre": 7,
+      "cargaHoraria": 96,
+      "nucleo": "especifico",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0430",
+      "nomeDisciplina": "PROCESSAMENTO DE ÁUDIO E VOZ",
+      "semestre": 7,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0431",
+      "nomeDisciplina": "APOIO À TOMADA DE DECISÃO",
+      "semestre": 7,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0432",
+      "nomeDisciplina": "PESQUISA E INOVAÇÃO",
+      "semestre": 7,
+      "cargaHoraria": 32,
+      "nucleo": "especifico",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0435",
+      "nomeDisciplina": "RESIDÊNCIA EM INTELIGÊNCIA ARTIFICIAL",
+      "semestre": 8,
+      "cargaHoraria": 384,
+      "nucleo": "especifico",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "OPT0001",
+      "nomeDisciplina": "Optativa 1",
+      "semestre": 7,
+      "cargaHoraria": 64,
+      "nucleo": "optativo",
+      "prerequisitos": []
+    }
+  ]
+}

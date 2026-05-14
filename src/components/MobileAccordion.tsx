@@ -12,9 +12,6 @@ interface MobileAccordionProps {
   semestres: number[];
   semestreMap: Map<number, Disciplina[]>;
   statusMap: Map<string, Status>;
-  cursadas: Set<string>;
-  simuladas: Set<string>;
-  simulationMode: boolean;
   combinedMatches: Set<string> | null;
   onDisciplinaClick: (codigo: string) => void;
   onInfoClick: (e: React.MouseEvent, codigo: string) => void;
@@ -31,9 +28,6 @@ export function MobileAccordion({
   semestres,
   semestreMap,
   statusMap,
-  cursadas,
-  simuladas,
-  simulationMode,
   combinedMatches,
   onDisciplinaClick,
   onInfoClick,
@@ -77,16 +71,14 @@ export function MobileAccordion({
                 {disciplinas.map((d) => {
                   const status = statusMap.get(d.codigoDisciplina) || 'nao_cursavel';
                   const isSearchMatch = combinedMatches ? combinedMatches.has(d.codigoDisciplina) : false;
-                  const isSimulated = simuladas.has(d.codigoDisciplina);
-                  const isUnlockedBySimulation = simulationMode && !cursadas.has(d.codigoDisciplina) && !simuladas.has(d.codigoDisciplina) && status === 'cursavel';
                   return (
                     <div
                       key={d.codigoDisciplina}
                       data-disciplina={d.codigoDisciplina}
                       data-status={status}
                       data-nucleo={d.nucleo}
-                      className={`discipline-card${isSearchMatch ? ' is-search-match' : ''}${isSimulated ? ' is-simulated' : ''}${isUnlockedBySimulation ? ' is-unlocked-by-sim' : ''}`}
-                      title={isSimulated ? 'Simulado' : statusLabels[status]}
+                      className={`discipline-card${isSearchMatch ? ' is-search-match' : ''}`}
+                      title={statusLabels[status]}
                       onClick={() => onDisciplinaClick(d.codigoDisciplina)}
                       onContextMenu={(e) => onContextMenu(e, d.codigoDisciplina)}
                     >
@@ -97,7 +89,6 @@ export function MobileAccordion({
                       >
                         i
                       </button>
-                      {isSimulated && <span className="simulated-badge">Simulado</span>}
                       <span className="discipline-code">{d.codigoDisciplina}</span>
                       <span className="discipline-name">{d.nomeDisciplina}</span>
                       <span className="discipline-info">

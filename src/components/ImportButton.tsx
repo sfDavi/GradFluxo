@@ -16,7 +16,7 @@ export function ImportButton({ curso, validCodes, onImport }: ImportButtonProps)
   const fileRef = useRef<HTMLInputElement>(null);
   const [toast, setToast] = useState<Toast | null>(null);
   const [pendingImport, setPendingImport] = useState<string[] | null>(null);
-  const toastTimer = useRef<ReturnType<typeof setTimeout>>();
+  const toastTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   const showToast = useCallback((t: Toast) => {
     if (toastTimer.current) clearTimeout(toastTimer.current);
