@@ -71,6 +71,7 @@ export function usePrerequisiteLines(
   }, [curso.disciplinas, gridRef]);
 
   useLayoutEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     calculateLines();
   }, [calculateLines, cursadas, plano]);
 

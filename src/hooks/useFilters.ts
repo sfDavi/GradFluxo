@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from 'react';
 import type { Curso, Nucleo, Status } from '../types';
-import { normalizeText } from '../components/SearchBar';
+import { normalizeText } from '../utils/normalizeText';
 
 export function useFilters(curso: Curso, statusMap: Map<string, Status>) {
   const [searchTerm, setSearchTerm] = useState('');

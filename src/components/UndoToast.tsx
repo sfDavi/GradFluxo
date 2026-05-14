@@ -8,7 +8,7 @@ interface UndoToastProps {
 }
 
 export function UndoToast({ nomeDisciplina, cascadeCount, onUndo, onDismiss }: UndoToastProps) {
-  const timerRef = useRef<ReturnType<typeof setTimeout>>();
+  const timerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   useEffect(() => {
     timerRef.current = setTimeout(onDismiss, 5000);

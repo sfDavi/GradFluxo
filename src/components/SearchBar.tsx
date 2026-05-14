@@ -1,22 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { normalizeText } from '../utils/normalizeText';
 
 interface SearchBarProps {
   onSearchChange: (term: string) => void;
 }
 
-function normalizeText(str: string): string {
-  return str
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase();
-}
-
-export { normalizeText };
-
 export function SearchBar({ onSearchChange }: SearchBarProps) {
   const [value, setValue] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
-  const timerRef = useRef<ReturnType<typeof setTimeout>>();
+  const timerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   const handleChange = useCallback(
     (newValue: string) => {
