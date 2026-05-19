@@ -218,15 +218,25 @@ export function useCursoState(curso: Curso) {
     (sem: number) => {
       const disciplinas = semestreMap.get(sem);
       if (!disciplinas) return;
-      setCursadas((prev) => {
-        const next = new Set(prev);
-        for (const d of disciplinas) {
-          next.add(d.codigoDisciplina);
-        }
-        return next;
-      });
+      const allCursadas = disciplinas.every((d) => cursadas.has(d.codigoDisciplina));
+      if (allCursadas) {
+        setCursadas((prev) => {
+          const next = new Set(prev);
+          for (const d of disciplinas) next.delete(d.codigoDisciplina);
+          return next;
+        });
+      } else {
+        const cursaveisNoSem = disciplinas
+          .filter((d) => statusMap.get(d.codigoDisciplina) === 'cursavel')
+          .map((d) => d.codigoDisciplina);
+        setCursadas((prev) => {
+          const next = new Set(prev);
+          for (const code of cursaveisNoSem) next.add(code);
+          return next;
+        });
+      }
     },
-    [semestreMap]
+    [semestreMap, cursadas, statusMap]
   );
 
   return {
