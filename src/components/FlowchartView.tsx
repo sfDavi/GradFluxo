@@ -257,14 +257,6 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
       )}
 
       <div className="progress-section">
-        <div className="progress-header-row">
-          <ExportButton curso={curso} cursadas={cursadas} />
-          <ImportButton
-            curso={curso}
-            validCodes={validCodes}
-            onImport={setCursadas}
-          />
-        </div>
         <div className="progress-label">
           <span className="progress-label-title">Progresso do Curso</span>
           <span className="progress-label-value">
@@ -280,6 +272,15 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
         </div>
 
         <ProgressByNucleo curso={curso} cursadas={cursadas} />
+
+        <div className="progress-header-row">
+          <ExportButton curso={curso} cursadas={cursadas} />
+          <ImportButton
+            curso={curso}
+            validCodes={validCodes}
+            onImport={setCursadas}
+          />
+        </div>
       </div>
 
       {undoInfo && (
