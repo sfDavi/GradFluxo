@@ -182,6 +182,7 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
           {semestres.map((sem) => {
             const discs = semestreMap.get(sem)!;
             const allCursadas = discs.every((d) => cursadas.has(d.codigoDisciplina));
+            const hasCursavel = discs.some((d) => statusMap.get(d.codigoDisciplina) === 'cursavel');
             return (
               <div
                 key={sem}
@@ -196,10 +197,16 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
                   <button
                     className={`mark-semester-btn${allCursadas ? ' is-done' : ''}`}
                     onClick={() => handleMarkSemestre(sem)}
-                    disabled={allCursadas}
-                    title={allCursadas ? 'Todas cursadas' : 'Marcar todas como cursadas'}
+                    disabled={!allCursadas && !hasCursavel}
+                    title={
+                      allCursadas
+                        ? 'Desmarcar todas'
+                        : hasCursavel
+                          ? 'Marcar cursáveis como cursadas'
+                          : 'Nenhuma disciplina cursável'
+                    }
                   >
-                    ✔
+                    {allCursadas ? '✕' : '✔'}
                   </button>
                 </div>
                 <div className="semester-cards">
@@ -250,14 +257,6 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
       )}
 
       <div className="progress-section">
-        <div className="progress-header-row">
-          <ExportButton curso={curso} cursadas={cursadas} />
-          <ImportButton
-            curso={curso}
-            validCodes={validCodes}
-            onImport={setCursadas}
-          />
-        </div>
         <div className="progress-label">
           <span className="progress-label-title">Progresso do Curso</span>
           <span className="progress-label-value">
@@ -273,6 +272,15 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
         </div>
 
         <ProgressByNucleo curso={curso} cursadas={cursadas} />
+
+        <div className="progress-header-row">
+          <ExportButton curso={curso} cursadas={cursadas} />
+          <ImportButton
+            curso={curso}
+            validCodes={validCodes}
+            onImport={setCursadas}
+          />
+        </div>
       </div>
 
       {undoInfo && (
