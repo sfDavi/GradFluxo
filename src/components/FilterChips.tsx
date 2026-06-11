@@ -18,9 +18,9 @@ const nucleoOptions: { value: Nucleo; label: string; cssVar: string }[] = [
 ];
 
 const statusOptions: { value: Status; label: string; cssVar: string }[] = [
-  { value: 'cursada', label: 'Cursada', cssVar: 'var(--status-cursada)' },
-  { value: 'cursavel', label: 'Cursável', cssVar: 'var(--status-cursavel)' },
-  { value: 'nao_cursavel', label: 'Não Cursável', cssVar: 'var(--status-locked)' },
+  { value: 'cursada', label: 'Cursada', cssVar: 'var(--status-cursada-bg)' },
+  { value: 'cursavel', label: 'Cursável', cssVar: 'var(--status-cursavel-bg)' },
+  { value: 'nao_cursavel', label: 'Não Cursável', cssVar: 'var(--status-locked-bg)' },
 ];
 
 export function FilterChips({
@@ -60,6 +60,7 @@ export function FilterChips({
           {statusOptions.map((opt) => (
             <button
               key={opt.value}
+              data-group="status"
               className={`filter-chip${activeStatuses.has(opt.value) ? ' is-active' : ''}`}
               style={{
                 '--chip-color': opt.cssVar,

@@ -58,6 +58,7 @@
   --status-cursavel:       #296ef9;
   --status-cursavel-bg:    #296ef9;
   --status-cursavel-fg:    #ffffff;
+  --status-locked:         #aaaaaa;
   --status-locked-bg:      #2d2d2d;
   --status-locked-fg:      #aaaaaa;
   --status-locked-border:  #3d3d3d;
@@ -89,12 +90,12 @@
 
 [data-theme="light"] {
   /* Surfaces */
-  --color-canvas:           #ffffff;
+  --color-canvas:           #f5f5f5;
   --color-surface:          #ffffff;
-  --color-cloud:            #f7f7f7;
-  --color-fog:              #e8e8e8;
-  --color-hairline:         #e8e8e8;
-  --color-hairline-strong:  #c2c2c2;
+  --color-cloud:            #eeeeee;
+  --color-fog:              #d6d6d6;
+  --color-hairline:         #afafaf;
+  --color-hairline-strong:  #7e7e7e;
 
   /* Text */
   --color-ink:       #1a1a1a;
@@ -102,21 +103,22 @@
   --color-charcoal:  #3d3d3d;
   --color-graphite:  #636363;
 
-  /* Brand — HP Electric Blue */
+  /* Brand */
   --color-primary:      #024ad8;
   --color-primary-deep: #0e3191;
   --color-primary-soft: #c9e0fc;
 
   /* Status — discipline cards (tinted surfaces on white) */
-  --status-cursada:        #059669;
+  --status-cursada:        #34d399;
   --status-cursada-bg:     #d1fae5;
   --status-cursada-fg:     #065f46;
   --status-cursavel:       #024ad8;
   --status-cursavel-bg:    #dbeafe;
   --status-cursavel-fg:    #1e40af;
-  --status-locked-bg:      #f7f7f7;
+  --status-locked:         #636363;
+  --status-locked-bg:      #eeeeee;
   --status-locked-fg:      #636363;
-  --status-locked-border:  #e0e0e0;
+  --status-locked-border:  #d6d6d6;
 
   /* Núcleo accents (saturated for light backgrounds) */
   --nucleo-comum:     #059669;

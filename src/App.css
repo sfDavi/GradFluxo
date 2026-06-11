@@ -196,36 +196,6 @@
   margin-bottom: var(--space-xl);
 }
 
-/* ─── Status Legend ─── */
-
-.status-legend {
-  display: flex;
-  gap: var(--space-lg);
-  margin-bottom: var(--space-md);
-  flex-wrap: wrap;
-}
-
-.legend-item {
-  display: flex;
-  align-items: center;
-  gap: var(--space-xxs);
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 1.33;
-  color: var(--color-charcoal);
-}
-
-.legend-swatch {
-  width: 10px;
-  height: 10px;
-  border-radius: var(--radius-xs);
-  flex-shrink: 0;
-}
-
-.legend-swatch[data-status="cursada"]     { background: var(--status-cursada); }
-.legend-swatch[data-status="cursavel"]    { background: var(--status-cursavel); }
-.legend-swatch[data-status="nao_cursavel"]{ background: var(--status-locked-border); }
-
 /* ─── Reset / Restore button ─── */
 
 .reset-plano-btn {
@@ -373,12 +343,7 @@
   height: 7px;
   border-radius: 50%;
   background: var(--chip-color);
-  opacity: 0.5;
-  transition: opacity 0.15s;
-}
-
-.filter-chip.is-active .filter-chip-dot {
-  opacity: 1;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--chip-color) 50%, var(--color-ink));
 }
 
 .filter-meta {
@@ -447,13 +412,13 @@
 
 /* ─── Search / Hover highlighting ─── */
 
-.flowchart-grid.is-searching .discipline-card { opacity: 0.18; }
+.flowchart-grid.is-searching .discipline-card { opacity: 0.4; }
 .flowchart-grid.is-searching .discipline-card.is-search-match {
   opacity: 1;
-  box-shadow: 0 0 0 2px var(--color-primary);
+  box-shadow: 0 0 0 1px var(--color-primary);
 }
 
-.flowchart-grid.is-hovering .discipline-card { opacity: 0.2; }
+.flowchart-grid.is-hovering .discipline-card { opacity: 0.4; }
 .flowchart-grid.is-hovering .discipline-card.is-highlighted,
 .flowchart-grid.is-hovering .discipline-card.is-hovered { opacity: 1; }
 .flowchart-grid.is-hovering .discipline-card.is-highlighted {
@@ -550,8 +515,18 @@
   cursor: pointer;
   transition: opacity 0.2s, transform 0.15s, box-shadow 0.15s;
   position: relative;
-  border-left: 3px solid transparent;
+  overflow: hidden;
   width: 100%;
+}
+
+.discipline-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--nucleo-color, transparent);
 }
 
 /* Status backgrounds */
@@ -568,16 +543,16 @@
 .discipline-card[data-status="nao_cursavel"] {
   background: var(--status-locked-bg);
   border: 1px solid var(--status-locked-border);
-  border-left: 3px solid transparent;
   cursor: default;
   color: var(--status-locked-fg);
+  --nucleo-color: transparent;
 }
 
-/* Núcleo left border */
-.discipline-card[data-nucleo="comum"]     { border-left-color: var(--nucleo-comum); }
-.discipline-card[data-nucleo="especifico"]{ border-left-color: var(--nucleo-especifico); }
-.discipline-card[data-nucleo="livre"]     { border-left-color: var(--nucleo-livre); }
-.discipline-card[data-nucleo="optativo"]  { border-left-color: var(--nucleo-optativo); }
+/* Núcleo strip color */
+.discipline-card[data-nucleo="comum"]     { --nucleo-color: var(--nucleo-comum); }
+.discipline-card[data-nucleo="especifico"]{ --nucleo-color: var(--nucleo-especifico); }
+.discipline-card[data-nucleo="livre"]     { --nucleo-color: var(--nucleo-livre); }
+.discipline-card[data-nucleo="optativo"]  { --nucleo-color: var(--nucleo-optativo); }
 
 .discipline-card[data-status="cursada"]:hover,
 .discipline-card[data-status="cursavel"]:hover {
