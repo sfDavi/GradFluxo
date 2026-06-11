@@ -99,22 +99,7 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
         {curso.codigoCurso} · {curso.numeroSemestres} semestres · {curso.cargaHorariaTotal}h
       </p>
 
-      <div className="status-legend">
-        <div className="legend-item">
-          <div className="legend-swatch" data-status="cursada" />
-          <span>Cursada</span>
-        </div>
-        <div className="legend-item">
-          <div className="legend-swatch" data-status="cursavel" />
-          <span>Cursável</span>
-        </div>
-        <div className="legend-item">
-          <div className="legend-swatch" data-status="nao_cursavel" />
-          <span>Não cursável</span>
-        </div>
-      </div>
-
-      {!isMobile && (
+{!isMobile && (
         <div style={{ marginBottom: '0.75rem' }}>
           <button
             className="reset-plano-btn"
