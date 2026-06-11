@@ -222,9 +222,22 @@ export function useCursoState(curso: Curso) {
       if (allCursadas) {
         setCursadas((prev) => {
           const next = new Set(prev);
-          for (const d of disciplinas) next.delete(d.codigoDisciplina);
+          const toRemove = new Set<string>();
+          const queue = disciplinas.map((d) => d.codigoDisciplina);
+          for (const code of queue) toRemove.add(code);
+          while (queue.length > 0) {
+            const code = queue.pop()!;
+            for (const dep of dependentsMap.get(code) || []) {
+              if (next.has(dep) && !toRemove.has(dep)) {
+                toRemove.add(dep);
+                queue.push(dep);
+              }
+            }
+          }
+          for (const code of toRemove) next.delete(code);
           return next;
         });
+        setUndoInfo(null);
       } else {
         const cursaveisNoSem = disciplinas
           .filter((d) => statusMap.get(d.codigoDisciplina) === 'cursavel')
@@ -236,7 +249,7 @@ export function useCursoState(curso: Curso) {
         });
       }
     },
-    [semestreMap, cursadas, statusMap]
+    [semestreMap, cursadas, statusMap, dependentsMap]
   );
 
   return {
