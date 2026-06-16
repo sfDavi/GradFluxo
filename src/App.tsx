@@ -3,7 +3,6 @@ import type { Curso } from './types'
 import { loadCursos } from './utils/loadCursos'
 import { CourseSelection } from './components/CourseSelection'
 import { FlowchartView } from './components/FlowchartView'
-import { ThemeToggle } from './components/ThemeToggle'
 import { useTheme } from './hooks/useTheme'
 import './App.css'
 
@@ -18,11 +17,20 @@ function App() {
 
   return (
     <>
-      <ThemeToggle theme={theme} onToggle={toggleTheme} />
       {selectedCurso ? (
-        <FlowchartView curso={selectedCurso} onBack={() => setSelectedCurso(null)} />
+        <FlowchartView
+          curso={selectedCurso}
+          onBack={() => setSelectedCurso(null)}
+          theme={theme}
+          onToggleTheme={toggleTheme}
+        />
       ) : (
-        <CourseSelection cursos={cursos} onSelectCurso={setSelectedCurso} />
+        <CourseSelection
+          cursos={cursos}
+          onSelectCurso={setSelectedCurso}
+          theme={theme}
+          onToggleTheme={toggleTheme}
+        />
       )}
     </>
   )

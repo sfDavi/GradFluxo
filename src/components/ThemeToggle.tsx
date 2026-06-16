@@ -1,12 +1,13 @@
 interface ThemeToggleProps {
   theme: 'dark' | 'light';
   onToggle: () => void;
+  inline?: boolean;
 }
 
-export function ThemeToggle({ theme, onToggle }: ThemeToggleProps) {
+export function ThemeToggle({ theme, onToggle, inline = false }: ThemeToggleProps) {
   return (
     <button
-      className="theme-toggle"
+      className={inline ? 'theme-toggle-inline' : 'theme-toggle'}
       onClick={onToggle}
       aria-label={theme === 'dark' ? 'Ativar tema claro' : 'Ativar tema escuro'}
       title={theme === 'dark' ? 'Ativar tema claro' : 'Ativar tema escuro'}

@@ -12,11 +12,14 @@ import { FilterChips } from './FilterChips';
 import { MobileAccordion } from './MobileAccordion';
 import { ProgressByNucleo } from './ProgressByNucleo';
 import { SearchBar } from './SearchBar';
+import { ThemeToggle } from './ThemeToggle';
 import { UndoToast } from './UndoToast';
 
 interface FlowchartViewProps {
   curso: Curso;
   onBack: () => void;
+  theme: 'dark' | 'light';
+  onToggleTheme: () => void;
 }
 
 const statusLabels: Record<Status, string> = {
@@ -32,7 +35,7 @@ const nucleoLabels: Record<string, string> = {
   optativo: 'Optativo',
 };
 
-export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
+export function FlowchartView({ curso, onBack, theme, onToggleTheme }: FlowchartViewProps) {
   const gridRef = useRef<HTMLDivElement>(null);
   const isMobile = useMobileDetect();
 
@@ -64,6 +67,8 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
   // ─── Drawer (local UI state) ───
 
   const [drawerDisciplina, setDrawerDisciplina] = useState<string | null>(null);
+  const [showHelp, setShowHelp] = useState(false);
+  const [showResetConfirm, setShowResetConfirm] = useState(false);
 
   const handleContextMenu = useCallback(
     (e: React.MouseEvent, codigoDisciplina: string) => {
@@ -93,21 +98,56 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
         <button className="back-button" onClick={onBack}>
           ← Voltar
         </button>
-      </div>
-      <h1>{curso.nomeCurso}</h1>
-      <p className="flowchart-subtitle">
-        {curso.codigoCurso} · {curso.numeroSemestres} semestres · {curso.cargaHorariaTotal}h
-      </p>
-
-{!isMobile && (
-        <div style={{ marginBottom: '0.75rem' }}>
+        <div className="flowchart-header-info">
+          <h1 className="flowchart-title">{curso.nomeCurso}</h1>
+          <p className="flowchart-subtitle">
+            {curso.codigoCurso} · {curso.numeroSemestres} semestres · {curso.cargaHorariaTotal}h
+          </p>
+        </div>
+        <div className="flowchart-header-actions">
+          {!isMobile && (
+            <button
+              className="reset-plano-btn"
+              onClick={() => setShowResetConfirm(true)}
+              disabled={!hasPlano && cursadas.size === 0}
+              title="Apaga todo o progresso e rearranjos de semestre"
+            >
+              ↺ Zerar progresso
+            </button>
+          )}
           <button
-            className="reset-plano-btn"
-            onClick={handleResetPlano}
-            disabled={!hasPlano && cursadas.size === 0}
+            className={`help-btn${showHelp ? ' is-active' : ''}`}
+            onClick={() => setShowHelp((v) => !v)}
+            aria-label="Ajuda"
+            aria-expanded={showHelp}
           >
-            ↩ Restaurar
+            ?
           </button>
+          <ThemeToggle theme={theme} onToggle={onToggleTheme} inline />
+        </div>
+      </div>
+
+      {showHelp && (
+        <div className="help-panel">
+          <div className="help-panel-section">
+            <p className="help-panel-heading">Interações</p>
+            <ul className="help-list">
+              <li><kbd className="help-key">Clique</kbd> em disciplina disponível — marcar como cursada</li>
+              <li><kbd className="help-key">Clique</kbd> em cursada — desmarcar (remove dependentes)</li>
+              <li><kbd className="help-key">Passar o mouse</kbd> — destacar pré-requisitos</li>
+              <li><kbd className="help-key">Botão i</kbd> ou clique direito — detalhes da disciplina</li>
+              <li><kbd className="help-key">Arrastar</kbd> card — mover para outro semestre</li>
+              <li><kbd className="help-key">Ctrl+K</kbd> — focar na busca</li>
+            </ul>
+          </div>
+          <div className="help-panel-section">
+            <p className="help-panel-heading">Cores</p>
+            <ul className="help-legend">
+              <li><span className="help-legend-dot" data-status="cursada"></span>Verde — cursada</li>
+              <li><span className="help-legend-dot" data-status="cursavel"></span>Azul — disponível para cursar</li>
+              <li><span className="help-legend-dot" data-status="nao_cursavel"></span>Cinza — bloqueada por pré-requisito</li>
+            </ul>
+          </div>
         </div>
       )}
 
@@ -294,6 +334,31 @@ export function FlowchartView({ curso, onBack }: FlowchartViewProps) {
           onClose={() => setDrawerDisciplina(null)}
           onNavigate={handleDrawerNavigate}
         />
+      )}
+
+      {showResetConfirm && (
+        <>
+          <div className="drawer-backdrop" onClick={() => setShowResetConfirm(false)} />
+          <div className="import-confirm-dialog">
+            <p className="import-confirm-text">
+              Isso apaga todas as disciplinas cursadas e os rearranjos de semestre. Essa ação não pode ser desfeita.
+            </p>
+            <div className="import-confirm-actions">
+              <button
+                className="import-confirm-btn import-confirm-cancel"
+                onClick={() => setShowResetConfirm(false)}
+              >
+                Cancelar
+              </button>
+              <button
+                className="import-confirm-btn import-confirm-ok"
+                onClick={() => { handleResetPlano(); setShowResetConfirm(false); }}
+              >
+                Zerar tudo
+              </button>
+            </div>
+          </div>
+        </>
       )}
     </div>
   );
