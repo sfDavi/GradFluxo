@@ -1,6 +1,6 @@
 {
-  "codigoCurso": "CICOMP-BI-4",
-  "nomeCurso": "CIÊNCIA DA COMPUTAÇÃO - Goiânia - Presencial - MVN - BACHARELADO",
+  "codigoCurso": "CICOMP-BI-4 2024",
+  "nomeCurso": "Bacharelado em Ciência da Computação",
   "numeroSemestres": 8,
   "cargaHorariaTotal": 3140,
   "cargaHorariaNucleoComum": 1120,
@@ -10,7 +10,7 @@
   "disciplinas": [
     {
       "codigoDisciplina": "IME0345",
-      "nomeDisciplina": "GEOMETRIA ANALÍTICA",
+      "nomeDisciplina": "Geometria Analítica",
       "semestre": 1,
       "cargaHoraria": 64,
       "nucleo": "especifico",
@@ -18,7 +18,7 @@
     },
     {
       "codigoDisciplina": "INF0285",
-      "nomeDisciplina": "FUNDAMENTOS DE MATEMÁTICA PARA COMPUTAÇÃO",
+      "nomeDisciplina": "Fundamentos de Matemática para Computação",
       "semestre": 1,
       "cargaHoraria": 64,
       "nucleo": "comum",
@@ -26,7 +26,7 @@
     },
     {
       "codigoDisciplina": "INF0446",
-      "nomeDisciplina": "INTRODUÇÃO À PROGRAMAÇÃO",
+      "nomeDisciplina": "Introdução à Programação",
       "semestre": 1,
       "cargaHoraria": 128,
       "nucleo": "comum",
@@ -34,7 +34,7 @@
     },
     {
       "codigoDisciplina": "INF0451",
-      "nomeDisciplina": "COMPUTAÇÃO E SOCIEDADE",
+      "nomeDisciplina": "Computação e Sociedade",
       "semestre": 1,
       "cargaHoraria": 64,
       "nucleo": "comum",
@@ -42,7 +42,7 @@
     },
     {
       "codigoDisciplina": "EMC0292",
-      "nomeDisciplina": "CIRCUITOS DIGITAIS",
+      "nomeDisciplina": "Circuitos Digitais",
       "semestre": 2,
       "cargaHoraria": 64,
       "nucleo": "especifico",
@@ -50,7 +50,7 @@
     },
     {
       "codigoDisciplina": "IME0351",
-      "nomeDisciplina": "ÁLGEBRA LINEAR",
+      "nomeDisciplina": "Álgebra Linear",
       "semestre": 2,
       "cargaHoraria": 64,
       "nucleo": "comum",
@@ -58,31 +58,31 @@
     },
     {
       "codigoDisciplina": "INF0331",
-      "nomeDisciplina": "MATEMÁTICA DISCRETA",
+      "nomeDisciplina": "Matemática Discreta",
       "semestre": 2,
       "cargaHoraria": 64,
       "nucleo": "especifico",
-      "prerequisitos": []
+      "prerequisitos": ["INF0285"]
     },
     {
       "codigoDisciplina": "INF0396",
-      "nomeDisciplina": "PROGRAMAÇÃO ORIENTADA A OBJETOS",
+      "nomeDisciplina": "Programação Orientada a Objetos",
       "semestre": 2,
       "cargaHoraria": 64,
       "nucleo": "comum",
-      "prerequisitos": []
+      "prerequisitos": ["INF0446"]
     },
     {
       "codigoDisciplina": "INF0447",
-      "nomeDisciplina": "ALGORITMOS E ESTRUTURAS DE DADOS 1",
+      "nomeDisciplina": "Algoritmos e Estruturas de Dados 1",
       "semestre": 2,
       "cargaHoraria": 64,
       "nucleo": "comum",
-      "prerequisitos": []
+      "prerequisitos": ["INF0446"]
     },
     {
       "codigoDisciplina": "IME0350",
-      "nomeDisciplina": "CÁLCULO 1A",
+      "nomeDisciplina": "Cálculo 1A",
       "semestre": 3,
       "cargaHoraria": 96,
       "nucleo": "comum",
@@ -90,31 +90,31 @@
     },
     {
       "codigoDisciplina": "INF0313",
-      "nomeDisciplina": "PESQUISA OPERACIONAL",
+      "nomeDisciplina": "Pesquisa Operacional",
       "semestre": 3,
       "cargaHoraria": 64,
       "nucleo": "especifico",
-      "prerequisitos": []
+      "prerequisitos": ["IME0351"]
     },
     {
       "codigoDisciplina": "INF0421",
-      "nomeDisciplina": "LÓGICA MATEMÁTICA",
+      "nomeDisciplina": "Lógica Matemática",
       "semestre": 3,
       "cargaHoraria": 64,
       "nucleo": "comum",
-      "prerequisitos": []
+      "prerequisitos": ["INF0331"]
     },
     {
       "codigoDisciplina": "INF0453",
-      "nomeDisciplina": "ALGORITMOS E ESTRUTURAS DE DADOS 2",
+      "nomeDisciplina": "Algoritmos e Estruturas de Dados 2",
       "semestre": 3,
       "cargaHoraria": 64,
       "nucleo": "comum",
-      "prerequisitos": []
+      "prerequisitos": ["INF0447"]
     },
     {
       "codigoDisciplina": "INF0462",
-      "nomeDisciplina": "ARQUITETURA DE COMPUTADORES",
+      "nomeDisciplina": "Arquitetura de Computadores",
       "semestre": 3,
       "cargaHoraria": 64,
       "nucleo": "comum",
@@ -122,15 +122,15 @@
     },
     {
       "codigoDisciplina": "IFI0203",
-      "nomeDisciplina": "FÍSICA I",
+      "nomeDisciplina": "Física I",
       "semestre": 4,
       "cargaHoraria": 64,
       "nucleo": "especifico",
-      "prerequisitos": []
+      "prerequisitos": ["IME0350"]
     },
     {
       "codigoDisciplina": "IFI0326",
-      "nomeDisciplina": "FÍSICA EXPERIMENTAL I",
+      "nomeDisciplina": "Física Experimental I",
       "semestre": 4,
       "cargaHoraria": 32,
       "nucleo": "especifico",
@@ -138,47 +138,47 @@
     },
     {
       "codigoDisciplina": "IME0356",
-      "nomeDisciplina": "CÁLCULO 2A",
+      "nomeDisciplina": "Cálculo 2A",
       "semestre": 4,
       "cargaHoraria": 96,
       "nucleo": "especifico",
-      "prerequisitos": []
+      "prerequisitos": ["IME0350"]
     },
     {
       "codigoDisciplina": "INF0332",
-      "nomeDisciplina": "TEORIA DOS GRAFOS",
+      "nomeDisciplina": "Teoria dos Grafos",
       "semestre": 4,
       "cargaHoraria": 64,
       "nucleo": "especifico",
-      "prerequisitos": []
+      "prerequisitos": ["INF0331"]
     },
     {
       "codigoDisciplina": "INF0334",
-      "nomeDisciplina": "SOFTWARE BÁSICO",
+      "nomeDisciplina": "Software Básico",
       "semestre": 4,
       "cargaHoraria": 64,
       "nucleo": "especifico",
-      "prerequisitos": []
+      "prerequisitos": ["INF0462"]
     },
     {
       "codigoDisciplina": "INF0409",
-      "nomeDisciplina": "ANÁLISE E PROJETO DE ALGORITMOS",
+      "nomeDisciplina": "Análise e Projeto de Algoritmos",
       "semestre": 4,
       "cargaHoraria": 64,
       "nucleo": "comum",
-      "prerequisitos": []
+      "prerequisitos": ["INF0453"]
     },
     {
       "codigoDisciplina": "IME0377",
-      "nomeDisciplina": "EQUAÇÕES DIFERENCIAIS ORDINÁRIAS",
+      "nomeDisciplina": "Equações Diferenciais Ordinárias",
       "semestre": 5,
       "cargaHoraria": 64,
       "nucleo": "especifico",
-      "prerequisitos": []
+      "prerequisitos": ["IME0356"]
     },
     {
       "codigoDisciplina": "INF0288",
-      "nomeDisciplina": "LINGUAGENS E PARADIGMAS DE PROGRAMAÇÃO",
+      "nomeDisciplina": "Linguagens e Paradigmas de Programação",
       "semestre": 5,
       "cargaHoraria": 64,
       "nucleo": "comum",
@@ -186,15 +186,15 @@
     },
     {
       "codigoDisciplina": "INF0333",
-      "nomeDisciplina": "LINGUAGENS FORMAIS E AUTÔMATOS",
+      "nomeDisciplina": "Linguagens Formais e Autômatos",
       "semestre": 5,
       "cargaHoraria": 64,
       "nucleo": "especifico",
-      "prerequisitos": []
+      "prerequisitos": ["INF0285"]
     },
     {
       "codigoDisciplina": "INF0336",
-      "nomeDisciplina": "SISTEMAS OPERACIONAIS",
+      "nomeDisciplina": "Sistemas Operacionais",
       "semestre": 5,
       "cargaHoraria": 64,
       "nucleo": "especifico",
@@ -202,7 +202,7 @@
     },
     {
       "codigoDisciplina": "INF0470",
-      "nomeDisciplina": "BANCO DE DADOS",
+      "nomeDisciplina": "Banco de Dados",
       "semestre": 5,
       "cargaHoraria": 64,
       "nucleo": "comum",
@@ -210,39 +210,39 @@
     },
     {
       "codigoDisciplina": "IME0060",
-      "nomeDisciplina": "CÁLCULO NUMÉRICO",
+      "nomeDisciplina": "Cálculo Numérico",
       "semestre": 6,
       "cargaHoraria": 64,
       "nucleo": "especifico",
-      "prerequisitos": []
+      "prerequisitos": ["IME0377"]
     },
     {
       "codigoDisciplina": "IME0378",
-      "nomeDisciplina": "PROBABILIDADE E ESTATÍSTICA A",
+      "nomeDisciplina": "Probabilidade e Estatística A",
       "semestre": 6,
       "cargaHoraria": 64,
       "nucleo": "comum",
-      "prerequisitos": []
+      "prerequisitos": ["IME0350"]
     },
     {
       "codigoDisciplina": "INF0335",
-      "nomeDisciplina": "INTRODUÇÃO À COMPUTABILIDADE E À COMPLEXIDADE COMPUTACIONAL",
+      "nomeDisciplina": "Introdução à Computabilidade e à Complexidade Computacional",
       "semestre": 6,
       "cargaHoraria": 64,
       "nucleo": "especifico",
-      "prerequisitos": []
+      "prerequisitos": ["INF0333", "INF0409"]
     },
     {
       "codigoDisciplina": "INF0337",
-      "nomeDisciplina": "COMPILADORES",
+      "nomeDisciplina": "Compiladores",
       "semestre": 6,
       "cargaHoraria": 64,
       "nucleo": "especifico",
-      "prerequisitos": []
+      "prerequisitos": ["INF0333"]
     },
     {
       "codigoDisciplina": "INF0471",
-      "nomeDisciplina": "ENGENHARIA DE SOFTWARE",
+      "nomeDisciplina": "Engenharia de Software",
       "semestre": 6,
       "cargaHoraria": 64,
       "nucleo": "comum",
@@ -250,7 +250,7 @@
     },
     {
       "codigoDisciplina": "INF0289",
-      "nomeDisciplina": "INTERAÇÃO HUMANO-COMPUTADOR",
+      "nomeDisciplina": "Interação Humano-Computador",
       "semestre": 7,
       "cargaHoraria": 64,
       "nucleo": "comum",
@@ -258,15 +258,15 @@
     },
     {
       "codigoDisciplina": "INF0338",
-      "nomeDisciplina": "COMPUTAÇÃO GRÁFICA",
+      "nomeDisciplina": "Computação Gráfica",
       "semestre": 7,
       "cargaHoraria": 64,
       "nucleo": "especifico",
-      "prerequisitos": []
+      "prerequisitos": ["IME0345", "IME0351"]
     },
     {
       "codigoDisciplina": "INF0341",
-      "nomeDisciplina": "REDES DE COMPUTADORES 1",
+      "nomeDisciplina": "Redes de Computadores 1",
       "semestre": 7,
       "cargaHoraria": 64,
       "nucleo": "especifico",
@@ -274,15 +274,15 @@
     },
     {
       "codigoDisciplina": "INF0342",
-      "nomeDisciplina": "INTELIGÊNCIA ARTIFICIAL",
+      "nomeDisciplina": "Inteligência Artificial",
       "semestre": 7,
       "cargaHoraria": 64,
       "nucleo": "especifico",
-      "prerequisitos": []
+      "prerequisitos": ["IME0378"]
     },
     {
       "codigoDisciplina": "INF0344",
-      "nomeDisciplina": "SISTEMAS DISTRIBUÍDOS",
+      "nomeDisciplina": "Sistemas Distribuídos",
       "semestre": 8,
       "cargaHoraria": 64,
       "nucleo": "especifico",
@@ -290,7 +290,7 @@
     },
     {
       "codigoDisciplina": "INF0472",
-      "nomeDisciplina": "PROJETO FINAL DE CURSO 1",
+      "nomeDisciplina": "Projeto Final de Curso 1",
       "semestre": 8,
       "cargaHoraria": 64,
       "nucleo": "especifico",
@@ -298,15 +298,31 @@
     },
     {
       "codigoDisciplina": "INF0473",
-      "nomeDisciplina": "METODOLOGIA DE PESQUISA EM COMPUTAÇÃO",
+      "nomeDisciplina": "Metodologia de Pesquisa em Computação",
       "semestre": 8,
       "cargaHoraria": 64,
       "nucleo": "especifico",
       "prerequisitos": []
     },
     {
+      "codigoDisciplina": "LIV0001",
+      "nomeDisciplina": "Núcleo Livre",
+      "semestre": 8,
+      "cargaHoraria": 64,
+      "nucleo": "livre",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "LIV0002",
+      "nomeDisciplina": "Núcleo Livre",
+      "semestre": 8,
+      "cargaHoraria": 64,
+      "nucleo": "livre",
+      "prerequisitos": []
+    },
+    {
       "codigoDisciplina": "INF0345",
-      "nomeDisciplina": "COMPUTAÇÃO PARALELA",
+      "nomeDisciplina": "Computação Paralela",
       "semestre": 9,
       "cargaHoraria": 64,
       "nucleo": "especifico",
@@ -314,7 +330,7 @@
     },
     {
       "codigoDisciplina": "INF0474",
-      "nomeDisciplina": "PROJETO FINAL DE CURSO 2",
+      "nomeDisciplina": "Projeto Final de Curso 2",
       "semestre": 9,
       "cargaHoraria": 64,
       "nucleo": "especifico",

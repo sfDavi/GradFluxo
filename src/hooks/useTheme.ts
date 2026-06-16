@@ -4,7 +4,7 @@ type Theme = 'dark' | 'light';
 const STORAGE_KEY = 'gradfluxo-theme';
 
 function getInitialTheme(): Theme {
-  return localStorage.getItem(STORAGE_KEY) === 'light' ? 'light' : 'dark';
+  return localStorage.getItem(STORAGE_KEY) === 'dark' ? 'dark' : 'light';
 }
 
 export function useTheme() {
