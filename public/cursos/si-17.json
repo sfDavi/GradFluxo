@@ -1,0 +1,384 @@
+{
+  "codigoCurso": "SIINF-BN-2",
+  "nomeCurso": "Bacharelado em Sistemas de Informação",
+  "numeroSemestres": 9,
+  "cargaHorariaTotal": 3000,
+  "cargaHorariaNucleoComum": 1152,
+  "cargaHorariaNucleoLivre": 128,
+  "cargaHorariaNucleoEspecifico": 1472,
+  "cargaHorariaNucleoOptativo": 128,
+  "cargaHorariaAtividadesComplementares": 120,
+  "disciplinas": [
+    {
+      "codigoDisciplina": "IME0350",
+      "nomeDisciplina": "Cálculo 1A",
+      "semestre": 1,
+      "cargaHoraria": 96,
+      "nucleo": "comum",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0283",
+      "nomeDisciplina": "Computação e Sociedade",
+      "semestre": 1,
+      "cargaHoraria": 32,
+      "nucleo": "comum",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0284",
+      "nomeDisciplina": "Introdução à Programação",
+      "semestre": 1,
+      "cargaHoraria": 128,
+      "nucleo": "comum",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0285",
+      "nomeDisciplina": "Fundamentos de Matemática para Computação",
+      "semestre": 1,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "IME0378",
+      "nomeDisciplina": "Probabilidade e Estatística A",
+      "semestre": 2,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": [
+        "IME0350"
+      ]
+    },
+    {
+      "codigoDisciplina": "INF0286",
+      "nomeDisciplina": "Algoritmos e Estruturas de Dados 1",
+      "semestre": 2,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": [
+        "INF0284"
+      ]
+    },
+    {
+      "codigoDisciplina": "INF0305",
+      "nomeDisciplina": "Lógica Matemática",
+      "semestre": 2,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": [
+        "INF0285"
+      ]
+    },
+    {
+      "codigoDisciplina": "INF0307",
+      "nomeDisciplina": "Metodologia Científica",
+      "semestre": 2,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0353",
+      "nomeDisciplina": "Introdução aos Sistemas de Informação",
+      "semestre": 2,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0015",
+      "nomeDisciplina": "Arquitetura de Computadores",
+      "semestre": 3,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": [
+        "INF0285"
+      ]
+    },
+    {
+      "codigoDisciplina": "INF0022",
+      "nomeDisciplina": "Banco de Dados",
+      "semestre": 3,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": [
+        "INF0305"
+      ]
+    },
+    {
+      "codigoDisciplina": "INF0164",
+      "nomeDisciplina": "Programação Orientada a Objetos",
+      "semestre": 3,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": ["INF0284"]
+    },
+    {
+      "codigoDisciplina": "INF0287",
+      "nomeDisciplina": "Algoritmos e Estruturas de Dados 2",
+      "semestre": 3,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": [
+        "INF0286"
+      ]
+    },
+    {
+      "codigoDisciplina": "INF0308",
+      "nomeDisciplina": "Engenharia de Sistemas de Informação 1",
+      "semestre": 3,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": [
+        "INF0353"
+      ]
+    },
+    {
+      "codigoDisciplina": "IME0351",
+      "nomeDisciplina": "Álgebra Linear",
+      "semestre": 4,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0013",
+      "nomeDisciplina": "Análise e Projeto de Algoritmos",
+      "semestre": 4,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": [
+        "INF0287",
+        "INF0285"
+      ]
+    },
+    {
+      "codigoDisciplina": "INF0056",
+      "nomeDisciplina": "Engenharia de Software",
+      "semestre": 4,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0309",
+      "nomeDisciplina": "Banco de Dados 2",
+      "semestre": 4,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": [
+        "INF0022"
+      ]
+    },
+    {
+      "codigoDisciplina": "INF0310",
+      "nomeDisciplina": "Sistemas Operacionais",
+      "semestre": 4,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": [
+        "INF0015"
+      ]
+    },
+    {
+      "codigoDisciplina": "FAC0307",
+      "nomeDisciplina": "Introdução à Administração de Empresas",
+      "semestre": 5,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0311",
+      "nomeDisciplina": "Engenharia de Requisitos",
+      "semestre": 5,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": [
+        "INF0164"
+      ]
+    },
+    {
+      "codigoDisciplina": "INF0312",
+      "nomeDisciplina": "Sistemas Inteligentes de Apoio à Decisão",
+      "semestre": 5,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": [
+        "INF0353"
+      ]
+    },
+    {
+      "codigoDisciplina": "INF0313",
+      "nomeDisciplina": "Pesquisa Operacional",
+      "semestre": 5,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": ["IME0351"]
+    },
+    {
+      "codigoDisciplina": "INF0314",
+      "nomeDisciplina": "Redes de Computadores",
+      "semestre": 5,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0288",
+      "nomeDisciplina": "Linguagens e Paradigmas de Programação",
+      "semestre": 6,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": ["INF0284"]
+    },
+    {
+      "codigoDisciplina": "INF0290",
+      "nomeDisciplina": "Projeto de Software",
+      "semestre": 6,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": [
+        "INF0164",
+        "INF0056"
+      ]
+    },
+    {
+      "codigoDisciplina": "INF0315",
+      "nomeDisciplina": "Gestão de Sistemas e de TI",
+      "semestre": 6,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": [
+        "FAC0307"
+      ]
+    },
+    {
+      "codigoDisciplina": "INF0317",
+      "nomeDisciplina": "Sistemas Distribuídos",
+      "semestre": 6,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": [
+        "INF0310",
+        "INF0164"
+      ]
+    },
+    {
+      "codigoDisciplina": "INF0323",
+      "nomeDisciplina": "Engenharia de Sistemas de Informação 2",
+      "semestre": 6,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": [
+        "INF0308"
+      ]
+    },
+    {
+      "codigoDisciplina": "INF0289",
+      "nomeDisciplina": "Interação Humano-Computador",
+      "semestre": 7,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": [
+        "INF0286"
+      ]
+    },
+    {
+      "codigoDisciplina": "INF0319",
+      "nomeDisciplina": "Gerenciamento de Processos e Serviços em SI",
+      "semestre": 7,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": ["FAC00307"]
+    },
+    {
+      "codigoDisciplina": "INF0324",
+      "nomeDisciplina": "Governança Corporativa e de TI",
+      "semestre": 7,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": [
+        "FAC0307"
+      ]
+    },
+    {
+      "codigoDisciplina": "INF0406",
+      "nomeDisciplina": "Desenvolvimento Full Stack",
+      "semestre": 7,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": [
+        "INF0164"
+      ]
+    },
+    {
+      "codigoDisciplina": "INF0327",
+      "nomeDisciplina": "Empreendedorismo Digital",
+      "semestre": 8,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": [
+        "INF0311",
+        "FAC0307"
+      ]
+    },
+    {
+      "codigoDisciplina": "INF0405",
+      "nomeDisciplina": "Gestão de Segurança da Informação",
+      "semestre": 8,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": [
+        "INF0314"
+      ]
+    },
+    {
+      "codigoDisciplina": "INF0407",
+      "nomeDisciplina": "Residência Técnica em Sistemas de Informação",
+      "semestre": 9,
+      "cargaHoraria": 320,
+      "nucleo": "especifico",
+      "prerequisitos": [
+        "INF0290",
+        "INF0406",
+        "INF0323",
+        "INF0313"
+      ]
+    },
+    {
+      "codigoDisciplina": "OPT0001",
+      "nomeDisciplina": "Optativa 1",
+      "semestre": 7,
+      "cargaHoraria": 64,
+      "nucleo": "optativo",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "OPT0002",
+      "nomeDisciplina": "Optativa 2",
+      "semestre": 8,
+      "cargaHoraria": 64,
+      "nucleo": "optativo",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "LIV0001",
+      "nomeDisciplina": "Núcleo Livre",
+      "semestre": 8,
+      "cargaHoraria": 64,
+      "nucleo": "livre",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "LIV0002",
+      "nomeDisciplina": "Núcleo Livre",
+      "semestre": 9,
+      "cargaHoraria": 64,
+      "nucleo": "livre",
+      "prerequisitos": []
+    }
+  ]
+}

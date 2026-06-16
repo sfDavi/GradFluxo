@@ -1,0 +1,333 @@
+{
+  "codigoCurso": "ENGSO-BN-2 2017",
+  "nomeCurso": "Bacharelado em Engenharia de Software",
+  "numeroSemestres": 9,
+  "cargaHorariaTotal": 3200,
+  "cargaHorariaNucleoComum": 1152,
+  "cargaHorariaNucleoLivre": 128,
+  "cargaHorariaNucleoEspecifico": 1536,
+  "cargaHorariaNucleoOptativo": 192,
+  "cargaHorariaAtividadesComplementares": 192,
+  "disciplinas": [
+    {
+      "codigoDisciplina": "IME0350",
+      "nomeDisciplina": "Cálculo 1A",
+      "semestre": 1,
+      "cargaHoraria": 96,
+      "nucleo": "comum",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0283",
+      "nomeDisciplina": "Computação e Sociedade",
+      "semestre": 1,
+      "cargaHoraria": 32,
+      "nucleo": "comum",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0284",
+      "nomeDisciplina": "Introdução à Programação",
+      "semestre": 1,
+      "cargaHoraria": 128,
+      "nucleo": "comum",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0285",
+      "nomeDisciplina": "Fundamentos de Matemática para Computação",
+      "semestre": 1,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "IME0351",
+      "nomeDisciplina": "Álgebra Linear",
+      "semestre": 2,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "IME0378",
+      "nomeDisciplina": "Probabilidade e Estatística A",
+      "semestre": 2,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": ["IME0350"]
+    },
+    {
+      "codigoDisciplina": "INF0015",
+      "nomeDisciplina": "Arquitetura de Computadores",
+      "semestre": 2,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": ["INF0285"]
+    },
+    {
+      "codigoDisciplina": "INF0286",
+      "nomeDisciplina": "Algoritmos e Estruturas de Dados 1",
+      "semestre": 2,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": ["INF0284"]
+    },
+    {
+      "codigoDisciplina": "INF0305",
+      "nomeDisciplina": "Lógica Matemática",
+      "semestre": 2,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": ["INF0285"]
+    },
+    {
+      "codigoDisciplina": "INF0056",
+      "nomeDisciplina": "Engenharia de Software",
+      "semestre": 3,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0164",
+      "nomeDisciplina": "Programação Orientada a Objetos",
+      "semestre": 3,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": ["INF0284"]
+    },
+    {
+      "codigoDisciplina": "INF0287",
+      "nomeDisciplina": "Algoritmos e Estruturas de Dados 2",
+      "semestre": 3,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": ["INF0286"]
+    },
+    {
+      "codigoDisciplina": "INF0288",
+      "nomeDisciplina": "Linguagens e Paradigmas de Programação",
+      "semestre": 3,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0013",
+      "nomeDisciplina": "Análise e Projeto de Algoritmos",
+      "semestre": 4,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": ["INF0285", "INF0287"]
+    },
+    {
+      "codigoDisciplina": "INF0022",
+      "nomeDisciplina": "Banco de Dados",
+      "semestre": 4,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": ["INF0305"]
+    },
+    {
+      "codigoDisciplina": "INF0289",
+      "nomeDisciplina": "Interação Humano-Computador",
+      "semestre": 4,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": ["INF0286","IME0378"]
+    },
+    {
+      "codigoDisciplina": "INF0290",
+      "nomeDisciplina": "Projeto de Software",
+      "semestre": 4,
+      "cargaHoraria": 64,
+      "nucleo": "comum",
+      "prerequisitos": ["INF0056", "INF0164"]
+    },
+    {
+      "codigoDisciplina": "INF0291",
+      "nomeDisciplina": "Construção de Software",
+      "semestre": 5,
+      "cargaHoraria": 128,
+      "nucleo": "especifico",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0292",
+      "nomeDisciplina": "Modelagem de Software",
+      "semestre": 5,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0293",
+      "nomeDisciplina": "Processos de Software",
+      "semestre": 5,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0294",
+      "nomeDisciplina": "Engenharia de Sistemas",
+      "semestre": 5,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0073",
+      "nomeDisciplina": "Gerência de Projeto de Software",
+      "semestre": 6,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0295",
+      "nomeDisciplina": "Design de Software",
+      "semestre": 6,
+      "cargaHoraria": 128,
+      "nucleo": "especifico",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0296",
+      "nomeDisciplina": "Domínios de Software",
+      "semestre": 6,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0297",
+      "nomeDisciplina": "Processos de Qualidade de Software",
+      "semestre": 6,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0018",
+      "nomeDisciplina": "Arquitetura de Software",
+      "semestre": 7,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0188",
+      "nomeDisciplina": "Requisitos de Software",
+      "semestre": 7,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0298",
+      "nomeDisciplina": "Software Concorrente e Distribuído",
+      "semestre": 7,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0299",
+      "nomeDisciplina": "Experiência do Usuário de Software",
+      "semestre": 7,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0300",
+      "nomeDisciplina": "Governança e Gestão de Serviços de Software",
+      "semestre": 7,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0301",
+      "nomeDisciplina": "Software para Persistência de Dados",
+      "semestre": 8,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0302",
+      "nomeDisciplina": "Padrões de Arquitetura de Software",
+      "semestre": 8,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0303",
+      "nomeDisciplina": "Teste de Software",
+      "semestre": 8,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0306",
+      "nomeDisciplina": "Software para Computação Ubíqua",
+      "semestre": 8,
+      "cargaHoraria": 64,
+      "nucleo": "especifico",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "INF0304",
+      "nomeDisciplina": "Prática em Engenharia de Software",
+      "semestre": 9,
+      "cargaHoraria": 320,
+      "nucleo": "especifico",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "OPT0001",
+      "nomeDisciplina": "Optativa 1",
+      "semestre": 3,
+      "cargaHoraria": 64,
+      "nucleo": "optativo",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "OPT0002",
+      "nomeDisciplina": "Optativa 2",
+      "semestre": 4,
+      "cargaHoraria": 64,
+      "nucleo": "optativo",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "OPT0003",
+      "nomeDisciplina": "Optativa 3",
+      "semestre": 8,
+      "cargaHoraria": 64,
+      "nucleo": "optativo",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "LIV0001",
+      "nomeDisciplina": "Núcleo Livre",
+      "semestre": 9,
+      "cargaHoraria": 64,
+      "nucleo": "livre",
+      "prerequisitos": []
+    },
+    {
+      "codigoDisciplina": "LIV0002",
+      "nomeDisciplina": "Núcleo Livre",
+      "semestre": 9,
+      "cargaHoraria": 64,
+      "nucleo": "livre",
+      "prerequisitos": []
+    }
+  ]
+}

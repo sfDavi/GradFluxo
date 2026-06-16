@@ -27,67 +27,10 @@
 }
 
 /* ═══════════════════════════════════════════════
-   DARK THEME  (default)
+   LIGHT THEME  (default)
    ═══════════════════════════════════════════════ */
 
 :root,
-[data-theme="dark"] {
-  /* Surfaces */
-  --color-canvas:           #111111;
-  --color-surface:          #1e1e1e;
-  --color-cloud:            #171717;
-  --color-fog:              #252525;
-  --color-hairline:         #2e2e2e;
-  --color-hairline-strong:  #3d3d3d;
-
-  /* Text */
-  --color-ink:       #ffffff;
-  --color-ink-soft:  #e0e0e0;
-  --color-charcoal:  #a0a0a0;
-  --color-graphite:  #6e6e6e;
-
-  /* Brand */
-  --color-primary:      #296ef9;
-  --color-primary-deep: #0e3191;
-  --color-primary-soft: rgba(41, 110, 249, 0.14);
-
-  /* Status — discipline cards */
-  --status-cursada:        #10a870;
-  --status-cursada-bg:     #10a870;
-  --status-cursada-fg:     #ffffff;
-  --status-cursavel:       #296ef9;
-  --status-cursavel-bg:    #296ef9;
-  --status-cursavel-fg:    #ffffff;
-  --status-locked:         #aaaaaa;
-  --status-locked-bg:      #2d2d2d;
-  --status-locked-fg:      #aaaaaa;
-  --status-locked-border:  #3d3d3d;
-
-  /* Núcleo accents */
-  --nucleo-comum:     #6ee7b7;
-  --nucleo-especifico:#fde68a;
-  --nucleo-livre:     #d8b4fe;
-  --nucleo-optativo:  #7dd3fc;
-
-  /* Progress */
-  --progress-track:       #252525;
-  --progress-fill-start:  #10a870;
-  --progress-fill-end:    #6ee7b7;
-
-  /* SVG prerequisite lines */
-  --line-default:   rgba(255, 255, 255, 0.10);
-  --line-dimmed:    rgba(255, 255, 255, 0.03);
-  --line-highlight: #296ef9;
-
-  /* Elevation */
-  --shadow-lift:  0 2px 8px  rgba(0, 0, 0, 0.45);
-  --shadow-float: 0 8px 24px rgba(0, 0, 0, 0.60);
-}
-
-/* ═══════════════════════════════════════════════
-   LIGHT THEME  (user opt-in)
-   ═══════════════════════════════════════════════ */
-
 [data-theme="light"] {
   /* Surfaces */
   --color-canvas:           #f5f5f5;
@@ -139,6 +82,63 @@
   /* Elevation */
   --shadow-lift:  0 2px 8px  rgba(26, 26, 26, 0.08);
   --shadow-float: 0 8px 24px rgba(26, 26, 26, 0.12);
+}
+
+/* ═══════════════════════════════════════════════
+   DARK THEME  (user opt-in)
+   ═══════════════════════════════════════════════ */
+
+[data-theme="dark"] {
+  /* Surfaces */
+  --color-canvas:           #111111;
+  --color-surface:          #1e1e1e;
+  --color-cloud:            #171717;
+  --color-fog:              #252525;
+  --color-hairline:         #2e2e2e;
+  --color-hairline-strong:  #3d3d3d;
+
+  /* Text */
+  --color-ink:       #ffffff;
+  --color-ink-soft:  #e0e0e0;
+  --color-charcoal:  #a0a0a0;
+  --color-graphite:  #6e6e6e;
+
+  /* Brand */
+  --color-primary:      #296ef9;
+  --color-primary-deep: #0e3191;
+  --color-primary-soft: rgba(41, 110, 249, 0.14);
+
+  /* Status — discipline cards */
+  --status-cursada:        #10a870;
+  --status-cursada-bg:     #10a870;
+  --status-cursada-fg:     #ffffff;
+  --status-cursavel:       #296ef9;
+  --status-cursavel-bg:    #296ef9;
+  --status-cursavel-fg:    #ffffff;
+  --status-locked:         #aaaaaa;
+  --status-locked-bg:      #2d2d2d;
+  --status-locked-fg:      #aaaaaa;
+  --status-locked-border:  #3d3d3d;
+
+  /* Núcleo accents */
+  --nucleo-comum:     #6ee7b7;
+  --nucleo-especifico:#fde68a;
+  --nucleo-livre:     #d8b4fe;
+  --nucleo-optativo:  #7dd3fc;
+
+  /* Progress */
+  --progress-track:       #252525;
+  --progress-fill-start:  #10a870;
+  --progress-fill-end:    #6ee7b7;
+
+  /* SVG prerequisite lines */
+  --line-default:   rgba(255, 255, 255, 0.10);
+  --line-dimmed:    rgba(255, 255, 255, 0.03);
+  --line-highlight: #296ef9;
+
+  /* Elevation */
+  --shadow-lift:  0 2px 8px  rgba(0, 0, 0, 0.45);
+  --shadow-float: 0 8px 24px rgba(0, 0, 0, 0.60);
 }
 
 /* ═══════════════════════════════════════════════
