@@ -292,7 +292,7 @@
       "semestre": 7,
       "cargaHoraria": 64,
       "nucleo": "especifico",
-      "prerequisitos": ["FAC00307"]
+      "prerequisitos": ["FAC0307"]
     },
     {
       "codigoDisciplina": "INF0324",
