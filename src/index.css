@@ -90,18 +90,18 @@
 
 [data-theme="dark"] {
   /* Surfaces */
-  --color-canvas:           #111111;
-  --color-surface:          #1e1e1e;
-  --color-cloud:            #171717;
-  --color-fog:              #252525;
-  --color-hairline:         #2e2e2e;
-  --color-hairline-strong:  #3d3d3d;
+  --color-canvas:           #202020;
+  --color-surface:          #262626;
+  --color-cloud:            #363636;
+  --color-fog:              #333333;
+  --color-hairline:         #4b4b4b;
+  --color-hairline-strong:  #555555;
 
   /* Text */
   --color-ink:       #ffffff;
-  --color-ink-soft:  #e0e0e0;
-  --color-charcoal:  #a0a0a0;
-  --color-graphite:  #6e6e6e;
+  --color-ink-soft:  #f1f1f1;
+  --color-charcoal:  #cccccc;
+  --color-graphite:  #bbbbbb;
 
   /* Brand */
   --color-primary:      #296ef9;
@@ -116,9 +116,9 @@
   --status-cursavel-bg:    #296ef9;
   --status-cursavel-fg:    #ffffff;
   --status-locked:         #aaaaaa;
-  --status-locked-bg:      #2d2d2d;
-  --status-locked-fg:      #aaaaaa;
-  --status-locked-border:  #3d3d3d;
+  --status-locked-bg:      #363636;
+  --status-locked-fg:      #ffffff;
+  --status-locked-border:  #4b4b4b;
 
   /* Núcleo accents */
   --nucleo-comum:     #6ee7b7;
