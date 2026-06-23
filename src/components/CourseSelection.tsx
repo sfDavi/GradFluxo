@@ -32,6 +32,18 @@ export function CourseSelection({
     <div className="course-selection">
       <ThemeToggle theme={theme} onToggle={onToggleTheme} />
 
+      <a
+        className="eval-banner"
+        href="https://forms.gle/uVUGGsjDt54mTsjx8"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span className="eval-banner-text">
+          Protótipo em avaliação, por favor ajude preenchendo o formulário de usabilidade
+        </span>
+        <span className="eval-banner-cta">Responder</span>
+      </a>
+
       <div className="course-hero">
         <h1>
           <span>Grad</span>Fluxo
