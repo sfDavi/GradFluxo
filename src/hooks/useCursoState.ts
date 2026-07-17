@@ -64,6 +64,31 @@ function saveCursadas(codigoCurso: string, cursadas: Set<string>): void {
   }
 }
 
+function getCursandoKey(codigoCurso: string): string {
+  return `gradfluxo-cursando-${codigoCurso}`;
+}
+
+function loadCursando(codigoCurso: string): Set<string> {
+  try {
+    const stored = localStorage.getItem(getCursandoKey(codigoCurso));
+    if (stored) {
+      const arr = JSON.parse(stored);
+      if (Array.isArray(arr)) return new Set(arr);
+    }
+  } catch {
+    // ignore corrupted data
+  }
+  return new Set();
+}
+
+function saveCursando(codigoCurso: string, cursando: Set<string>): void {
+  if (cursando.size === 0) {
+    localStorage.removeItem(getCursandoKey(codigoCurso));
+  } else {
+    localStorage.setItem(getCursandoKey(codigoCurso), JSON.stringify([...cursando]));
+  }
+}
+
 // ─── Hook ───
 
 export function useCursoState(curso: Curso) {
@@ -74,6 +99,7 @@ export function useCursoState(curso: Curso) {
     nomeDisciplina: string;
     cascadeCount: number;
   } | null>(null);
+  const [cursando, setCursando] = useState<Set<string>>(() => loadCursando(curso.codigoCurso));
 
   // ─── Persistence ───
 
@@ -84,6 +110,10 @@ export function useCursoState(curso: Curso) {
   useEffect(() => {
     savePlano(curso.codigoCurso, plano);
   }, [curso.codigoCurso, plano]);
+
+  useEffect(() => {
+    saveCursando(curso.codigoCurso, cursando);
+  }, [curso.codigoCurso, cursando]);
 
   // ─── Derived data ───
 
@@ -154,47 +184,58 @@ export function useCursoState(curso: Curso) {
       const status = statusMap.get(codigoDisciplina);
       if (status === 'cursavel') {
         setUndoInfo(null);
+        setCursando((prev) => {
+          if (!prev.has(codigoDisciplina)) return prev;
+          const next = new Set(prev);
+          next.delete(codigoDisciplina);
+          return next;
+        });
         setCursadas((prev) => {
           const next = new Set(prev);
           next.add(codigoDisciplina);
           return next;
         });
       } else if (status === 'cursada') {
-        setCursadas((prev) => {
-          const snapshot = new Set(prev);
-          const next = new Set(prev);
-          const toRemove = new Set<string>();
-          const queue = [codigoDisciplina];
-          while (queue.length > 0) {
-            const code = queue.pop()!;
-            if (toRemove.has(code)) continue;
-            toRemove.add(code);
-            const deps = dependentsMap.get(code) || [];
-            for (const dep of deps) {
-              if (next.has(dep)) {
-                queue.push(dep);
-              }
+        // Compute toRemove outside updaters so it's available for both setCursadas and setCursando
+        const snapshot = new Set(cursadas);
+        const toRemove = new Set<string>();
+        const queue = [codigoDisciplina];
+        while (queue.length > 0) {
+          const code = queue.pop()!;
+          if (toRemove.has(code)) continue;
+          toRemove.add(code);
+          const deps = dependentsMap.get(code) || [];
+          for (const dep of deps) {
+            if (cursadas.has(dep)) {
+              queue.push(dep);
             }
           }
-          for (const code of toRemove) {
-            next.delete(code);
-          }
-          const cascadeCount = toRemove.size - 1;
-          if (cascadeCount > 0) {
-            const disc = disciplinasMap.get(codigoDisciplina);
-            setUndoInfo({
-              snapshot,
-              nomeDisciplina: disc?.nomeDisciplina || codigoDisciplina,
-              cascadeCount,
-            });
-          } else {
-            setUndoInfo(null);
-          }
+        }
+        const cascadeCount = toRemove.size - 1;
+        if (cascadeCount > 0) {
+          const disc = disciplinasMap.get(codigoDisciplina);
+          setUndoInfo({
+            snapshot,
+            nomeDisciplina: disc?.nomeDisciplina || codigoDisciplina,
+            cascadeCount,
+          });
+        } else {
+          setUndoInfo(null);
+        }
+        setCursadas((prev) => {
+          const next = new Set(prev);
+          for (const code of toRemove) next.delete(code);
+          return next;
+        });
+        setCursando((prev) => {
+          if ([...toRemove].every(code => !prev.has(code))) return prev;
+          const next = new Set(prev);
+          for (const code of toRemove) next.delete(code);
           return next;
         });
       }
     },
-    [statusMap, dependentsMap, disciplinasMap]
+    [statusMap, dependentsMap, disciplinasMap, cursadas]
   );
 
   const handleUndo = useCallback(() => {
@@ -208,9 +249,19 @@ export function useCursoState(curso: Curso) {
     setUndoInfo(null);
   }, []);
 
+  const handleToggleCursando = useCallback((codigoDisciplina: string) => {
+    setCursando((prev) => {
+      const next = new Set(prev);
+      if (next.has(codigoDisciplina)) next.delete(codigoDisciplina);
+      else next.add(codigoDisciplina);
+      return next;
+    });
+  }, []);
+
   const handleResetPlano = useCallback(() => {
     setPlano({});
     setCursadas(new Set());
+    setCursando(new Set());
     setUndoInfo(null);
   }, []);
 
@@ -255,6 +306,8 @@ export function useCursoState(curso: Curso) {
   return {
     cursadas,
     setCursadas,
+    cursando,
+    handleToggleCursando,
     plano,
     setPlano,
     statusMap,

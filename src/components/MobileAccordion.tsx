@@ -13,6 +13,7 @@ interface MobileAccordionProps {
   semestreMap: Map<number, Disciplina[]>;
   statusMap: Map<string, Status>;
   combinedMatches: Set<string> | null;
+  cursando: Set<string>;
   onDisciplinaClick: (codigo: string) => void;
   onInfoClick: (e: React.MouseEvent, codigo: string) => void;
   onContextMenu: (e: React.MouseEvent, codigo: string) => void;
@@ -29,6 +30,7 @@ export function MobileAccordion({
   semestreMap,
   statusMap,
   combinedMatches,
+  cursando,
   onDisciplinaClick,
   onInfoClick,
   onContextMenu,
@@ -71,13 +73,14 @@ export function MobileAccordion({
                 {disciplinas.map((d) => {
                   const status = statusMap.get(d.codigoDisciplina) || 'nao_cursavel';
                   const isSearchMatch = combinedMatches ? combinedMatches.has(d.codigoDisciplina) : false;
+                  const isCursando = cursando.has(d.codigoDisciplina);
                   return (
                     <div
                       key={d.codigoDisciplina}
                       data-disciplina={d.codigoDisciplina}
                       data-status={status}
                       data-nucleo={d.nucleo}
-                      className={`discipline-card${isSearchMatch ? ' is-search-match' : ''}`}
+                      className={`discipline-card${isSearchMatch ? ' is-search-match' : ''}${isCursando ? ' is-cursando' : ''}`}
                       title={statusLabels[status]}
                       onClick={() => onDisciplinaClick(d.codigoDisciplina)}
                       onContextMenu={(e) => onContextMenu(e, d.codigoDisciplina)}
