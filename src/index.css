@@ -62,6 +62,7 @@
   --status-locked-bg:      #eeeeee;
   --status-locked-fg:      #636363;
   --status-locked-border:  #d6d6d6;
+  --status-cursando:       #ec5317;
 
   /* Núcleo accents (saturated for light backgrounds) */
   --nucleo-comum:     #059669;
@@ -119,6 +120,7 @@
   --status-locked-bg:      #363636;
   --status-locked-fg:      #ffffff;
   --status-locked-border:  #4b4b4b;
+  --status-cursando:       #e67e54;
 
   /* Núcleo accents */
   --nucleo-comum:     #6ee7b7;

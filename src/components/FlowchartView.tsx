@@ -45,6 +45,7 @@ export function FlowchartView({ curso, onBack, theme, onToggleTheme }: Flowchart
     progressInfo, semestreMap, semestres, hasPlano, undoInfo,
     handleDisciplinaClick, handleUndo, handleUndoDismiss,
     handleResetPlano, handleMarkSemestre,
+    cursando, handleToggleCursando,
   } = useCursoState(curso);
 
   const {
@@ -73,9 +74,9 @@ export function FlowchartView({ curso, onBack, theme, onToggleTheme }: Flowchart
   const handleContextMenu = useCallback(
     (e: React.MouseEvent, codigoDisciplina: string) => {
       e.preventDefault();
-      setDrawerDisciplina(codigoDisciplina);
+      handleToggleCursando(codigoDisciplina);
     },
-    []
+    [handleToggleCursando]
   );
 
   const handleInfoClick = useCallback(
@@ -132,20 +133,20 @@ export function FlowchartView({ curso, onBack, theme, onToggleTheme }: Flowchart
           <div className="help-panel-section">
             <p className="help-panel-heading">Interações</p>
             <ul className="help-list">
-              <li><kbd className="help-key">Clique</kbd> em disciplina disponível — marcar como cursada</li>
-              <li><kbd className="help-key">Clique</kbd> em cursada — desmarcar (remove dependentes)</li>
-              <li><kbd className="help-key">Passar o mouse</kbd> — destacar pré-requisitos</li>
-              <li><kbd className="help-key">Botão i</kbd> ou clique direito — detalhes da disciplina</li>
-              <li><kbd className="help-key">Arrastar</kbd> card — mover para outro semestre</li>
-              <li><kbd className="help-key">Ctrl+K</kbd> — focar na busca</li>
+              <li><kbd className="help-key">Clique esquerdo</kbd> marcar/desmarcar como cursada</li>
+              <li><kbd className="help-key">Clique direito</kbd> marcar/desmarcar "cursando agora"</li>
+              <li><kbd className="help-key">Passar o mouse</kbd> destacar pré-requisitos</li>
+              <li><kbd className="help-key">Clicar e arrastar</kbd> mover Livre e Optativas para outro semestre</li>
+              <li><kbd className="help-key">Botão i</kbd> detalhes da disciplina</li>
             </ul>
           </div>
           <div className="help-panel-section">
             <p className="help-panel-heading">Cores</p>
             <ul className="help-legend">
-              <li><span className="help-legend-dot" data-status="cursada"></span>Verde — cursada</li>
-              <li><span className="help-legend-dot" data-status="cursavel"></span>Azul — disponível para cursar</li>
-              <li><span className="help-legend-dot" data-status="nao_cursavel"></span>Cinza — bloqueada por pré-requisito</li>
+              <li><span className="help-legend-dot" data-status="cursada"></span>Cursada</li>
+              <li><span className="help-legend-dot" data-status="cursavel"></span>Disponível para cursar</li>
+              <li><span className="help-legend-dot" data-status="nao_cursavel"></span>Bloqueada por pré-requisito</li>
+              <li><span className="help-legend-dot" data-status="cursando"></span>Cursando agora</li>
             </ul>
           </div>
         </div>
@@ -169,6 +170,7 @@ export function FlowchartView({ curso, onBack, theme, onToggleTheme }: Flowchart
           semestreMap={semestreMap}
           statusMap={statusMap}
           combinedMatches={combinedMatches}
+          cursando={cursando}
           onDisciplinaClick={handleDisciplinaClick}
           onInfoClick={handleInfoClick}
           onContextMenu={handleContextMenu}
@@ -242,13 +244,14 @@ export function FlowchartView({ curso, onBack, theme, onToggleTheme }: Flowchart
                     const isSearchMatch = combinedMatches ? combinedMatches.has(d.codigoDisciplina) : false;
                     const canDrag = isDraggable(d);
                     const isMoved = plano[d.codigoDisciplina] !== undefined;
+                    const isCursando = cursando.has(d.codigoDisciplina);
                     return (
                       <div
                         key={d.codigoDisciplina}
                         data-disciplina={d.codigoDisciplina}
                         data-status={status}
                         data-nucleo={d.nucleo}
-                        className={`discipline-card${isHovered ? ' is-hovered' : ''}${isHighlighted ? ' is-highlighted' : ''}${isSearchMatch ? ' is-search-match' : ''}${canDrag ? ' is-draggable' : ''}${isMoved ? ' is-moved' : ''}`}
+                        className={`discipline-card${isHovered ? ' is-hovered' : ''}${isHighlighted ? ' is-highlighted' : ''}${isSearchMatch ? ' is-search-match' : ''}${canDrag ? ' is-draggable' : ''}${isMoved ? ' is-moved' : ''}${isCursando ? ' is-cursando' : ''}`}
                         title={statusLabels[status]}
                         draggable={canDrag}
                         onDragStart={canDrag ? (e) => handleDragStart(e, d.codigoDisciplina) : undefined}

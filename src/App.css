@@ -355,6 +355,7 @@
 .help-legend-dot[data-status="cursada"]      { background: var(--status-cursada); }
 .help-legend-dot[data-status="cursavel"]     { background: var(--status-cursavel); }
 .help-legend-dot[data-status="nao_cursavel"] { background: var(--status-locked); }
+.help-legend-dot[data-status="cursando"]     { background: transparent; box-shadow: 0 0 0 2px var(--status-cursando); }
 
 .flowchart-title {
   font-size: 22px;
@@ -576,7 +577,7 @@
   display: flex;
   gap: var(--space-xs);
   overflow-x: auto;
-  padding-bottom: var(--space-md);
+  padding: 4px 4px var(--space-md);
   align-items: flex-start;
   scroll-behavior: smooth;
 }
@@ -817,6 +818,19 @@
   outline: 1px dashed var(--color-primary);
   outline-offset: -1px;
 }
+
+.discipline-card.is-cursando {
+  box-shadow: 0 0 0 2px var(--status-cursando);
+}
+
+.discipline-card.is-cursando[data-status="cursada"]:hover,
+.discipline-card.is-cursando[data-status="cursavel"]:hover {
+  box-shadow: var(--shadow-lift), 0 0 0 2px var(--status-cursando);
+}
+
+.flowchart-grid.is-hovering  .discipline-card.is-cursando { opacity: 1; }
+.flowchart-grid.is-searching .discipline-card.is-cursando { opacity: 1; }
+.mobile-accordion.is-searching .discipline-card.is-cursando { opacity: 1; }
 
 /* ═══════════════════════════════════════════════
    PROGRESS SECTION  (dark slab, hp help-band-dark)
