@@ -1,5 +1,9 @@
 /* ═══════════════════════════════════════════════
    DESIGN TOKENS  (HP-inspired · DESIGN.md)
+
+   Contraste: todo par foi medido pela fórmula de
+   luminância relativa da WCAG 2.2.
+   Texto ≥ 4.5:1 · gráfico/borda ≥ 3:1
    ═══════════════════════════════════════════════ */
 
 :root {
@@ -35,58 +39,96 @@
   /* Surfaces */
   --color-canvas:           #f5f5f5;
   --color-surface:          #ffffff;
-  --color-cloud:            #eeeeee;
-  --color-fog:              #d6d6d6;
-  --color-hairline:         #afafaf;
-  --color-hairline-strong:  #7e7e7e;
+  --color-cloud:            #ebebeb;
+  --color-fog:              #e0e0e0;
+  --color-hairline:         #848484;  /* G 3.43 / canvas */
+  --color-hairline-strong:  #6b6b6b;  /* AA 5.33 / surface */
 
   /* Text */
-  --color-ink:       #1a1a1a;
+  --color-ink:       #1a1a1a;  /* AA 17.4 */
   --color-ink-soft:  #292929;
-  --color-charcoal:  #3d3d3d;
-  --color-graphite:  #636363;
+  --color-charcoal:  #3d3d3d;  /* AA 10.9 */
+  --color-graphite:  #5c5c5c;  /* AA 5.76 / cloud */
 
   /* Brand */
-  --color-primary:      #024ad8;
+  --color-primary:      #024ad8;  /* AA 7.06 */
   --color-primary-deep: #0e3191;
-  --color-primary-soft: #c9e0fc;
+  --color-primary-soft: #dbe8fd;  /* primary sobre ele: AA 5.71 */
+  --color-primary-fg:   #ffffff;  /* AA 7.06 sobre primary */
 
-  /* Status — discipline cards (tinted surfaces on white) */
-  --status-cursada:        #34d399;
-  --status-cursada-bg:     #d1fae5;
-  --status-cursada-fg:     #065f46;
-  --status-cursavel:       #024ad8;
-  --status-cursavel-bg:    #dbeafe;
-  --status-cursavel-fg:    #1e40af;
-  --status-locked:         #636363;
-  --status-locked-bg:      #eeeeee;
-  --status-locked-fg:      #636363;
-  --status-locked-border:  #d6d6d6;
-  --status-cursando:       #ec5317;
+  /* Status — cursada */
+  --status-cursada:        #047857;  /* ponto/legenda · AA 5.48 */
+  --status-cursada-bg:     #ccf3e0;
+  --status-cursada-fg:     #0b5c41;  /* AA 6.66 */
+  --status-cursada-meta:   #2f6b57;  /* AA 5.20 */
+  --status-cursada-border: #0e8a63;  /* G 3.98 / canvas */
 
-  /* Núcleo accents (saturated for light backgrounds) */
-  --nucleo-comum:     #059669;
-  --nucleo-especifico:#b45309;
-  --nucleo-livre:     #7c3aed;
-  --nucleo-optativo:  #0369a1;
+  /* Status — cursável */
+  --status-cursavel:        #2f6ae0;  /* AA 4.93 */
+  --status-cursavel-bg:     #d8e7ff;
+  --status-cursavel-fg:     #17408f;  /* AA 7.75 */
+  --status-cursavel-meta:   #3a5da8;  /* AA 5.07 */
+  --status-cursavel-border: #2f6ae0;  /* G 4.52 / canvas */
+
+  /* Status — bloqueada */
+  --status-locked:        #7a7a7a;  /* G 4.29 */
+  --status-locked-bg:     #e9e9e9;
+  --status-locked-fg:     #3d3d3d;  /* AA 8.95 */
+  --status-locked-meta:   #5c5c5c;  /* AA 5.51 */
+  --status-locked-border: #7a7a7a;  /* G 3.94 / canvas */
+
+  /* Status — cursando (anel) */
+  --status-cursando: #c2410c;  /* G 4.75 / canvas */
+
+  /* Botão "marcar semestre" concluído */
+  --status-done-bg: #047857;
+  --status-done-fg: #ffffff;  /* AA 5.48 */
+
+  /* Ações destrutivas */
+  --danger-bg: #b3261e;
+  --danger-fg: #ffffff;  /* AA 6.54 */
+
+  /* Toasts */
+  --toast-success-bg: #047857;  --toast-success-fg: #ffffff;  /* AA 5.48 */
+  --toast-warning-bg: #a4500a;  --toast-warning-fg: #ffffff;  /* AA 5.63 */
+  --toast-error-bg:   #b3261e;  --toast-error-fg:   #ffffff;  /* AA 6.54 */
+
+  /* Núcleo accents */
+  --nucleo-comum:     #047857;  /* AA 5.48 */
+  --nucleo-especifico:#a4500a;  /* AA 5.63 */
+  --nucleo-livre:     #6d28d9;  /* AA 7.10 */
+  --nucleo-optativo:  #036296;  /* AA 6.58 */
 
   /* Progress */
-  --progress-track:       #e8e8e8;
-  --progress-fill-start:  #059669;
-  --progress-fill-end:    #34d399;
+  --progress-track:        #d0d0d0;
+  --progress-track-border: #848484;
+  --progress-fill:         #047857;  /* G 3.56 sobre a trilha */
+  --progress-fill-start:   #047857;
+  --progress-fill-end:     #0e8a63;
+  --progress-value:        #047857;  /* AA 5.48 */
 
   /* SVG prerequisite lines */
-  --line-default:   rgba(26, 26, 26, 0.12);
-  --line-dimmed:    rgba(26, 26, 26, 0.04);
-  --line-highlight: #024ad8;
+  --line-default:   #8a8a8a;  /* G 3.17 / canvas */
+  --line-dimmed:    #8a8a8a;  /* G 3.17 — esmaece pela espessura, não pela cor */
+  --line-highlight: #024ad8;  /* AA 6.48 */
 
   /* Elevation */
-  --shadow-lift:  0 2px 8px  rgba(26, 26, 26, 0.08);
-  --shadow-float: 0 8px 24px rgba(26, 26, 26, 0.12);
+  --shadow-lift:  0 2px 8px  rgba(26, 26, 26, 0.10);
+  --shadow-float: 0 8px 24px rgba(26, 26, 26, 0.16);
+
+  /* Apelidos usados por .eval-banner */
+  --color-surface-raised: var(--color-surface);
+  --color-border:         var(--color-hairline);
+  --color-text:           var(--color-ink);
+  --color-text-secondary: var(--color-graphite);
 }
 
 /* ═══════════════════════════════════════════════
    DARK THEME  (user opt-in)
+
+   Espelha o Claro em estrutura, não em inversão:
+   todo status é superfície escura tingida com
+   texto claro, nunca preenchimento saturado.
    ═══════════════════════════════════════════════ */
 
 [data-theme="dark"] {
@@ -95,52 +137,86 @@
   --color-surface:          #262626;
   --color-cloud:            #363636;
   --color-fog:              #333333;
-  --color-hairline:         #4b4b4b;
-  --color-hairline-strong:  #555555;
+  --color-hairline:         #707070;  /* G 3.06 / surface */
+  --color-hairline-strong:  #8a8a8a;  /* G 4.38 / surface */
 
   /* Text */
-  --color-ink:       #ffffff;
+  --color-ink:       #ffffff;  /* AA 14.6 */
   --color-ink-soft:  #f1f1f1;
-  --color-charcoal:  #cccccc;
-  --color-graphite:  #bbbbbb;
+  --color-charcoal:  #d4d4d4;  /* AA 10.2 */
+  --color-graphite:  #b0b0b0;  /* AA 5.57 / cloud */
 
   /* Brand */
-  --color-primary:      #296ef9;
-  --color-primary-deep: #0e3191;
-  --color-primary-soft: rgba(41, 110, 249, 0.14);
+  --color-primary:      #5b91ff;  /* AA 5.00 */
+  --color-primary-deep: #a8c8ff;  /* AA 8.91 */
+  --color-primary-soft: #16243d;  /* primary sobre ele: AA 5.13 */
+  --color-primary-fg:   #16243d;  /* AA 5.13 sobre primary */
 
-  /* Status — discipline cards */
-  --status-cursada:        #10a870;
-  --status-cursada-bg:     #10a870;
-  --status-cursada-fg:     #ffffff;
-  --status-cursavel:       #296ef9;
-  --status-cursavel-bg:    #296ef9;
-  --status-cursavel-fg:    #ffffff;
-  --status-locked:         #aaaaaa;
-  --status-locked-bg:      #363636;
-  --status-locked-fg:      #ffffff;
-  --status-locked-border:  #4b4b4b;
-  --status-cursando:       #e67e54;
+  /* Status — cursada */
+  --status-cursada:        #6ee7b7;  /* ponto/legenda · AA 9.93 */
+  --status-cursada-bg:     #0f3d2e;
+  --status-cursada-fg:     #6ee7b7;  /* AA 7.98 */
+  --status-cursada-meta:   #8fbfa9;  /* AA 5.90 */
+  --status-cursada-border: #35a37a;  /* G 5.18 / canvas */
+
+  /* Status — cursável */
+  --status-cursavel:        #4a7fe0;  /* G 3.89 */
+  --status-cursavel-bg:     #17305c;
+  --status-cursavel-fg:     #a8c8ff;  /* AA 7.67 */
+  --status-cursavel-meta:   #8ba4d1;  /* AA 5.16 */
+  --status-cursavel-border: #4a7fe0;  /* G 4.19 / canvas */
+
+  /* Status — bloqueada */
+  --status-locked:        #858585;  /* G 4.10 */
+  --status-locked-bg:     #2e2e2e;
+  --status-locked-fg:     #c9c9c9;  /* AA 8.20 */
+  --status-locked-meta:   #a3a3a3;  /* AA 5.38 */
+  --status-locked-border: #858585;  /* G 4.42 / canvas */
+
+  /* Status — cursando (anel) */
+  --status-cursando: #fb923c;  /* G 7.20 / canvas */
+
+  /* Botão "marcar semestre" concluído */
+  --status-done-bg: #6ee7b7;
+  --status-done-fg: #0f3d2e;  /* AA 7.98 */
+
+  /* Ações destrutivas */
+  --danger-bg: #ff9a90;
+  --danger-fg: #2e2e2e;  /* AA 6.65 */
+
+  /* Toasts */
+  --toast-success-bg: #6ee7b7;  --toast-success-fg: #0f3d2e;  /* AA 7.98 */
+  --toast-warning-bg: #fbbf24;  --toast-warning-fg: #2e2e2e;  /* AA 8.13 */
+  --toast-error-bg:   #ff9a90;  --toast-error-fg:   #2e2e2e;  /* AA 6.65 */
 
   /* Núcleo accents */
-  --nucleo-comum:     #6ee7b7;
-  --nucleo-especifico:#fde68a;
-  --nucleo-livre:     #d8b4fe;
-  --nucleo-optativo:  #7dd3fc;
+  --nucleo-comum:     #5ddba9;  /* AA 9.50 */
+  --nucleo-especifico:#fbbf24;  /* AA 9.07 */
+  --nucleo-livre:     #c4b5fd;  /* AA 8.20 */
+  --nucleo-optativo:  #7dd3fc;  /* AA 9.08 */
 
   /* Progress */
-  --progress-track:       #252525;
-  --progress-fill-start:  #10a870;
-  --progress-fill-end:    #6ee7b7;
+  --progress-track:        #454545;
+  --progress-track-border: #707070;
+  --progress-fill:         #34d399;  /* G 4.99 sobre a trilha */
+  --progress-fill-start:   #34d399;
+  --progress-fill-end:     #6ee7b7;
+  --progress-value:        #34d399;  /* AA 7.87 */
 
   /* SVG prerequisite lines */
-  --line-default:   rgba(255, 255, 255, 0.10);
-  --line-dimmed:    rgba(255, 255, 255, 0.03);
-  --line-highlight: #296ef9;
+  --line-default:   #6b6b6b;  /* G 3.06 / canvas */
+  --line-dimmed:    #6b6b6b;  /* G 3.06 — esmaece pela espessura, não pela cor */
+  --line-highlight: #5b91ff;  /* AA 5.38 */
 
   /* Elevation */
   --shadow-lift:  0 2px 8px  rgba(0, 0, 0, 0.45);
   --shadow-float: 0 8px 24px rgba(0, 0, 0, 0.60);
+
+  /* Apelidos usados por .eval-banner */
+  --color-surface-raised: var(--color-surface);
+  --color-border:         var(--color-hairline);
+  --color-text:           var(--color-ink);
+  --color-text-secondary: var(--color-graphite);
 }
 
 /* ═══════════════════════════════════════════════
@@ -175,10 +251,12 @@ body {
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
+/* 1.15 evita que descendentes sejam cortados quando o
+   título quebra em duas linhas; 1.0 só nos tamanhos display */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font);
   font-weight: 500;
-  line-height: 1.0;
+  line-height: 1.15;
 }
 
 a {

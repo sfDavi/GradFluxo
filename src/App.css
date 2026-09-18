@@ -555,57 +555,73 @@
 
 /* ─── Prerequisite Lines ─── */
 
+/* Cor opaca, nunca preto/branco translúcido: a translucidez
+   deixava as linhas em 1.27:1, abaixo do mínimo de 3:1 */
 .prerequisite-line {
   stroke: var(--line-default);
-  stroke-width: 1.5;
+  stroke-width: 2;
   fill: none;
   transition: stroke 0.2s, stroke-width 0.2s;
 }
 
 .prerequisite-line.is-highlighted {
   stroke: var(--line-highlight);
-  stroke-width: 2.5;
+  stroke-width: 3;
 }
 
 .prerequisite-line.is-dimmed {
   stroke: var(--line-dimmed);
+  stroke-width: 1;
 }
 
 /* ─── Grid Layout ─── */
 
 .flowchart-grid {
   display: flex;
-  gap: var(--space-xs);
+  gap: var(--space-lg);
   overflow-x: auto;
-  padding: 4px 4px var(--space-md);
+  padding: 8px 8px var(--space-md);
   align-items: flex-start;
   scroll-behavior: smooth;
 }
 
-.flowchart-grid::-webkit-scrollbar { height: 4px; }
-.flowchart-grid::-webkit-scrollbar-track { background: var(--color-cloud); border-radius: 2px; }
-.flowchart-grid::-webkit-scrollbar-thumb { background: var(--color-hairline-strong); border-radius: 2px; }
+.flowchart-grid::-webkit-scrollbar { height: 10px; }
+.flowchart-grid::-webkit-scrollbar-track { background: var(--color-cloud); border-radius: var(--radius-pill); }
+.flowchart-grid::-webkit-scrollbar-thumb { background: var(--color-hairline-strong); border-radius: var(--radius-pill); }
 
-/* ─── Search / Hover highlighting ─── */
+/* ─── Search / Hover highlighting ───
+   Destaque ADITIVO: nenhum card perde a cor de status.
+   O status é a informação principal do fluxograma — apagá-lo
+   (por opacity ou por cinza) custa mais do que o destaque ganha.
+   Quem entra em foco recebe um halo: outline separado da borda
+   do card por um respiro de 2px, que deixa ver a cor do canvas
+   entre os dois. O halo não usa nenhuma cor de status, então
+   funciona por cima de verde, azul ou cinza igualmente. */
 
-.flowchart-grid.is-searching .discipline-card { opacity: 0.4; }
-.flowchart-grid.is-searching .discipline-card.is-search-match {
-  opacity: 1;
-  box-shadow: 0 0 0 1px var(--color-primary);
+/* cadeia de pré-requisitos — mesma cor das linhas destacadas */
+.flowchart-grid.is-hovering .discipline-card.is-highlighted,
+.flowchart-grid.is-searching .discipline-card.is-search-match,
+.mobile-accordion.is-searching .discipline-card.is-search-match {
+  outline: 3px solid var(--line-highlight);
+  outline-offset: 2px;
+  z-index: 3;
 }
 
-.flowchart-grid.is-hovering .discipline-card { opacity: 0.4; }
-.flowchart-grid.is-hovering .discipline-card.is-highlighted,
-.flowchart-grid.is-hovering .discipline-card.is-hovered { opacity: 1; }
-.flowchart-grid.is-hovering .discipline-card.is-highlighted {
-  box-shadow: 0 0 0 2px var(--line-highlight);
+/* a disciplina sob o cursor — tinta pura, que não é cor de
+   nenhum status, para se distinguir do resto da cadeia */
+.flowchart-grid.is-hovering .discipline-card.is-hovered {
+  outline: 3px solid var(--color-ink);
+  outline-offset: 2px;
+  box-shadow: var(--shadow-float);
+  transform: translateY(-2px);
+  z-index: 4;
 }
 
 /* ─── Semester Column ─── */
 
 .semester-column {
-  min-width: 148px;
-  max-width: 188px;
+  min-width: 168px;
+  max-width: 208px;
   flex-shrink: 0;
   animation: fadeInUp 0.35s ease both;
 }
@@ -636,15 +652,16 @@
   border-bottom: 1px solid var(--color-hairline);
 }
 
-/* mark-semester button */
+/* mark-semester button — 24×24 é o mínimo da WCAG 2.2 · 2.5.8 */
 .mark-semester-btn {
-  width: 20px;
-  height: 20px;
+  position: relative;
+  width: 24px;
+  height: 24px;
   border-radius: var(--radius-pill);
   border: 1px solid var(--color-hairline-strong);
   background: transparent;
   color: var(--color-charcoal);
-  font-size: 0.6rem;
+  font-size: 11px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -654,28 +671,38 @@
   flex-shrink: 0;
 }
 
+/* área de toque de 44px sem alterar o desenho */
+.mark-semester-btn::after {
+  content: '';
+  position: absolute;
+  inset: -10px;
+}
+
 .mark-semester-btn:hover:not(:disabled) {
-  background: var(--status-cursada);
-  border-color: var(--status-cursada);
-  color: #fff;
+  background: var(--status-done-bg);
+  border-color: var(--status-done-bg);
+  color: var(--status-done-fg);
 }
 
 .mark-semester-btn.is-done {
-  background: var(--status-cursada);
-  border-color: var(--status-cursada);
-  color: #fff;
+  background: var(--status-done-bg);
+  border-color: var(--status-done-bg);
+  color: var(--status-done-fg);
   opacity: 1;
 }
 
 .mark-semester-btn.is-done:hover {
-  background: #b91c1c;
-  border-color: #b91c1c;
+  background: var(--danger-bg);
+  border-color: var(--danger-bg);
+  color: var(--danger-fg);
 }
 
 .semester-cards {
   display: flex;
   flex-direction: column;
-  gap: var(--space-xxs);
+  /* 12px dá folga para o halo de 5px (offset 2 + traço 3)
+     de dois cards vizinhos destacados ao mesmo tempo */
+  gap: var(--space-sm);
 }
 
 /* ─── Discipline Card ─── */
@@ -684,12 +711,14 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
-  padding: var(--space-xxs) var(--space-xs);
+  padding: 10px var(--space-sm);
+  min-height: 56px;
+  border: 1px solid transparent;
   border-radius: var(--radius-lg);
   color: var(--color-ink);
   text-align: left;
   cursor: pointer;
-  transition: opacity 0.2s, transform 0.15s, box-shadow 0.15s;
+  transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.15s, box-shadow 0.15s;
   position: relative;
   overflow: hidden;
   width: 100%;
@@ -701,27 +730,30 @@
   left: 0;
   top: 0;
   bottom: 0;
-  width: 3px;
+  width: 4px;
   background: var(--nucleo-color, transparent);
 }
 
-/* Status backgrounds */
+/* Status: superfície tingida + borda ≥3:1 + faixa de núcleo.
+   Nunca preenchimento saturado com texto branco. */
 .discipline-card[data-status="cursada"] {
   background: var(--status-cursada-bg);
+  border-color: var(--status-cursada-border);
   color: var(--status-cursada-fg);
 }
 
 .discipline-card[data-status="cursavel"] {
   background: var(--status-cursavel-bg);
+  border-color: var(--status-cursavel-border);
   color: var(--status-cursavel-fg);
 }
 
 .discipline-card[data-status="nao_cursavel"] {
   background: var(--status-locked-bg);
-  border: 1px solid var(--status-locked-border);
+  border-color: var(--status-locked-border);
   cursor: default;
   color: var(--status-locked-fg);
-  --nucleo-color: transparent;
+  --nucleo-color: var(--status-locked-border);
 }
 
 /* Núcleo strip color */
@@ -738,40 +770,46 @@
 
 /* ─── Card Typography ─── */
 
+/* Sem opacity: ela compõe a cor com o fundo e derruba o
+   contraste. O tom secundário vem de um token medido. */
 .discipline-code {
-  font-size: 11px;
+  font-size: 11.5px;
   font-weight: 700;
-  letter-spacing: 0.7px;
+  letter-spacing: 0.8px;
+  line-height: 1.3;
   text-transform: uppercase;
-  opacity: 0.8;
 }
 
 .discipline-name {
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 1.25;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.3;
 }
 
 .discipline-info {
-  font-size: 11px;
-  font-weight: 400;
-  opacity: 0.65;
+  font-size: 11.5px;
+  font-weight: 500;
+  line-height: 1.35;
   margin-top: 1px;
 }
+
+.discipline-card[data-status="cursada"]     .discipline-info { color: var(--status-cursada-meta); }
+.discipline-card[data-status="cursavel"]    .discipline-info { color: var(--status-cursavel-meta); }
+.discipline-card[data-status="nao_cursavel"] .discipline-info { color: var(--status-locked-meta); }
 
 /* ─── Discipline info button ─── */
 
 .discipline-info-btn {
   position: absolute;
-  top: 3px;
-  right: 3px;
-  width: 20px;
-  height: 20px;
+  top: 4px;
+  right: 4px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid currentColor;
+  background: var(--color-surface);
   color: inherit;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   font-style: italic;
   font-family: Georgia, serif;
@@ -786,14 +824,15 @@
   line-height: 1;
 }
 
-[data-theme="light"] .discipline-card[data-status="cursada"] .discipline-info-btn,
-[data-theme="light"] .discipline-card[data-status="cursavel"] .discipline-info-btn {
-  border-color: rgba(0, 0, 0, 0.25);
-  background: rgba(0, 0, 0, 0.15);
+/* área de toque de 44px sem alterar o desenho */
+.discipline-info-btn::after {
+  content: '';
+  position: absolute;
+  inset: -10px;
 }
 
 .discipline-card:hover .discipline-info-btn { opacity: 1; }
-.discipline-info-btn:hover { background: rgba(0, 0, 0, 0.4); opacity: 1; }
+.discipline-info-btn:hover { background: var(--color-cloud); opacity: 1; }
 
 /* ─── Drag & Drop ─── */
 
@@ -828,9 +867,18 @@
   box-shadow: var(--shadow-lift), 0 0 0 2px var(--status-cursando);
 }
 
-.flowchart-grid.is-hovering  .discipline-card.is-cursando { opacity: 1; }
-.flowchart-grid.is-searching .discipline-card.is-cursando { opacity: 1; }
-.mobile-accordion.is-searching .discipline-card.is-cursando { opacity: 1; }
+/* o halo do hover não pode engolir o anel de "cursando":
+   o anel fica colado no card, o halo 2px além dele */
+.flowchart-grid.is-hovering .discipline-card.is-hovered.is-cursando {
+  box-shadow: var(--shadow-float), 0 0 0 2px var(--status-cursando);
+  outline-offset: 4px;
+}
+
+.flowchart-grid.is-hovering .discipline-card.is-highlighted.is-cursando,
+.flowchart-grid.is-searching .discipline-card.is-search-match.is-cursando,
+.mobile-accordion.is-searching .discipline-card.is-search-match.is-cursando {
+  outline-offset: 4px;
+}
 
 /* ═══════════════════════════════════════════════
    PROGRESS SECTION  (dark slab, hp help-band-dark)
@@ -898,21 +946,24 @@
 }
 
 .progress-label-percentage {
-  font-weight: 600;
-  color: var(--status-cursada);
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.4px;
+  color: var(--progress-value);
 }
 
 .progress-bar-track {
   width: 100%;
-  height: 8px;
+  height: 12px;
   background: var(--progress-track);
+  border: 1px solid var(--progress-track-border);
   border-radius: var(--radius-pill);
   overflow: hidden;
 }
 
 .progress-bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--progress-fill-start), var(--progress-fill-end));
+  background: var(--progress-fill);
   border-radius: var(--radius-pill);
   transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -960,8 +1011,9 @@
 
 .nucleo-progress-track {
   width: 100%;
-  height: 4px;
+  height: 8px;
   background: var(--progress-track);
+  border: 1px solid var(--progress-track-border);
   border-radius: var(--radius-pill);
   overflow: hidden;
 }
@@ -1098,10 +1150,17 @@
   border: 1px solid var(--status-locked-border);
 }
 
-.drawer-badge-nucleo[data-nucleo="comum"]      { background: color-mix(in srgb, var(--nucleo-comum)      18%, var(--color-surface)); color: var(--nucleo-comum); }
-.drawer-badge-nucleo[data-nucleo="especifico"] { background: color-mix(in srgb, var(--nucleo-especifico) 18%, var(--color-surface)); color: var(--nucleo-especifico); }
-.drawer-badge-nucleo[data-nucleo="livre"]      { background: color-mix(in srgb, var(--nucleo-livre)      18%, var(--color-surface)); color: var(--nucleo-livre); }
-.drawer-badge-nucleo[data-nucleo="optativo"]   { background: color-mix(in srgb, var(--nucleo-optativo)   18%, var(--color-surface)); color: var(--nucleo-optativo); }
+/* Fundo da própria superfície + borda: o mix de 18% deixava
+   o texto do núcleo em ~3.5:1 no tema Escuro */
+.drawer-badge-nucleo {
+  background: var(--color-surface);
+  border: 1px solid currentColor;
+}
+
+.drawer-badge-nucleo[data-nucleo="comum"]      { color: var(--nucleo-comum); }
+.drawer-badge-nucleo[data-nucleo="especifico"] { color: var(--nucleo-especifico); }
+.drawer-badge-nucleo[data-nucleo="livre"]      { color: var(--nucleo-livre); }
+.drawer-badge-nucleo[data-nucleo="optativo"]   { color: var(--nucleo-optativo); }
 
 /* details card */
 .drawer-details {
@@ -1260,12 +1319,13 @@
 
 .import-confirm-ok {
   background: var(--color-primary);
-  color: #fff;
+  color: var(--color-primary-fg);
   border: 1px solid transparent;
 }
 
 .import-confirm-ok:hover {
   background: var(--color-primary-deep);
+  color: var(--color-primary-fg);
 }
 
 /* ─── Import Toast ─── */
@@ -1293,9 +1353,9 @@
   to   { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
 
-.import-toast-success { background: var(--status-cursada); color: #fff; }
-.import-toast-warning { background: #b45309; color: #fff; }
-.import-toast-error   { background: #b91c1c; color: #fff; }
+.import-toast-success { background: var(--toast-success-bg); color: var(--toast-success-fg); }
+.import-toast-warning { background: var(--toast-warning-bg); color: var(--toast-warning-fg); }
+.import-toast-error   { background: var(--toast-error-bg);   color: var(--toast-error-fg); }
 
 .import-toast-close {
   background: none;
@@ -1371,11 +1431,8 @@
   margin-bottom: var(--space-md);
 }
 
-.mobile-accordion.is-searching .discipline-card { opacity: 0.18; }
-.mobile-accordion.is-searching .discipline-card.is-search-match {
-  opacity: 1;
-  box-shadow: 0 0 0 2px var(--color-primary);
-}
+/* o destaque do acordeão móvel está junto do desktop,
+   na seção Search / Hover highlighting */
 
 /* faq-row */
 .accordion-item {
@@ -1433,7 +1490,7 @@
 .accordion-content {
   display: flex;
   flex-direction: column;
-  gap: var(--space-xs);
+  gap: var(--space-sm);
   padding: var(--space-sm);
   animation: accordionOpen 0.2s ease;
 }
