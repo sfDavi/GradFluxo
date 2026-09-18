@@ -18,9 +18,9 @@ const nucleoOptions: { value: Nucleo; label: string; cssVar: string }[] = [
 ];
 
 const statusOptions: { value: Status; label: string; cssVar: string }[] = [
-  { value: 'cursada', label: 'Cursada', cssVar: 'var(--status-cursada-bg)' },
-  { value: 'cursavel', label: 'Cursável', cssVar: 'var(--status-cursavel-bg)' },
-  { value: 'nao_cursavel', label: 'Não Cursável', cssVar: 'var(--status-locked-bg)' },
+  { value: 'cursada', label: 'Cursada', cssVar: 'var(--status-cursada)' },
+  { value: 'cursavel', label: 'Cursável', cssVar: 'var(--status-cursavel)' },
+  { value: 'nao_cursavel', label: 'Não Cursável', cssVar: 'var(--status-locked)' },
 ];
 
 export function FilterChips({
