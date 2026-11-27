@@ -973,7 +973,14 @@
    Quem entra em foco recebe um halo: outline separado da borda
    do card por um respiro de 2px, que deixa ver a cor do canvas
    entre os dois. O halo não usa nenhuma cor de status, então
-   funciona por cima de verde, azul ou cinza igualmente. */
+   funciona por cima de verde, azul ou cinza igualmente.
+   No hover, os cards fora da cadeia esmaecem levemente (80%)
+   para reforçar o foco — leve o bastante para o status
+   continuar legível. */
+
+.flowchart-grid.is-hovering .discipline-card:not(.is-hovered):not(.is-highlighted) {
+  opacity: 0.80;
+}
 
 /* cadeia de pré-requisitos — mesma cor das linhas destacadas */
 .flowchart-grid.is-hovering .discipline-card.is-highlighted,
@@ -1095,7 +1102,7 @@
   color: var(--color-ink);
   text-align: left;
   cursor: pointer;
-  transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.15s, box-shadow 0.15s;
+  transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.15s, box-shadow 0.15s, opacity 0.15s;
   position: relative;
   overflow: hidden;
   width: 100%;
